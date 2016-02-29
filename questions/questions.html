@@ -1,0 +1,28 @@
+<template name="questions">
+  <div class="transitions-content">
+  <main>
+    <div class="content">
+      <div class="row toolbar grey lighten-3">
+        <div class="col s1">
+          {{#if isInRole 'admin' 'default_group'}}
+          <a href="{{pathFor 'question_add'}}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="waves-effect waves-light btn-floating btn-large green" ><i class="mdi-content-add"></i></a>
+          {{/if}}
+        </div>
+      </div>
+      <div>
+        <ul class="collection">
+          <li class="collection-item">
+            <span class="title">What city do you live in?</span>
+            <button class="waves-effect waves-grey btn-flat white"><i class="mdi-toggle-check-box left"></i>5 choices</button>
+            <button class="waves-effect waves-grey btn-flat green-text white"><i class="mdi-maps-place"></i>*</button>
+            <button class="waves-effect waves-grey btn-flat red-text white"><i class="mdi-editor-insert-photo"></i></button>
+            <button class="btn waves-effect waves-light secondary-content">Edit<i class="mdi-image-edit left"></i></button>
+            <p><span class="grey-text">Included in 8 books.</span>
+            <span class="blue-grey-text right">Keywords: Location, Geography</span></p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </main>
+  </div>
+</template>

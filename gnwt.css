@@ -1,0 +1,200 @@
+/* CSS declarations go here */
+
+body {
+  font-family: Verdana, sans-serif;
+  font-size: 10pt;
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.btn-flat.btn_table {
+  height: 28px;
+  line-height: 28px;
+  padding: 2px;
+}
+
+.btn-flat.btn_table:focus {
+  background-color: transparent;
+}
+
+.content {
+  padding-left: 50px;
+  width: 100%;
+  height: 100%;
+}
+
+.form_label {
+  color: #7F8C8D;
+  font-size: 10pt;
+  height: 30px;
+  line-height: 30px;
+  display: inline-block;
+}
+
+.form_inline_field {
+  display: inline-block;
+  height: 30px;
+}
+
+h2 {
+  color: #2196f3;
+}
+
+#header {
+  width: 100%;
+  height: 48px;
+  background-color: #e3f2fd;
+  border-bottom: 1px #bbdefb solid;
+  z-index: 1;
+}
+
+.header_button {
+  margin-top: 3px;
+}
+
+#header_page_title {
+  padding-left: 70px;
+  height: 49px;
+  line-height: 49px;
+  color: #3498db;
+  font-size: 16pt;
+}
+
+.header_slide_title {
+  height: 30px;
+  line-height: 30px;
+  color: #7F8C8D;
+  font-size: 16pt;
+}
+
+html {
+  line-height: 1.5;
+  height: 100%;
+}
+
+.input-field {
+  margin-top: 0;
+}
+
+#login {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+#login_button {
+  float: right;
+  width: 46px;
+  height: 46px;
+}
+
+#login_slide {
+  float: right;
+  width: 400px;
+  height: 300px;
+  background-color: #ecf0f1;
+  border-bottom: 1px #cbd0de solid;
+  border-left: 1px #cbd0de solid;
+  padding: 20px;
+  display: none;
+}
+
+main {
+  flex: 1 0 auto;
+  height: 100%;
+}
+
+#menu {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  z-index: 2;
+}
+
+#menu_button {
+  width: 50px;
+  height: 48px;
+  background-color: #3498db;
+}
+
+.menu_nav_button {
+  padding: 4px 8px;
+}
+
+.menu_nav_button_active {
+  background-color: #cbd0de;
+}
+
+#menu_slide {
+  float: left;
+  width: 200px;
+  height: 100%;
+  display: none;
+}
+a.menu_slide {
+  color: white;
+  text-decoration: none;
+}
+
+a.menu_slide_button:hover {
+  text-decoration: underline;
+}
+
+a.menu_slide_button:visited {
+  text-decoration: none;
+}
+
+div.menu_slide_button {
+  width: 200px;
+  height: 45px;
+  line-height: 45px;
+  padding-left: 15px;
+  font-size: 12pt;
+  color: white;
+  background-color: #b3c1c2;
+  opacity: 0.93;
+}
+
+div.menu_slide_button_active {
+  background-color: #a3b1b2;
+  color: #004d40;
+}
+
+#menu_static {
+  float: left;
+  width: 50px;
+  height: 100%;
+  background-color: #ecf0f1;
+  border-right: 1px #cbd0de solid;
+}
+
+.row_normal {
+  background-color: #ffffff;
+}
+
+.row_highlighted {
+  background-color: #999999;
+}
+
+.toolbar {
+  height: 46px;
+  border-bottom: 1px #cbd0de solid;
+}
+
+.toolbar_button {
+  margin: 5px 0px;
+  cursor: pointer;
+}
+
+.toolbar_button:hover {
+  background-color: #ffffff;
+}
+
+.transitions-content, .transitions-container {
+  height: 100%;
+}

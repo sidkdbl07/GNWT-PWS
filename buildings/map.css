@@ -1,0 +1,5 @@
+#map, .leaflet-map {
+  height: 100%;
+  min-height: 600px;
+  min-width: 100%;
+}
