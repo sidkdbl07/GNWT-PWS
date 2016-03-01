@@ -36,3 +36,4 @@ ground:db
 sacha:spin
 cfs:gridfs
 yogiben:autoform-file
+cfs:ui
