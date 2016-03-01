@@ -6,6 +6,25 @@ if (Meteor.isClient) {
   Template.registerHelper("Collections", Collections);
 }
 
+Images = new FS.Collection("images", {
+  stores: [new FS.Store.FileSystem("images")]
+});
+
+Images.allow({
+ insert: function(){
+ return true;
+ },
+ update: function(){
+ return true;
+ },
+ remove: function(){
+ return true;
+ },
+ download: function(){
+ return true;
+ }
+});
+
 /////////////////////////////////////////////
 // BUILDINGS
 Buildings = Collections.Buildings = new Meteor.Collection("Buildings");
@@ -17,6 +36,19 @@ Schemas.Buildings = new SimpleSchema({
     label: 'What is the name of the building?',
     max: 200,
     unique: true
+  },
+  'picture': {
+    type: String, 
+    max: 200,
+    optional: true,
+    autoform: {
+      afFieldInput: {
+        type: 'fileUpload',
+        collection: 'Images',
+        accept: 'image/*',
+        label: 'Choose file'
+      }
+    }
   },
   'address': {
     type: String,

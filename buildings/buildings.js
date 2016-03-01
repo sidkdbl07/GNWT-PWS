@@ -7,6 +7,7 @@ if (Meteor.isClient) {
     var self = this;
     self.autorun(function() {
       if( Meteor.status().connected ) {
+        Meteor.subscribe("images");
         Meteor.subscribe("buildings");
       };
     });

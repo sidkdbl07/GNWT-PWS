@@ -1,6 +1,9 @@
 Meteor.publish("buildings", function() {
   return Buildings.find();
 });
+Meteor.publish('images', function() {
+  return Images.find();
+});
 Meteor.publish("building", function(id) {
   return Buildings.find({_id: id});
 });

@@ -21,9 +21,10 @@
           <thead>
             <tr>
               <th width="10%"></th>
-              <th width="25%">Name</th>
-              <th width="25%">Address</th>
-              <th width="20%">Region</th>
+              <th width="20%">Name</th>
+              <th width="20%">Picture</th>
+              <th width="20%">Address</th>
+              <th width="10%">Region</th>
               <th width="10%">Latitude</th>
               <th width="10%">Longitude</th>
             </tr>
@@ -35,6 +36,7 @@
                 <tr>
                   <td>{{#if isInRole 'admin' 'default_group'}}<a href="{{pathFor 'building_edit' _id=this._id }}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="waves-effect waves-light btn-flat btn_table grey-text btn_edit_user" ><i class="mdi-content-create"></i></a>{{/if}}</td>
                   <td>{{name}}</td>
+                  <td>{{picture}}</td>
                   <td>{{address}}</td>
                   <td>{{region}}</td>
                   <td>{{location.coordinates.[1]}}</td>

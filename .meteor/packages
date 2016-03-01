@@ -34,3 +34,5 @@ appshore:leaflet-awesome-markers
 pagebakers:ionicons
 ground:db
 sacha:spin
+cfs:gridfs
+yogiben:autoform-file
