@@ -59,11 +59,15 @@
                           <div class="row">
                             <div class="col s12">{{> afQuickField name=this.current.unit}}</div>
                             <div class="col s8">{{> afQuickField name=this.current.multiplier}}</div>
-                            <div class="col s3 offset-s1"><button class="btn btn-primary btn-floating red darken-2 autoform-remove-item" data-autoform-field="possible_units"><i class="mdi-content-remove"></i></button></div>
+                            <div class="col s3 offset-s1"><button class="btn btn-primary btn-floating red autoform-remove-item" data-autoform-field="possible_units"><i class="mdi-content-remove"></i></button></div>
                           </div>
                         </fieldset>
                       {{/afEachArrayItem}}
                       <button class="btn btn-primary autoform-add-item" data-autoform-field="possible_units">Unit<i class="mdi-content-add left"></i></button>
+                      <br/>
+                      <br/>
+                      <br/>
+                      {{> afQuickField name=this.current.operator}}
                     </div>
                     <div class="col s2 offset-s1">
                       <button class="btn btn-primary btn-floating red autoform-remove-item" data-autoform-field="numbers"><i class="mdi-content-remove"></i></button>
@@ -74,16 +78,41 @@
               {{/afEachArrayItem}}
               <button class="btn btn-primary autoform-add-item" data-autoform-field="numbers">Number<i class="mdi-content-add left"></i></button>
             {{/if}}
+            {{#if afFieldValueIs name="type" value="Date"}}
+              {{#afEachArrayItem name="dates"}}
+              <div class="card grey lighten-3">
+                <div class="card-content">
+                  <div class="row">
+                    <div class="col s9">
+                      {{> afQuickField name=this.current.label}}
+                      {{> afQuickField name=this.current.apply_min noselect=true}}
+                      {{#if afFieldValueIs name=this.current.apply_min value=true}}
+                        {{> afQuickField name=this.current.min}}
+                      {{/if}}
+                      {{> afQuickField name=this.current.apply_max noselect=true}}
+                      {{#if afFieldValueIs name=this.current.apply_max value=true}}
+                        {{> afQuickField name=this.current.max}}
+                      {{/if}}
+                    </div>
+                    <div class="col s2 offset-s1">
+                      <button class="btn btn-primary btn-floating red autoform-remove-item" data-autoform-field="dates"><i class="mdi-content-remove"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {{/afEachArrayItem}}
+              <button class="btn btn-primary autoform-add-item" data-autoform-field="dates">Date<i class="mdi-content-add left"></i></button>
+            {{/if}}
           </div>
         <div class="col offset-s1 s4">
           <ul class="collapsible" data-collapsible="expandable">
             <li>
               <div class="collapsible-header">Help<i class="mdi-action-help left"></i></div>
-              <div class="collapsible-body" style="padding-top: 15px;">{{> afQuickField name="help_text"}}</div>
+              <div class="collapsible-body grey lighten-3" style="padding-top: 15px;">{{> afQuickField name="help_text"}}</div>
             </li>
             <li>
               <div class="collapsible-header">Tags<i class="mdi-action-label left"></i></div>
-              <div class="collapsible-body" style="padding: 10px;">
+              <div class="collapsible-body grey lighten-3" style="padding: 10px;">
                 {{#afEachArrayItem name="tags"}}
                   <div class="row">
                     <div class="col s8 offset-s1">
@@ -99,7 +128,7 @@
             </li>
             <li>
               <div class="collapsible-header">Options<i class="mdi-action-settings left"></i></div>
-              <div class="collapsible-body">
+              <div class="collapsible-body grey lighten-3">
                 <p>Should inspectors have the ability to attach photos and map annotations to their answers?</p>
                 {{> afQuickField name="pictures"}}
                 {{> afQuickField name="map_annotations"}}

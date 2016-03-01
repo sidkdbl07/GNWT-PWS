@@ -43,7 +43,7 @@ Schemas.Buildings = new SimpleSchema({
     unique: true
   },
   'picture': {
-    type: String, 
+    type: String,
     max: 200,
     optional: true,
     autoform: {
@@ -197,7 +197,7 @@ Schemas.Questions = new SimpleSchema({
     allowedValues: ['Multiple Choice', 'Numeric', 'Date'],
     label: 'What type of question are you asking?',
     autoform: {
-      firstOption: false,
+      firstOption: true,
       options: 'allowed'
     },
     optional: false
@@ -316,6 +316,48 @@ Schemas.Questions = new SimpleSchema({
       firstOption: false,
       options: 'allowed'
     }
+  },
+  'dates': {
+    type: Array,
+    optional: true
+  },
+  'dates.$': {
+    type: Object
+  },
+  'dates.$.label': {
+    type: String,
+    optional: false,
+    label: 'Label'
+  },
+  'dates.$.apply_min': {
+    type: Boolean,
+    optional: true,
+    label: "Apply Minimum",
+    autoform: {
+      afFieldInput: {
+        type: "boolean-checkbox"
+      }
+    }
+  },
+  'dates.$.min': {
+    type: Number,
+    optional: true,
+    label: 'Minimum'
+  },
+  'dates.$.apply_max': {
+    type: Boolean,
+    optional: true,
+    label: "Apply Maximum",
+    autoform: {
+      afFieldInput: {
+        type: "boolean-checkbox"
+      }
+    }
+  },
+  'dates.$.max': {
+    type: Number,
+    optional: true,
+    label: 'Maximum'
   }
 });
 Questions.attachSchema = new SimpleSchema(Schemas.Questions);
