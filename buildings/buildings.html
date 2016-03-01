@@ -36,7 +36,7 @@
                 <tr>
                   <td>{{#if isInRole 'admin' 'default_group'}}<a href="{{pathFor 'building_edit' _id=this._id }}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="waves-effect waves-light btn-flat btn_table grey-text btn_edit_user" ><i class="mdi-content-create"></i></a>{{/if}}</td>
                   <td>{{name}}</td>
-                  <td>{{picture}}</td>
+                  <td><img src="{{this.url stores='images'}}" /></td>
                   <td>{{address}}</td>
                   <td>{{region}}</td>
                   <td>{{location.coordinates.[1]}}</td>
