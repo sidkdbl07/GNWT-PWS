@@ -4,6 +4,11 @@ var Schemas = {};
 if (Meteor.isClient) {
   Template.registerHelper("Schemas", Schemas);
   Template.registerHelper("Collections", Collections);
+  Template.registerHelper('isCordova', function(){
+    if (Meteor.isCordova){
+      return true;
+    }
+  });
 }
 
 Images = new FS.Collection("images", {

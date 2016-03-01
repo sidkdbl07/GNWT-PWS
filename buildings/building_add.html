@@ -17,6 +17,9 @@
       <div class="row">
         <div class="col s6" style="padding: 15px;">
           {{> afQuickField name="name"}}
+          {{#unless isCordova}}
+          {{> afQuickField name="picture"}}
+          {{/unless}}
           {{> afQuickField name="address"}}
           {{> afQuickField name="region"}}
           {{> afQuickField name="location"}}

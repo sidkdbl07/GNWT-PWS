@@ -190,7 +190,7 @@ var IronRouter_BeforeHooks = {
       $.publish('toast', ["Click the button above to access the features of this application.", "You are not logged in!", "info"]);
       Router.go('/buildings');
       //$.publish('page_changed', [Router.current().route.getName()]);
-      this.next();
+      // this.next();
     }
     if (!userData.ready()) {
       //this.render('logingInLoading');
