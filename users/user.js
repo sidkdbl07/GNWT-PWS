@@ -6,6 +6,7 @@ if (Meteor.isClient) {
     }
   });
   Template.users.onRendered(function(){
+    $.publish('page_changed',"users");
     $("#btn_new_user").leanModal();
   });
   Template.users.events({
@@ -16,7 +17,6 @@ if (Meteor.isClient) {
       $("#edit_user_email").val(this.emails[0].address);
       $("#edit_user_email").next('label').addClass('active');
       $("input[name=edit_user_role][value="+this.roles.default_group[0]+"]").attr('checked', 'checked');
-      $("#user_edit_modal").openModal();
     }
   });
   Template.user_new.events({

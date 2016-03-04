@@ -1,15 +1,20 @@
 <template name="question_add">
   {{#autoForm schema=Schemas.Questions collection=Collections.Questions id="insert_question" type="insert"}}
   <div class="transitions-content">
-    <div class="content">
-      <div class="row toolbar grey lighten-3">
-        <div class="col s1">
-          <a href="{{pathFor 'questions'}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="btn-large btn-floating waves-effect waves-light blue" ><i class="mdi-hardware-keyboard-backspace"></i></a>
-        </div>
-        <div class="col s1 offset-s4 toolbar_button">
-          <button type="submit" class="btn btn-primary">Save</button>
-        </div>
+    <div id="header" class="row">
+      <div class="col s12">
+        <div id="header_page_title">Add a Question</div>
       </div>
+    </div>
+    <div class="row toolbar">
+      <div class="col s1">
+        <a href="{{pathFor 'questions'}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="btn-large btn-floating waves-effect waves-light blue" ><i class="mdi-hardware-keyboard-backspace"></i></a>
+      </div>
+      <div class="col s1 offset-s4 toolbar_button">
+        <button type="submit" class="btn btn-primary green">Save</button>
+      </div>
+    </div>
+    <div class="content">
       <div class="row">
         <div class="col s5 offset-s1" style="padding: 10px 15px 0px 15px;">
           {{> afQuickField name="type"}}
@@ -40,21 +45,20 @@
               <button class="btn btn-primary autoform-add-item" data-autoform-field="allowed_values">Answer<i class="mdi-content-add left"></i></button>
             {{/if}}
             {{#if afFieldValueIs name="type" value="Numeric"}}
-              {{#afEachArrayItem name="numbers"}}
               <div class="card grey lighten-3">
                 <div class="card-content">
                   <div class="row">
                     <div class="col s9">
-                      {{> afQuickField name=this.current.label}}
-                      {{> afQuickField name=this.current.apply_min noselect=true}}
-                      {{#if afFieldValueIs name=this.current.apply_min value=true}}
-                        {{> afQuickField name=this.current.min}}
+                      {{> afQuickField name="label"}}
+                      {{> afQuickField name="apply_min" noselect=true}}
+                      {{#if afFieldValueIs name="apply_min" value=true}}
+                        {{> afQuickField name="min"}}
                       {{/if}}
-                      {{> afQuickField name=this.current.apply_max noselect=true}}
-                      {{#if afFieldValueIs name=this.current.apply_max value=true}}
-                        {{> afQuickField name=this.current.max}}
+                      {{> afQuickField name="apply_max" noselect=true}}
+                      {{#if afFieldValueIs name="apply_max" value=true}}
+                        {{> afQuickField name="max"}}
                       {{/if}}
-                      {{#afEachArrayItem name=this.current.possible_units}}
+                      {{#afEachArrayItem name="possible_units"}}
                         <fieldset style="margin: 3px 0px; padding-top: 20px;">
                           <div class="row">
                             <div class="col s12">{{> afQuickField name=this.current.unit}}</div>
@@ -64,44 +68,40 @@
                         </fieldset>
                       {{/afEachArrayItem}}
                       <button class="btn btn-primary autoform-add-item" data-autoform-field="possible_units">Unit<i class="mdi-content-add left"></i></button>
-                      <br/>
-                      <br/>
-                      <br/>
-                      {{> afQuickField name=this.current.operator}}
-                    </div>
-                    <div class="col s2 offset-s1">
-                      <button class="btn btn-primary btn-floating red autoform-remove-item" data-autoform-field="numbers"><i class="mdi-content-remove"></i></button>
                     </div>
                   </div>
                 </div>
               </div>
-              {{/afEachArrayItem}}
-              <button class="btn btn-primary autoform-add-item" data-autoform-field="numbers">Number<i class="mdi-content-add left"></i></button>
             {{/if}}
-            {{#if afFieldValueIs name="type" value="Date"}}
-              {{#afEachArrayItem name="dates"}}
+            {{#if afFieldValueIs name="type" value="Year"}}
               <div class="card grey lighten-3">
                 <div class="card-content">
                   <div class="row">
-                    <div class="col s9">
-                      {{> afQuickField name=this.current.label}}
-                      {{> afQuickField name=this.current.apply_min noselect=true}}
-                      {{#if afFieldValueIs name=this.current.apply_min value=true}}
-                        {{> afQuickField name=this.current.min}}
+                    <div class="col s12">
+                      {{> afQuickField name="label"}}
+                      {{> afQuickField name="apply_min" noselect=true}}
+                      {{#if afFieldValueIs name="apply_min" value=true}}
+                        {{> afQuickField name="min"}}
                       {{/if}}
-                      {{> afQuickField name=this.current.apply_max noselect=true}}
-                      {{#if afFieldValueIs name=this.current.apply_max value=true}}
-                        {{> afQuickField name=this.current.max}}
+                      {{> afQuickField name="apply_max" noselect=true}}
+                      {{#if afFieldValueIs name="apply_max" value=true}}
+                        {{> afQuickField name="max_year"}}
                       {{/if}}
-                    </div>
-                    <div class="col s2 offset-s1">
-                      <button class="btn btn-primary btn-floating red autoform-remove-item" data-autoform-field="dates"><i class="mdi-content-remove"></i></button>
                     </div>
                   </div>
                 </div>
               </div>
-              {{/afEachArrayItem}}
-              <button class="btn btn-primary autoform-add-item" data-autoform-field="dates">Date<i class="mdi-content-add left"></i></button>
+            {{/if}}
+            {{#if afFieldValueIs name="type" value="Geo-Point"}}
+              <div class="card grey lighten-3">
+                <div class="card-content">
+                  <div class="row">
+                    <div class="col s12">
+                      {{> afQuickField name="label"}}
+                    </div>
+                  </div>
+                </div>
+              </div>
             {{/if}}
           </div>
         <div class="col offset-s1 s4">
@@ -111,7 +111,7 @@
               <div class="collapsible-body grey lighten-3" style="padding-top: 15px;">{{> afQuickField name="help_text"}}</div>
             </li>
             <li>
-              <div class="collapsible-header">Tags<i class="mdi-action-label left"></i></div>
+              <div class="collapsible-header">Tags ({{number_of_tags}})<i class="mdi-action-label left"></i></div>
               <div class="collapsible-body grey lighten-3" style="padding: 10px;">
                 {{#afEachArrayItem name="tags"}}
                   <div class="row">
@@ -129,9 +129,8 @@
             <li>
               <div class="collapsible-header">Options<i class="mdi-action-settings left"></i></div>
               <div class="collapsible-body grey lighten-3">
-                <p>Should inspectors have the ability to attach photos and map annotations to their answers?</p>
+                <p>Should inspectors have the ability to attach photos to their answers?</p>
                 {{> afQuickField name="pictures"}}
-                {{> afQuickField name="map_annotations"}}
                 <p>How should historical answers be used?</p>
                 {{> afQuickField name="show_history"}}
                 {{> afQuickField name="use_history"}}

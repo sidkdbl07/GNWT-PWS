@@ -189,12 +189,12 @@ Schemas.Questions = new SimpleSchema({
     max: 1000,
     optional: true,
     autoform: {
-      rows: 5
+      rows: 1
     }
   },
   'type': {
     type: String,
-    allowedValues: ['Multiple Choice', 'Numeric', 'Date'],
+    allowedValues: ['Multiple Choice', 'Numeric', 'Year', 'Geo-Point'],
     label: 'What type of question are you asking?',
     autoform: {
       firstOption: true,
@@ -219,18 +219,10 @@ Schemas.Questions = new SimpleSchema({
       options: 'allowed'
     }
   },
-  'map_annotations': {
-    type: String,
-    allowedValues: ['Disabled','Points Only Permitted','Points Only Required','Line Only Permitted','Line Only Required','Areas Only Permitted','Areas Only Required','All Permitted', 'All Required'],
-    label: 'Map Annotations',
-    autoform: {
-      firstOption: false,
-      options: 'allowed'
-    }
-  },
   'tags': {
     type: Array,
-    optional: true
+    optional: true,
+    minCount: 0
   },
   'tags.$': {
     type: Object
@@ -241,6 +233,7 @@ Schemas.Questions = new SimpleSchema({
   },
   'allowed_values': {
     type: Array,
+    minCount: 0,
     maxCount: 5
   },
   'allowed_values.$': {
@@ -252,19 +245,12 @@ Schemas.Questions = new SimpleSchema({
     min: 1,
     max: 100
   },
-  'numbers': {
-    type: Array,
-    optional: true
-  },
-  'numbers.$': {
-    type: Object
-  },
-  'numbers.$.label': {
+  'label': {
     type: String,
     optional: false,
     label: 'Label'
   },
-  'numbers.$.apply_min': {
+  'apply_min': {
     type: Boolean,
     optional: true,
     label: "Apply Minimum",
@@ -274,12 +260,26 @@ Schemas.Questions = new SimpleSchema({
       }
     }
   },
-  'numbers.$.min': {
+  'min': {
     type: Number,
     optional: true,
-    label: 'Minimum'
+    label: function() {
+      if(this.field('type').value = "Year") {
+        return "Minimum Year"
+      }
+      return "Minimum Value"
+    }
   },
-  'numbers.$.apply_max': {
+  'min_year': {
+    type: Number,
+    optional: true,
+    decimal: false,
+    min: 1900,
+    max: function() {
+      return parseInt(new Date().getFullYear());
+    }
+  },
+  'apply_max': {
     type: Boolean,
     optional: true,
     label: "Apply Maximum",
@@ -289,75 +289,34 @@ Schemas.Questions = new SimpleSchema({
       }
     }
   },
-  'numbers.$.max': {
+  'max': {
     type: Number,
     optional: true,
     label: 'Maximum'
   },
-  'numbers.$.possible_units': {
+  'max_year': {
+    type: Number,
+    optional: true,
+    decimal: false,
+    min: 1900,
+    max: function() {
+      return parseInt(new Date().getFullYear());
+    }
+  },
+  'possible_units': {
     type: Array,
     optional: true,
+    minCount: 0,
     label: 'Possible Units'
   },
-  'numbers.$.possible_units.$': {
+  'possible_units.$': {
     type: Object
   },
-  'numbers.$.possible_units.$.unit': {
+  'possible_units.$.unit': {
     type: String
   },
-  'numbers.$.possible_units.$.multiplier': {
+  'possible_units.$.multiplier': {
     type: Number
-  },
-  'numbers.$.operator': {
-    type: String,
-    allowedValues: ['No operation','Multiply by next','Divide by next','Add next','Subtract next'],
-    label: "Operator",
-    autoform: {
-      firstOption: false,
-      options: 'allowed'
-    }
-  },
-  'dates': {
-    type: Array,
-    optional: true
-  },
-  'dates.$': {
-    type: Object
-  },
-  'dates.$.label': {
-    type: String,
-    optional: false,
-    label: 'Label'
-  },
-  'dates.$.apply_min': {
-    type: Boolean,
-    optional: true,
-    label: "Apply Minimum",
-    autoform: {
-      afFieldInput: {
-        type: "boolean-checkbox"
-      }
-    }
-  },
-  'dates.$.min': {
-    type: Number,
-    optional: true,
-    label: 'Minimum'
-  },
-  'dates.$.apply_max': {
-    type: Boolean,
-    optional: true,
-    label: "Apply Maximum",
-    autoform: {
-      afFieldInput: {
-        type: "boolean-checkbox"
-      }
-    }
-  },
-  'dates.$.max': {
-    type: Number,
-    optional: true,
-    label: 'Maximum'
   }
 });
 Questions.attachSchema = new SimpleSchema(Schemas.Questions);

@@ -1,19 +1,20 @@
 <template name="building_add">
   <div class="transitions-content">
-  <main>
     {{#autoForm collection=Collections.Buildings id="insert_building" type="insert"}}
+    <div id="header" class="row">
+      <div class="col s3">
+        <div id="header_page_title">Add a Building</div>
+      </div>
+    </div>
+    <div class="row toolbar">
+      <div class="col s1">
+        <a href="{{pathFor 'buildings'}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="btn-large btn-floating waves-effect waves-light blue" ><i class="mdi-hardware-keyboard-backspace"></i></a>
+      </div>
+      <div class="col offset-s4 s1 toolbar_button">
+        <button type="submit" class="btn btn-primary green">Save</button>
+      </div>
+    </div>
     <div class="content">
-      <div class="row toolbar grey lighten-3">
-        <div class="col s1">
-          <a href="{{pathFor 'buildings'}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="btn-large btn-floating waves-effect waves-light blue" ><i class="mdi-hardware-keyboard-backspace"></i></a>
-        </div>
-        <div class="col offset-s4 s1 toolbar_button">
-          <button type="submit" class="btn btn-primary">Save</button>
-        </div>
-      </div>
-      <div class="row">
-        <h2>&nbsp;Add a Building</h2>
-      </div>
       <div class="row">
         <div class="col s6" style="padding: 15px;">
           {{> afQuickField name="name"}}
@@ -45,6 +46,5 @@
       </div>
     </div>
     {{/autoForm}}
-  </main>
   </div>
 </template>

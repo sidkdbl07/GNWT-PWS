@@ -33,15 +33,11 @@ if (Meteor.isClient) {
     if(page_name === "home") // default page
       page_name = "buildings";
     //var menu_object = Pages.findOne({'route': page_name}); // Asynchronous
-    var menu_object = Pages.findOne({'route': page_name});
     //$.publish('toast',[menu_object.include_in_menu,"Include",'info']);
     $(".menu_nav_button").removeClass("menu_nav_button_active");
     $(".menu_slide_button").removeClass("menu_slide_button_active");
-    if(menu_object.include_in_menu) {
-      $("#menu_nav_"+page_name).addClass("menu_nav_button_active");
-      $("#menu_slide_"+page_name).addClass("menu_slide_button_active");
-    }
-    $("#header_page_title").text(menu_object.name);
+    $("#menu_nav_"+page_name).addClass("menu_nav_button_active");
+    $("#menu_slide_"+page_name).addClass("menu_slide_button_active");
   });
 
   ////////////////////////////////////////
@@ -156,7 +152,7 @@ Router.route('/questions', {
     document.title = "GNWT PWS - Questions";
   }
 });
-Router.route('/question_add', {
+Router.route('/question/add', {
   name: 'question_add',
   template: 'question_add',
   subscriptions: function() {
@@ -172,7 +168,7 @@ Router.route('/users', {
     document.title = "GNWT PWS - Users";
   }
 });
-Router.route('/users/:_id', {
+Router.route('/users/update/:_id', {
   name: 'edit_user',
   template: 'user_edit',
   data: function() {
@@ -197,16 +193,6 @@ var IronRouter_BeforeHooks = {
       //$.publish('page_changed', [Router.current().route.getName()]);
     }
     this.next();
-  },
-  page_change: function() {
-    var page_name = Router.current().route.getName();
-    //console.log("Changing to "+page_name);
-    //$.publish('toast', [page_name, "Page changed", "warning"]);
-    if(Pages.find({ route: page_name }).count() > 0) {
-      $.publish('page_changed', [page_name]);
-    }
-    this.next();
   }
 }
 Router.before( IronRouter_BeforeHooks.is_logged_in, {except: ['buildings','buildings_map']});
-Router.onBeforeAction( IronRouter_BeforeHooks.page_change );

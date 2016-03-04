@@ -1,4 +1,8 @@
 if (Meteor.isClient) {
+  Template.user_edit.onRendered(function(){
+    $.publish('page_changed',"users");
+  });
+
   Template.user_edit.events({
     'click #submit_user_edit_info': function(event) {
       event.preventDefault();

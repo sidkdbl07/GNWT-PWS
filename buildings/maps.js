@@ -1,4 +1,8 @@
 if (Meteor.isClient) {
+  Template.buildings_map.onRendered(function() {
+    $.publish('page_changed',"buildings");
+  });
+
   var buildings, markers;
   var defaultMarker = L.AwesomeMarkers.icon({
       icon: 'star',

@@ -1,20 +1,24 @@
 <template name="buildings">
 <div class="transitions-content">
-<main>
-  <div class="content">
-    <div class="row toolbar grey lighten-3">
-      <div class="col s1">
-        {{#if isInRole 'admin' 'default_group'}}
-        <a href="{{pathFor 'building_add'}}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="waves-effect waves-light btn-floating btn-large green" ><i class="mdi-content-add"></i></a>
-        {{/if}}
-      </div>
-      <div class="col s2">
-        <a href="{{pathFor 'buildings'}}" data-transition-out="slideDownOut" data-transition-in="slideDownIn" class="toolbar_button waves-effect waves-teal btn-flat disabled" ><i class="mdi-action-view-headline"></i>List</a>
-      </div>
-      <div class="col s2">
-        <a href="{{pathFor 'buildings_map'}}" data-transition-out="slideDownOut" data-transition-in="slideDownIn" class="toolbar_button waves-effect waves-teal btn-flat grey lighten-3 teal-text " ><i class="mdi-action-room"></i>Map</a>
-      </div>
+  <div id="header" class="row">
+    <div class="col s3">
+      <div id="header_page_title">Buildings</div>
     </div>
+    <div class="col s2">
+      <a href="{{pathFor 'buildings'}}" data-transition-out="slideDownOut" data-transition-in="slideDownIn" class="toolbar_button waves-effect waves-teal btn-flat transparent disabled" ><i class="mdi-action-view-headline"></i>List</a>
+    </div>
+    <div class="col s2">
+      <a href="{{pathFor 'buildings_map'}}" data-transition-out="slideDownOut" data-transition-in="slideDownIn" class="toolbar_button waves-effect waves-teal btn-flat transparent teal-text " ><i class="mdi-action-room"></i>Map</a>
+    </div>
+  </div>
+  <div class="row toolbar">
+    <div class="col s1">
+      {{#if isInRole 'admin' 'default_group'}}
+      <a href="{{pathFor 'building_add'}}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="waves-effect waves-light btn-floating btn-large green" ><i class="mdi-content-add"></i></a>
+      {{/if}}
+    </div>
+  </div>
+  <div class="content">
     <div class="row">
       <div style="col s12">
         <table width="100%" class="striped">
@@ -34,7 +38,7 @@
               {{#if all_buildings}}
                 {{#each all_buildings}}
                 <tr>
-                  <td>{{#if isInRole 'admin' 'default_group'}}<a href="{{pathFor 'building_edit' _id=this._id }}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="waves-effect waves-light btn-flat btn_table grey-text btn_edit_user" ><i class="mdi-content-create"></i></a>{{/if}}</td>
+                  <td>{{#if isInRole 'admin' 'default_group'}}<a href="{{pathFor 'building_edit' _id=this._id }}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="waves-effect waves-light btn-flat btn_table grey-text" ><i class="mdi-content-create"></i></a>{{/if}}</td>
                   <td>{{name}}</td>
                   <td>{{#if this.picture}}
                   <img src="{{this.picture.url stores='images'}}" width="50" height="50"/>
@@ -54,12 +58,11 @@
             {{else}}
               {{> spinner}}
             {{/if}}
-            
+
           </tbody>
         </table>
       </div>
     </div>
   </div>
-</main>
 </div>
 </template>

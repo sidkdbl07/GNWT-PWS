@@ -1,22 +1,25 @@
 <template name="buildings_map">
   <div class="transitions-content">
-  <main>
-    <div class="content" id="map_wrapper">
-      <div class="row toolbar grey lighten-3" style="margin-bottom: 0px;">
-        <div class="col s2">
-          <a href="{{pathFor 'buildings'}}" data-transition-out="slideDownOut" data-transition-in="slideDownIn" class="toolbar_button waves-effect waves-teal btn-flat grey lighten-3 teal-text" ><i class="mdi-action-view-headline"></i>List</a>
-        </div>
-        <div class="col s2">
-          <a href="{{pathFor 'buildings_map'}}" data-transition-out="slideDownOut" data-transition-in="slideDownIn" class="toolbar_button waves-effect waves-teal btn-flat disabled " ><i class="mdi-action-room"></i>Map</a>
-        </div>
-        <div class="col s2">
-          <button id="color_btn" class="toolbar_button waves-effect waves-light btn teal">Colorize</button>
-        </div>
+    <div id="header" class="row">
+      <div class="col s3">
+        <div id="header_page_title">Buildings</div>
       </div>
+      <div class="col s2">
+        <a href="{{pathFor 'buildings'}}" data-transition-out="slideDownOut" data-transition-in="slideDownIn" class="toolbar_button waves-effect waves-teal btn-flat transparent lighten-3 teal-text" ><i class="mdi-action-view-headline"></i>List</a>
+      </div>
+      <div class="col s2">
+        <a href="{{pathFor 'buildings_map'}}" data-transition-out="slideDownOut" data-transition-in="slideDownIn" class="toolbar_button waves-effect waves-teal btn-flat transparent disabled " ><i class="mdi-action-room"></i>Map</a>
+      </div>
+    </div>
+    <div class="row toolbar grey lighten-3" style="margin-bottom: 0px;">
+      <div class="col s2">
+        <button id="color_btn" class="toolbar_button waves-effect waves-light btn teal">Colorize</button>
+      </div>
+    </div>
+    <div class="content" id="map_wrapper">
       <div class="leaflet-map">
         <div id='map'></div>
       </div>
     </div>
-  </main>
   </div>
 </template>

@@ -1,4 +1,8 @@
 if (Meteor.isClient) {
+  Template.building_edit.onRendered(function() {
+    $.publish('page_changed',"buildings");
+  });
+
   AutoForm.hooks({
     'update_building': {
       onSubmit: function(insertDoc, updateDoc, currentDoc) {

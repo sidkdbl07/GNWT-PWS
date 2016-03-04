@@ -1,10 +1,3 @@
-<template name="header">
-  <div id="header">
-    <div id="header_page_title"></div>
-    {{> login}}
-  </div>
-</template>
-
 <template name="login">
   <div id="login">
     <div class="header_button"><button data-target="login_modal" id="login_button" class="btn-floating teal modal-trigger"><i class="mdi-social-person"></i></button></div>
@@ -46,10 +39,8 @@
 </template>
 
 <template name="main">
-  <header>
-  {{> header}}
+  {{> login}}
   {{> menu}}
-  </header>
   <div class="transitions-container">
   {{> yield}}
   </div>
@@ -59,21 +50,29 @@
   <div id="menu">
     <div id="menu_static">
       <div id="menu_button"><img src="menu.png" border="0" width="48" height="48" /></div>
-      {{#each menus}}
-        {{#if include_in_menu}}
-      <div id="menu_nav_{{route}}" class="menu_nav_button">
-        <a href="{{pathFor route}}"  data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="waves-effect waves-light btn-floating teal" style="text-align: center;">{{{icon}}}</a>
+      <div id="menu_nav_buildings" class="menu_nav_button">
+        <a href="{{pathFor 'buildings'}}"  data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="waves-effect waves-light btn-floating teal" style="text-align: center;"><i class='mdi-social-domain'></i></a>
       </div>
+        {{#if isInRole 'admin' 'default_group'}}
+          <div id="menu_nav_questions" class="menu_nav_button">
+            <a href="{{pathFor 'questions'}}"  data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="waves-effect waves-light btn-floating teal" style="text-align: center;">Qu</a>
+          </div>
+          <div id="menu_nav_books" class="menu_nav_button">
+            <a href="{{pathFor 'books'}}"  data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="waves-effect waves-light btn-floating teal" style="text-align: center;"><i class='mdi-image-style'></i></a>
+          </div>
+          <div id="menu_nav_users" class="menu_nav_button">
+            <a href="{{pathFor 'users'}}"  data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="waves-effect waves-light btn-floating teal" style="text-align: center;"><i class='mdi-social-group'></i></a>
+          </div>
         {{/if}}
-      {{/each}}
     </div>
     <div id="menu_slide">
       <div class="menu_slide_button" style="background-color: #2980b9; opacity: 1; height: 48px;">Menu</div>
-      {{#each menus}}
-        {{#if include_in_menu}}
-      <a href="/{{route}}" class="menu_slide"><div id="menu_slide_{{route}}" class="menu_slide_button">{{name}}</div></a>
-        {{/if}}
-      {{/each}}
+      <a href="{{pathFor 'buildings'}}" class="menu_slide"><div id="menu_slide_buildings" class="menu_slide_button">Buildings</div></a>
+      {{#if isInRole 'admin' 'default_group'}}
+        <a href="{{pathFor 'questions'}}" class="menu_slide"><div id="menu_slide_questions" class="menu_slide_button">Questions</div></a>
+        <a href="{{pathFor 'books'}}" class="menu_slide"><div id="menu_slide_books" class="menu_slide_button">Books</div></a>
+        <a href="{{pathFor 'users'}}" class="menu_slide"><div id="menu_slide_users" class="menu_slide_button">Users</div></a>
+      {{/if}}
     </div>
   </div>
 </template>

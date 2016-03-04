@@ -1,6 +1,6 @@
 if (Meteor.isClient) {
   Template.buildings.onRendered(function() {
-
+    $.publish('page_changed',"buildings");
   });
 
   Template.buildings.onCreated(function() {

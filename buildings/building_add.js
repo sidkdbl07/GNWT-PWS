@@ -1,8 +1,6 @@
 if (Meteor.isClient) {
   Template.building_add.onRendered(function() {
-    // Make sure that the page has a title
-    if($('#header_page_title').html() == "")
-      $('#header_page_title').html("Buildings");
+    $.publish('page_changed',"buildings");
   });
 
   AutoForm.hooks({
@@ -14,8 +12,8 @@ if (Meteor.isClient) {
         }
       },
       onSubmit: function(insertDoc) {
-        Neteor.call('addBuilding', insertDoc, function(error, result) {
-          if(error) alert(error.reason);
+        Meteor.call('addBuilding', insertDoc, function(error, result) {
+          if(error) $.publish('toast',[error.reason,"An error occurred",'error']);
         });
         $(".back-button").click();
         return false;
