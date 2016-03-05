@@ -329,6 +329,15 @@ Schemas.Questions = new SimpleSchema({
       rows: 1
     }
   },
+  'help_text': {
+    type: String,
+    label: "Text to help answer the question",
+    max: 1000,
+    optional: true,
+    autoform: {
+      rows: 1
+    }
+  },
   'type': {
     type: String,
     allowedValues: ['Multiple Choice', 'Numeric', 'Year', 'Geo-Point'],
@@ -338,6 +347,35 @@ Schemas.Questions = new SimpleSchema({
       options: 'allowed'
     },
     optional: false
+  },
+  'show_history': {
+    type: Boolean,
+    label: 'Allow user to see past responses'
+  },
+  'use_history': {
+    type: Boolean,
+    label: "Pre-populate field with historical response"
+  },
+  'pictures': {
+    type: String,
+    allowedValues: ['Disabled','Permitted','Required'],
+    label: 'Photos',
+    autoform: {
+      firstOption: false,
+      options: 'allowed'
+    }
+  },
+  'tags': {
+    type: Array,
+    optional: true,
+    minCount: 0
+  },
+  'tags.$': {
+    type: Object
+  },
+  'tags.$.tag': {
+    type: String,
+    label: ""
   },
   'allowed_values': {
     type: Array,
