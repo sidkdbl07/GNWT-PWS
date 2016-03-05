@@ -323,7 +323,7 @@ Schemas.Questions = new SimpleSchema({
   'min': {
     type: Number,
     optional: true,
-    label: function() {
+    custom: function() {
       return "Minimum ..." // it's because now the Aldeed:simple-schema has issue of this.field(...)
       // if(this.field('type').value == "Year") {
       //   return "Minimum Year"
@@ -381,6 +381,22 @@ Schemas.Questions = new SimpleSchema({
   }
 
 });
+
+// if(this.field('type').value == "Year") {
+      //   return "Minimum Year"
+      // }
+      // return "Minimum Value"
+
+if (Meteor.isClient) {
+
+  Template.registerHelper('question_min_label', function() {
+    if(AutoForm.getFieldValue("type")=="Year")
+      return "Minimum Year";
+    else
+      return "Minimum Value";
+  });
+
+}
 
 Questions.attachSchema = new SimpleSchema(Schemas.Questions);
 Questions.allow({

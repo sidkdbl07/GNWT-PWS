@@ -52,7 +52,7 @@
                       {{> afQuickField name="label"}}
                       {{> afQuickField name="apply_min" noselect=true}}
                       {{#if afFieldValueIs name="apply_min" value=true}}
-                        {{> afQuickField name="min"}}
+                        {{> afQuickField name="min" label=question_min_label }}
                       {{/if}}
                       {{> afQuickField name="apply_max" noselect=true}}
                       {{#if afFieldValueIs name="apply_max" value=true}}
@@ -81,7 +81,7 @@
                       {{> afQuickField name="label"}}
                       {{> afQuickField name="apply_min" noselect=true}}
                       {{#if afFieldValueIs name="apply_min" value=true}}
-                        {{> afQuickField name="min"}}
+                        {{> afQuickField name="min" label=question_min_label }}
                       {{/if}}
                       {{> afQuickField name="apply_max" noselect=true}}
                       {{#if afFieldValueIs name="apply_max" value=true}}
