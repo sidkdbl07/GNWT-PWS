@@ -479,8 +479,8 @@ Questions.allow({
       return false
     }
   },
-  update: function() {
-    if(this.userId && Roles.userIsInRole(this.userId, ['admin'], 'default_group')) {
+  update: function(userId, doc, fields, modifier) {
+    if(userId && Roles.userIsInRole(userId, ['admin'], 'default_group')) {
       return true;
     } else {
       return false

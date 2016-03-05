@@ -17,6 +17,9 @@ Meteor.publish("directory", function() {
 Meteor.publish("questions", function() {
   return Questions.find();
 });
+Meteor.publish("question", function(id) {
+  return Questions.find({_id: id});
+});
 Meteor.publish("site_pages", function() {
   if(this.userId && Roles.userIsInRole(this.userId, ['admin'], 'default_group')) {
     return Pages.find();
