@@ -169,6 +169,19 @@ Router.route('/question/add', {
     document.title = "GNWT PWS - Add a question";
   }
 });
+Router.route('/question/update/:_id', {
+  name: 'question_edit',
+  template: 'question_edit',
+  data: function(id) {
+    return Questions.findOne(this.params._id);
+  },
+  waitOn: function() {
+    this.subscribe('question', this.params._id);
+  },
+  onAfterAction: function() {
+    document.title = "GNWT PWS - Edit Question";
+  }
+});
 Router.route('/users', {
   name: 'users',
   onAfterAction: function() {
