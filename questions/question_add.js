@@ -4,14 +4,23 @@ if (Meteor.isClient) {
     $(".collapsible").collapsible();
   });
 
+  Template.question_add.onCreated(function() {
+    this.number_of_tags = new ReactiveVar(0);
+  });
+
   Template.question_add.helpers({
     'number_of_tags': function() {
-      return $("input[name^='tags']").length;
+      return Template.instance().number_of_tags.get();
     }
   });
 
   Template.question_add.events({
-
+    'blur input[type="text"][name^="tags"]': function(event, template) {
+      template.number_of_tags.set($('input[type="text"][name^="tags"]').length);
+    },
+    'click button.autoform-remove-item[data-autoform-field="tags"]': function(event, template) {
+      template.number_of_tags.set($('input[type="text"][name^="tags"]').length - 1);
+    }
   });
 
   AutoForm.hooks({
