@@ -7,12 +7,12 @@ if (Meteor.isClient) {
     var self = this;
     self.autorun(function() {
       if( Meteor.status().connected ) {
-        Meteor.subscribe("book");
+        Meteor.subscribe("books");
       };
     });
   });
 
-  Template.buildings.helpers({
+  Template.books.helpers({
     'all_books': function() {
       var books = Books.find().fetch();
       return books;
