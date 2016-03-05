@@ -95,6 +95,19 @@ Router.route('/', {
     document.title = "GNWT PWS - Buildings";
   }
 });
+Router.route('/books', {
+  name: 'books',
+  onAfterAction: function() {
+    document.title = "GNWT PWS - Books";
+  }
+});
+Router.route('/book/add', {
+  name: 'book_add',
+  template: "book_add",
+  onAfterAction: function() {
+    document.title = "GNWT PWS - Add a Book";
+  }
+});
 Router.route('/buildings', {
   name: 'buildings',
   subscriptions: function() {
@@ -135,12 +148,6 @@ Router.route('/buildings_map', {
   },
   onAfterAction: function() {
     document.title = "GNWT PWS - Buildings";
-  }
-});
-Router.route('/books', {
-  name: 'books',
-  onAfterAction: function() {
-    document.title = "GNWT PWS - Books";
   }
 });
 Router.route('/questions', {

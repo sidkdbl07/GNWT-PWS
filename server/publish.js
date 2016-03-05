@@ -1,3 +1,9 @@
+Meteor.publish("books", function() {
+  return Books.find();
+});
+Meteor.publish("book", function(id) {
+  return Books.find({_id: id});
+});
 Meteor.publish("buildings", function() {
   return Buildings.find();
 });

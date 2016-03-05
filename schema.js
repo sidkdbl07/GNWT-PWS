@@ -14,7 +14,6 @@ if (Meteor.isClient) {
 Images = new FS.Collection("images", {
   stores: [new FS.Store.FileSystem("images")]
 });
-
 Images.allow({
  insert: function(){
  return true;
@@ -29,6 +28,59 @@ Images.allow({
  return true;
  }
 });
+
+/////////////////////////////////////////////
+// Books
+Books = Collections.Books = new Meteor.Collection("Books");
+if(Meteor.isCordova) Ground.Collection(Books);
+Schemas.Books = new SimpleSchema({
+  'name': {
+    type: String,
+    label: "Name of Book",
+    max: 200,
+    unique: true
+  },
+  'locked': {
+    type: Boolean,
+    label: "Locked"
+  },
+  'pages': {
+    type: [Schemas.Pages],
+    optional: true
+  }
+});
+Books.attachSchema(Schemas.Books);
+Books.allow({
+  insert: function() {
+    return true;
+  },
+  update: function() {
+    return true;
+  }
+});
+Meteor.methods({
+  addBook: function(doc) {
+    check(doc, Schemas.Books);
+    var obj = {name: doc.name, locked: doc.locked, pages: doc.pages};
+    return Books.insert(obj);
+  },
+  editBook: function(obj) {
+    check(obj._id, String);
+    check(obj.updateDoc.$set, Schemas.Books);
+    return Books.update({_id: obj._id}, obj.updateDoc);
+  },
+  removeBook: function(id) {
+    check(id, String);
+    return Books.remove(id);
+  }
+});
+if( Meteor.isClient ) {
+  Ground.methodResume([
+    'addBook',
+    'editBook',
+    'removeBook'
+  ]);
+}
 
 /////////////////////////////////////////////
 // BUILDINGS
@@ -111,7 +163,6 @@ Buildings.allow({
     return true;
   }
 });
-
 Meteor.methods({
   addBuilding: function(doc) {
     check(doc, Schemas.Buildings);
@@ -137,37 +188,44 @@ if( Meteor.isClient ) {
   ]);
 }
 
-///////////////////////////////////////////
-// PAGES
+/////////////////////////////////////////////
+// Pages
 Pages = Collections.Pages = new Meteor.Collection("Pages");
-if (Meteor.isCordova) Ground.Collection(Pages);
-
+if(Meteor.isCordova) Ground.Collection(Pages);
 Schemas.Pages = new SimpleSchema({
   'name': {
     type: String,
-    label: 'Name',
-    max: 100
-  },
-  'icon': {
-    type: String,
-    label: 'Name',
-    max: 100
-  },
-  'route': {
-    type: String,
-    label: 'Name',
-    max: 100
-  },
-  'include_in_menu': {
-    type: Boolean,
-    label: 'Name'
-  },
-  'protected': {
-    type: Boolean,
-    label: 'Administrator Only'
-  },
+    label: "Name of Book",
+    max: 200,
+    unique: true
+  }
 });
 Pages.attachSchema(Schemas.Pages);
+Pages.allow({
+  insert: function() {
+    return true;
+  },
+  update: function() {
+    return true;
+  }
+});
+Meteor.methods({
+  addPage: function(doc) {
+    check(doc, Schemas.Pages);
+    var obj = {name: doc.name};
+    return Pages.insert(obj);
+  },
+  editPage: function(obj) {
+    check(obj._id, String);
+    check(obj.updateDoc.$set, Schemas.Pages);
+    return Pages.update({_id: obj._id}, obj.updateDoc);
+  },
+  removePage: function(id) {
+    check(id, String);
+    return Pages.remove(id);
+  }
+});
+
 
 ///////////////////////////////////////////
 // QUESTIONS

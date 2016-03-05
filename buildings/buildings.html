@@ -38,7 +38,7 @@
               {{#if all_buildings}}
                 {{#each all_buildings}}
                 <tr>
-                  <td>{{#if isInRole 'admin' 'default_group'}}<a href="{{pathFor 'building_edit' _id=this._id }}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="waves-effect waves-light btn-flat btn_table grey-text" ><i class="mdi-content-create"></i></a>{{/if}}</td>
+                  <td>{{#if isInRole 'admin' 'default_group'}}<a href="{{pathFor 'building_edit' _id=this._id }}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="waves-effect waves-light btn-flat btn_table transparent grey-text" ><i class="mdi-content-create"></i></a>{{/if}}</td>
                   <td>{{name}}</td>
                   <td>{{#if this.picture}}
                   <img src="{{this.picture.url stores='images'}}" width="50" height="50"/>
@@ -52,13 +52,12 @@
               {{else}}
                 <tr>
                   <td></td>
-                  <td>There is no any buildings</td>
+                  <td>There are no buildings</td>
                 </tr>
               {{/if}}
             {{else}}
               {{> spinner}}
             {{/if}}
-
           </tbody>
         </table>
       </div>

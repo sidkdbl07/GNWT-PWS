@@ -31,13 +31,6 @@ Meteor.startup(function () {
     Buildings.insert( {'name': 'Building #6', 'address': '456 Elm St', 'region': 'Pink Paradise', 'location': { 'type': 'Point', 'coordinates': [-119.23, 60.23]}});
   }
 
-  if(Pages.find().count() === 0) {
-    Pages.insert( {'name': "Buildings", 'icon': "<i class='mdi-social-domain'></i>", 'route': 'buildings', 'include_in_menu': true, 'protected': false} );
-    Pages.insert( {'name': "Questions", 'icon': "Qu", 'route': 'questions', 'include_in_menu': true, 'protected': true} );
-    Pages.insert( {'name': "Books", 'icon': "<i class='mdi-image-style'></i>", 'route': 'books', 'include_in_menu': true, 'protected': true} );
-    Pages.insert( {'name': "Users", 'icon': "<i class='mdi-social-group'></i>", 'route': 'users', 'include_in_menu': true, 'protected': true} );
-  }
-
   if(Questions.find().count() === 0) {
     //Questions.insert({ });
   }

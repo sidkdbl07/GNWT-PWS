@@ -1,6 +1,6 @@
 <template name="question_add">
-  {{#autoForm schema=Schemas.Questions collection=Collections.Questions id="insert_question" type="insert"}}
   <div class="transitions-content">
+    {{#autoForm schema=Schemas.Questions collection=Collections.Questions id="insert_question" type="insert"}}
     <div id="header" class="row">
       <div class="col s12">
         <div id="header_page_title">Add a Question</div>
@@ -140,6 +140,6 @@
         </div>
       </div>
     </div>
+    {{/autoForm}}
   </div>
-  {{/autoForm}}
 </template>
