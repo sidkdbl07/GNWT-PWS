@@ -1,0 +1,43 @@
+<template name="book_add">
+  <div class="transitions-content">
+    {{#autoForm schema=Schemas.Books collection=Collections.Books id="insert_book" type="insert"}}
+    <div id="header" class="row">
+      <div class="col s12">
+        <div id="header_page_title">Add a Book</div>
+      </div>
+    </div>
+    <div class="row toolbar">
+      <div class="col s1">
+        <a href="{{pathFor 'books'}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="back-button btn-large btn-floating waves-effect waves-light blue" ><i class="mdi-hardware-keyboard-backspace"></i></a>
+      </div>
+      <div class="col s1 offset-s4 ">
+        <button type="submit" class="btn btn-primary green toolbar_button">Save</button>
+      </div>
+    </div>
+    <div class="content">
+      <div class="row">
+        <div class="col s5 offset-s1" style="padding: 10px 15px 0px 15px;">
+          {{> afQuickField name="name"}}
+          {{> afQuickField name="locked"}}
+        </div>
+        <div class="col offset-s1 s4">
+          <div class="card lime lighten-4">
+            <div class="card-content">
+              <span class="card-title">Adding a New Book</span>
+              <p>Books must have unique names so that we can choose the appropriate book when we start and inspection. A good example of a book name is
+                <i><b>Field Book 2016 (As-built, Change-of-use, Deterioration, Snow, Permafrost)</b></i>, beacuse is indicates the year it was created and the
+                parameters that it measures.</p>
+            </div>
+          </div>
+          <div class="card lime lighten-4">
+            <div class="card-content">
+              <span class="card-title">Locked?</span>
+              <p>Books that are locked cannot be edited. Once a book has been attached to at least one building, it automatically becomes locked.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{/autoForm}}
+  </div>
+</template>
