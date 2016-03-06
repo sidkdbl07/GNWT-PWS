@@ -101,6 +101,19 @@ Router.route('/books', {
     document.title = "GNWT PWS - Books";
   }
 });
+Router.route('/book/:_id', {
+  name: 'book_view',
+  template: 'book_view',
+  data: function(id) {
+    return Books.findOne(this.params._id);
+  },
+  waitOn: function() {
+    this.subscribe('book', this.params._id);
+  },
+  onAfterAction: function() {
+    document.title = "GNWT PWS - Book";
+  }
+});
 Router.route('/book/add', {
   name: 'book_add',
   template: "book_add",

@@ -19,7 +19,7 @@
             <thead>
               <tr>
                 <th width="80%">Name</th>
-                <th width="10%"></th>
+                <th width="20%"></th>
               </tr>
             </thead>
             <tbody>
@@ -28,7 +28,10 @@
                   {{#each all_books}}
                   <tr>
                     <td>{{name}}</td>
-                    <td>{{#if isInRole 'admin' 'default_group'}}<a href="{{pathFor 'book_edit' _id=this._id }}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="waves-effect waves-light btn-flat btn_table grey-text" ><i class="mdi-content-create"></i></a>{{/if}}</td>
+                    <td>
+                      {{#if isInRole 'admin' 'default_group'}}<a href="{{pathFor 'book_edit' _id=this._id }}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="btn waves-effect waves-light teal" ><i class="mdi-content-create left"></i>Edit</a>{{/if}}
+                      <a href="{{pathFor 'book_view' _id=this._id }}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="btn waves-effect waves-light btn-large btn-flat transparent teal-text" ><i class="mdi-content-send"></i></a>
+                    </td>
                   </tr>
                   {{/each}}
                 {{else}}
