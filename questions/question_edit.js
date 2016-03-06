@@ -11,6 +11,13 @@ if (Meteor.isClient) {
   Template.question_edit.helpers({
     'number_of_tags': function() {
       return Template.instance().number_of_tags.get();
+    }, 
+    'type_value': function() {
+      var formId = AutoForm.getFormId();
+      return AutoForm.getFieldValue("type", formId);
+    }, 
+    '_': function() {
+      return _;
     }
   });
 
