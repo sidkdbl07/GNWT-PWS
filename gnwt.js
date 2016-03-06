@@ -9,9 +9,6 @@ if (Meteor.isClient) {
   // Menu events and helpers
   /////////////////////////////////////////
   Template.menu.helpers({
-    'menus': function() {
-      return Pages.find().fetch();
-    },
     'currentUser': function() {
       return Meteor.user();
     }
