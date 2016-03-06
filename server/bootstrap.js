@@ -21,6 +21,10 @@ Meteor.startup(function () {
     });
   }
 
+  if(Books.find().count() === 0) {
+    Books.insert( {'name': "Field Book Beta Mar 6, 2016", 'locked': false, 'pages': []});
+  }
+
   if(Buildings.find().count() === 0) {
     Buildings.insert( {'name': 'Building #1', 'address': '123 Main St', 'region': 'Fort Smith', 'location': { 'type': 'Point', 'coordinates': [-119, 60]}});
     Buildings.insert( {'name': 'Building #2', 'address': '123 Elm St', 'region': 'Fort Smith', 'location': { 'type': 'Point', 'coordinates': [-119.1, 60.2]}});

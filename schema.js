@@ -195,9 +195,34 @@ if(Meteor.isCordova) Ground.Collection(Pages);
 Schemas.Pages = new SimpleSchema({
   'name': {
     type: String,
-    label: "Name of Book",
-    max: 200,
-    unique: true
+    label: "Name of Page",
+    max: 200
+  },
+  'sort_order': {
+    type: Number,
+    optional: false,
+    decimal: false
+  },
+  'page_colors': {
+    type: [String],
+    minCount: 1,
+    maxCount: 5
+  },
+  'page_colors.$': {
+    type: String,
+    allowedValues: ["Red","Orange","Yellow","Light Green","Dark Green" ]
+  },
+  'groups': {
+    type: [Schemas.Question_Groups],
+    optional: true
+  },
+  'navigation_rules': {
+    type: [Schemas.Navigation_Rules],
+    optional: true
+  },
+  'scenarios': {
+    type: [Schemas.Scenarios],
+    optional: true
   }
 });
 Pages.attachSchema(Schemas.Pages);
