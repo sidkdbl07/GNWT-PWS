@@ -16,10 +16,25 @@
 	</div>
 	<div class="content">
 		<div class="row">
-			<div class="col s12" style="padding: 15px;">
+			<div class="col s5 offset-s1" style="padding: 15px;">
 				{{> afQuickField name="name"}}
 				{{> afQuickField name="locked"}}
-				{{> afQuickField name="pages"}}
+			</div>
+			<div class="col offset-s1 s4">
+				<div class="card lime lighten-4">
+					<div class="card-content">
+						<span class="card-title">Book Names</span>
+						<p>Books must have unique names so that we can choose the appropriate book when we start and inspection. A good example of a book name is
+							<i><b>Field Book 2016 (As-built, Change-of-use, Deterioration, Snow, Permafrost)</b></i>, beacuse is indicates the year it was created and the
+							parameters that it measures.</p>
+					</div>
+				</div>
+				<div class="card lime lighten-4">
+					<div class="card-content">
+						<span class="card-title">Locked?</span>
+						<p>Books that are locked cannot have their pages, groups and questions edited. Once a book has been attached to at least one building, it automatically becomes locked.</p>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
