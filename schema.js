@@ -257,151 +257,6 @@ Meteor.methods({
 Questions = Collections.Questions = new Meteor.Collection("Questions");
 if (Meteor.isCordova) Ground.Collection(Questions);
 
-// Schemas.Questions = new SimpleSchema({
-//   'text': {
-//     type: String,
-//     label: "Your Question",
-//     max: 200,
-//     autoform: {
-//       rows: 1
-//     }
-//   },
-//   'help_text': {
-//     type: String,
-//     label: "Text to help answer the question",
-//     max: 1000,
-//     optional: true,
-//     autoform: {
-//       rows: 1
-//     }
-//   },
-//   'type': {
-//     type: String,
-//     allowedValues: ['Multiple Choice', 'Numeric', 'Year', 'Geo-Point'],
-//     label: 'What type of question are you asking?',
-//     autoform: {
-//       firstOption: "Please select one type",
-//       options: 'allowed'
-//     },
-//     optional: false
-//   },
-//   'show_history': {
-//     type: Boolean,
-//     label: 'Allow user to see past responses'
-//   },
-//   'use_history': {
-//     type: Boolean,
-//     label: "Pre-populate field with historical response"
-//   },
-//   'pictures': {
-//     type: String,
-//     allowedValues: ['Disabled','Permitted','Required'],
-//     label: 'Photos',
-//     autoform: {
-//       firstOption: false,
-//       options: 'allowed'
-//     }
-//   },
-//   'tags': {
-//     type: Array,
-//     optional: true,
-//     minCount: 0
-//   },
-//   'tags.$': {
-//     type: Object
-//   },
-//   'tags.$.tag': {
-//     type: String,
-//     label: ""
-//   },
-//   'allowed_values': {
-//     type: Array,
-//     minCount: 0,
-//     maxCount: 5
-//   },
-//   'allowed_values.$': {
-//     type: Object
-//   },
-//   'allowed_values.$.value': {
-//     type: String,
-//     label: "Possible Answer",
-//     min: 1,
-//     max: 100
-//   },
-//   'label': {
-//     type: String,
-//     optional: false,
-//     label: 'Label'
-//   },
-//   'apply_min': {
-//     type: Boolean,
-//     optional: true,
-//     label: "Apply Minimum",
-//     autoform: {
-//       afFieldInput: {
-//         type: "boolean-checkbox"
-//       }
-//     }
-//   },
-//   'min': {
-//     type: Number,
-//     optional: true,
-//     label: function() {
-//       if(this.field('type').value = "Year") {
-//         return "Minimum Year"
-//       }
-//       return "Minimum Value"
-//     }
-//   },
-//   'min_year': {
-//     type: Number,
-//     optional: true,
-//     decimal: false,
-//     min: 1900,
-//     max: function() {
-//       return parseInt(new Date().getFullYear());
-//     }
-//   },
-//   'apply_max': {
-//     type: Boolean,
-//     optional: true,
-//     label: "Apply Maximum",
-//     autoform: {
-//       afFieldInput: {
-//         type: "boolean-checkbox"
-//       }
-//     }
-//   },
-//   'max': {
-//     type: Number,
-//     optional: true,
-//     label: 'Maximum'
-//   },
-//   'max_year': {
-//     type: Number,
-//     optional: true,
-//     decimal: false,
-//     min: 1900,
-//     max: function() {
-//       return parseInt(new Date().getFullYear());
-//     }
-//   },
-//   'possible_units': {
-//     type: Array,
-//     optional: true,
-//     minCount: 0,
-//     label: 'Possible Units'
-//   },
-//   'possible_units.$': {
-//     type: Object
-//   },
-//   'possible_units.$.unit': {
-//     type: String
-//   },
-//   'possible_units.$.multiplier': {
-//     type: Number
-//   }
-// });
 
 Schemas.Questions = new SimpleSchema({
   'text': {
@@ -493,7 +348,7 @@ Schemas.Questions = new SimpleSchema({
   'min': {
     type: Number,
     optional: true,
-    label: function() {
+    custom: function() {
       return "Minimum ..." // it's because now the Aldeed:simple-schema has issue of this.field(...)
       // if(this.field('type').value == "Year") {
       //   return "Minimum Year"
@@ -551,6 +406,22 @@ Schemas.Questions = new SimpleSchema({
   }
 
 });
+
+// if(this.field('type').value == "Year") {
+      //   return "Minimum Year"
+      // }
+      // return "Minimum Value"
+
+if (Meteor.isClient) {
+
+  Template.registerHelper('question_min_label', function() {
+    if(AutoForm.getFieldValue("type")=="Year")
+      return "Minimum Year";
+    else
+      return "Minimum Value";
+  });
+
+}
 
 Questions.attachSchema = new SimpleSchema(Schemas.Questions);
 Questions.allow({

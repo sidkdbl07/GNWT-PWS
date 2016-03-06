@@ -4,9 +4,29 @@ if (Meteor.isClient) {
     $(".collapsible").collapsible();
   });
 
+  Template.question_edit.onCreated(function() {
+    this.number_of_tags = new ReactiveVar(this.data.tags === undefined ? 0 : this.data.tags.length);
+  });
+
   Template.question_edit.helpers({
     'number_of_tags': function() {
-      return $("input[name^='tags']").length;
+      return Template.instance().number_of_tags.get();
+    }, 
+    'type_value': function() {
+      var formId = AutoForm.getFormId();
+      return AutoForm.getFieldValue("type", formId);
+    }, 
+    '_': function() {
+      return _;
+    }
+  });
+
+  Template.question_edit.events({
+    'blur input[type="text"][name^="tags"]': function(event, template) {
+      template.number_of_tags.set($('input[type="text"][name^="tags"]').length);
+    },
+    'click button.autoform-remove-item[data-autoform-field="tags"]': function(event, template) {
+      template.number_of_tags.set($('input[type="text"][name^="tags"]').length - 1);
     }
   });
 

@@ -108,6 +108,20 @@ Router.route('/book/add', {
     document.title = "GNWT PWS - Add a Book";
   }
 });
+Router.route('/book/update/:_id', {
+  name: 'book_edit',
+  template: 'book_edit',
+  data: function(id) {
+    return Books.findOne(this.params._id);
+  },
+  waitOn: function() {
+    this.subscribe('book', this.params._id);
+  },
+  onAfterAction: function() {
+    document.title = "GNWT PWS - Edit Book";
+  }
+});
+
 Router.route('/buildings', {
   name: 'buildings',
   subscriptions: function() {
