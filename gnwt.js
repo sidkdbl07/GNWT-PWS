@@ -98,6 +98,13 @@ Router.route('/books', {
     document.title = "GNWT PWS - Books";
   }
 });
+Router.route('/book/add', {
+  name: 'book_add',
+  template: "book_add",
+  onAfterAction: function() {
+    document.title = "GNWT PWS - Add a Book";
+  }
+});
 Router.route('/book/:_id', {
   name: 'book_view',
   template: 'book_view',
@@ -111,13 +118,7 @@ Router.route('/book/:_id', {
     document.title = "GNWT PWS - Book";
   }
 });
-Router.route('/book/add', {
-  name: 'book_add',
-  template: "book_add",
-  onAfterAction: function() {
-    document.title = "GNWT PWS - Add a Book";
-  }
-});
+
 Router.route('/book/update/:_id', {
   name: 'book_edit',
   template: 'book_edit',
