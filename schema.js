@@ -348,14 +348,7 @@ Schemas.Questions = new SimpleSchema({
   },
   'min': {
     type: Number,
-    optional: true,
-    custom: function() {
-      return "Minimum ..." // it's because now the Aldeed:simple-schema has issue of this.field(...)
-      // if(this.field('type').value == "Year") {
-      //   return "Minimum Year"
-      // }
-      // return "Minimum Value"
-    }
+    optional: true
   },
   'min_year': {
     type: Number,
