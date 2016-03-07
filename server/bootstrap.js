@@ -21,8 +21,11 @@ Meteor.startup(function () {
     });
   }
 
+  var book, page, question_group, question;
   if(Books.find().count() === 0) {
-    Books.insert( {'name': "Field Book Beta Mar 6, 2016", 'locked': false, 'pages': []});
+    book = Books.insert( {'name': "Field Book Beta Mar 6, 2016", 'locked': false});
+    page = Pages.insert( {'name': "Snow", "sort_order": 1, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
+
   }
 
   if(Buildings.find().count() === 0) {

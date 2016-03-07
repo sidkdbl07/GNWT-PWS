@@ -174,6 +174,48 @@ Router.route('/buildings_map', {
     document.title = "GNWT PWS - Buildings";
   }
 });
+Router.route('/page/:_id', {
+  name: 'page_view',
+  template: 'page_view',
+  data: function(_id) {
+    return Pages.findOne(this.params._id)
+  },
+  waitOn: function() {
+    this.subscribe('page', this.params._id);
+    this.subscribe('books');
+  },
+  onAfterAction: function() {
+    document.title = "GNWT PWS - Page";
+  }
+});
+Router.route('/page/add/:book_id', {
+  name: 'page_add',
+  template: 'page_add',
+  data: function(book_id) {
+    return {'book': Books.findOne(this.params.book_id)};
+  },
+  waitOn: function() {
+    this.subscribe('book', this.params.book_id);
+    this.subscribe('pages');
+  },
+  onAfterAction: function() {
+    document.title = "GNWT PWS - Add a Page";
+  }
+});
+Router.route('/page/update/:_id', {
+  name: 'page_edit',
+  template: 'page_edit',
+  data: function(_id) {
+    return Pages.findOne(this.params._id)
+  },
+  waitOn: function() {
+    this.subscribe('page', this.params._id);
+    this.subscribe('books');
+  },
+  onAfterAction: function() {
+    document.title = "GNWT PWS - Edit Page";
+  }
+});
 Router.route('/questions', {
   name: 'questions',
   subscriptions: function() {

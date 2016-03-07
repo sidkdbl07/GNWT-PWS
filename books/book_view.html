@@ -10,11 +10,47 @@
   			<a href="{{pathFor 'books'}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="back-button btn-large btn-floating waves-effect waves-light blue" ><i class="mdi-hardware-keyboard-backspace"></i></a>
   		</div>
   		<div class="col offset-s4 s2">
-  			<button type="submit" class="btn waves-effect waves-light teal toolbar_button">Add Page</button>
+  			<a href="{{pathFor 'page_add' book_id=this._id}}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="btn waves-effect waves-light teal toolbar_button" ><i class="mdi-content-add left"></i>Add Page</a>
   		</div>
   	</div>
   	<div class="content">
-      {{name}}
+      <div class="row">
+        <div class="col s11 offset-s1">
+          <h4>{{name}}</h4>
+        </div>
+        <div class="col s12">
+          <table width="100%" class="striped">
+            <thead>
+              <tr>
+                <th width="80%">Pages</th>
+                <th width="20%"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#if Template.subscriptionsReady}}
+                {{#if pages}}
+                  {{#each pages}}
+                  <tr>
+                    <td>{{name}}</td>
+                    <td>
+                      <a href="{{pathFor 'page_edit' _id=_id }}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="btn waves-effect waves-light teal" ><i class="mdi-content-create left"></i>Edit</a>
+                      <a href="{{pathFor 'page_view' _id=_id }}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="waves-effect waves-light btn-flat btn-large transparent teal-text" ><i class="large mdi-content-send"></i></a>
+                    </td>
+                  </tr>
+                  {{/each}}
+                {{else}}
+                  <tr>
+                    <td>There are no pages</td>
+                    <td></td>
+                  </tr>
+                {{/if}}
+              {{else}}
+                {{> spinner}}
+              {{/if}}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </template>

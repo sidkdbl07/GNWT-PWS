@@ -204,25 +204,26 @@ Schemas.Pages = new SimpleSchema({
     decimal: false
   },
   'page_colors': {
-    type: [String],
+    type: Array,
     minCount: 1,
     maxCount: 5
   },
   'page_colors.$': {
+    type: Object,
+    label: "Page Colours",
+  },
+  'page_colors.$.value': {
     type: String,
-    allowedValues: ["Red","Orange","Yellow","Light Green","Dark Green" ]
+    label: "Colour",
+    allowedValues: ["Red","Orange","Yellow","Light Green","Dark Green"],
+    autoform: {
+      firstOption: false,
+      options: 'allowed'
+    }
   },
-  'groups': {
-    type: [Schemas.Question_Groups],
-    optional: true
-  },
-  'navigation_rules': {
-    type: [Schemas.Navigation_Rules],
-    optional: true
-  },
-  'scenarios': {
-    type: [Schemas.Scenarios],
-    optional: true
+  'book_id': {
+    type: String,
+    optional: false
   }
 });
 Pages.attachSchema(Schemas.Pages);
