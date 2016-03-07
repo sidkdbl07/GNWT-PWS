@@ -258,7 +258,6 @@ Meteor.methods({
 Questions = Collections.Questions = new Meteor.Collection("Questions");
 if (Meteor.isCordova) Ground.Collection(Questions);
 
-
 Schemas.Questions = new SimpleSchema({
   'text': {
     type: String,
@@ -405,9 +404,84 @@ Schemas.Questions = new SimpleSchema({
   'possible_units.$.multiplier': {
     type: Number
   }
-
 });
 
+///////////////////////////////////////////
+// QUESTION GROUPS
+Question_Groups = Collections.Question_Groups = new Meteor.Collection("Question_Groups");
+if (Meteor.isCordova) Ground.Collection(Question_Groups);
+
+Schemas.Question_Groups = new SimpleSchema({
+  'name': {
+    type: String,
+    label: 'Name of Group',
+    optional: false
+  },
+  'sort_order': {
+    type: Number,
+    decimal: false,
+    optional: false
+  },
+  'type': {
+    type: String,
+    label: 'Type of Group',
+    allowedValues: ['Simple', 'Math', 'Lookup', 'Measurements at a Location'],
+    autoform: {
+      firstOption: false,
+      options: 'allowed'
+    }
+  },
+  'multiple': {
+    type: Boolean,
+    label: 'Allow multiple?'
+  },
+  'decision_points': {
+    type: [Schemas.Decision_Points],
+    optional: true
+  },
+  'questions': {
+    type: Array,
+    optional: true
+  },
+  'questions.$': {
+    type: Object
+  },
+  'questions.$.question': {
+    type: String
+  },
+  'questions.$.sort_order': {
+    type: Number,
+    decimal: false
+  },
+  'questions.$.operator': {
+    type: String,
+    label: "Operator"
+  },
+  'questions.$.decision_points': {
+    type: [Schemas.Decision_Points],
+    optional: true
+  }
+});
+Decision_Points = Schemas.Decision_Points = new SimpleSchema({
+  'label': {
+    type: String,
+    label: "Label"
+  },
+  'min': {
+    type: Number,
+    label: "Lower Bound",
+    optional: true
+  },
+  'max': {
+    type: Number,
+    label: "Upper Bound",
+    optional: true
+  },
+  'value': {
+    type: String,
+    label: "Value"
+  }
+});
 // if(this.field('type').value == "Year") {
       //   return "Minimum Year"
       // }
