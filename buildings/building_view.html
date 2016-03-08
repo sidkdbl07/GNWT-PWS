@@ -1,0 +1,30 @@
+<template name="building_view">
+	<div class="transitions-content">
+    <div id="header" class="row">
+  		<div class="col s12">
+  			<div id="header_page_title">Buildings > Building Details</div>
+  		</div>
+  	</div>
+  	<div class="row toolbar">
+  		<div class="col s1">
+  			<a href="{{pathFor 'buildings'}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="back-button btn-large btn-floating waves-effect waves-light blue" ><i class="mdi-hardware-keyboard-backspace"></i></a>
+  		</div>
+  	</div>
+  	<div class="content">
+      <div class="row">
+        <div class="col s11 offset-s1">
+          <h4>{{name}}</h4>
+					<div style="float: right">{{#if picture}}
+					<img src="{{picture.url stores='images'}}" width="50" height="50"/>
+					{{/if}}
+					</div>
+        </div>
+			</div>
+			<div class="row">
+				<div class="col s12">
+
+    		</div>
+      </div>
+    </div>
+  </div>
+</template>

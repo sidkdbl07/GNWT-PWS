@@ -20,19 +20,23 @@ Meteor.publish("directory", function() {
     return [];
   }
 });
+Meteor.publish("pages", function() {
+  return Pages.find();
+});
+Meteor.publish("page", function(id) {
+  return Pages.find({_id: id});
+});
 Meteor.publish("questions", function() {
   return Questions.find();
 });
 Meteor.publish("question", function(id) {
   return Questions.find({_id: id});
 });
-Meteor.publish("site_pages", function() {
-  if(this.userId && Roles.userIsInRole(this.userId, ['admin'], 'default_group')) {
-    return Pages.find();
-  } else {
-    return Pages.find({ 'protected': false });
-    //return Pages.find();
-  }
+Meteor.publish("question_group", function(id) {
+  return Question_Groups.find({_id: id});
+});
+Meteor.publish("question_groups", function() {
+  return Question_Groups.find();
 });
 Meteor.publish("user", function() {
   return Meteor.users.find({

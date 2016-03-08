@@ -1,10 +1,12 @@
 if (Meteor.isClient) {
-  Template.book_view.onRendered(function() {
+  Template.page_view.onRendered(function() {
     $.publish('page_changed',"books");
+    $('ul.tabs').tabs();
   });
 
-  Template.book_view.helpers({
+  Template.page_view.helpers({
     'book': function() {
+      //console.log(this.book_id);
       return Books.findOne({_id: this.book_id}).fetch();
     },
     'groups': function() {

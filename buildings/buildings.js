@@ -15,11 +15,7 @@ if (Meteor.isClient) {
 
   Template.buildings.helpers({
     'all_buildings': function() {
-      var buildings = Buildings.find().fetch();
-      buildings.forEach(function(each) {
-        each.picture = Images.findOne({_id: each.picture});
-      });
-      return buildings;
+      return Buildings.find().fetch();
     },
     'formatted_year': function(datestamp) {
       return moment(datestamp).format("YYYY")+" ("+moment(datestamp).fromNow()+")";

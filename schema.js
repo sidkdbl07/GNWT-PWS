@@ -258,7 +258,6 @@ Meteor.methods({
 Questions = Collections.Questions = new Meteor.Collection("Questions");
 if (Meteor.isCordova) Ground.Collection(Questions);
 
-
 Schemas.Questions = new SimpleSchema({
   'text': {
     type: String,
@@ -398,16 +397,8 @@ Schemas.Questions = new SimpleSchema({
   'possible_units.$.multiplier': {
     type: Number
   }
-
 });
-
-// if(this.field('type').value == "Year") {
-      //   return "Minimum Year"
-      // }
-      // return "Minimum Value"
-
 if (Meteor.isClient) {
-
   Template.registerHelper('question_min_label', function() {
     if(AutoForm.getFieldValue("type")=="Year")
       return "Minimum Year";
@@ -416,9 +407,108 @@ if (Meteor.isClient) {
   });
 
 }
-
 Questions.attachSchema = new SimpleSchema(Schemas.Questions);
 Questions.allow({
+  insert: function (userId, doc) {
+    debugger;
+    if(userId && Roles.userIsInRole(userId, ['admin'], 'default_group')) {
+      return true;
+    } else {
+      return false
+    }
+  },
+  update: function(userId, doc, fields, modifier) {
+    if(userId && Roles.userIsInRole(userId, ['admin'], 'default_group')) {
+      return true;
+    } else {
+      return false
+    }
+  }
+});
+
+///////////////////////////////////////////
+// QUESTION GROUPS
+Question_Groups = Collections.Question_Groups = new Meteor.Collection("Question_Groups");
+if (Meteor.isCordova) Ground.Collection(Question_Groups);
+
+Schemas.Question_Groups = new SimpleSchema({
+  'name': {
+    type: String,
+    label: 'Name of Group',
+    optional: false
+  },
+  'sort_order': {
+    type: Number,
+    decimal: false,
+    optional: false
+  },
+  'type': {
+    type: String,
+    label: 'Type of Group',
+    allowedValues: ['Simple', 'Math', 'Lookup', 'Measurements at a Location'],
+    autoform: {
+      firstOption: false,
+      options: 'allowed'
+    }
+  },
+  'multiple': {
+    type: Boolean,
+    label: 'Allow multiple?'
+  },
+  'page_id': {
+    type: String,
+    optional: false
+  },
+  'decision_points': {
+    type: [Schemas.Decision_Points],
+    optional: true
+  },
+  'questions': {
+    type: Array,
+    optional: true
+  },
+  'questions.$': {
+    type: Object
+  },
+  'questions.$.question': {
+    type: String
+  },
+  'questions.$.sort_order': {
+    type: Number,
+    decimal: false
+  },
+  'questions.$.operator': {
+    type: String,
+    label: "Operator"
+  },
+  'questions.$.decision_points': {
+    type: [Schemas.Decision_Points],
+    optional: true
+  }
+});
+Decision_Points = Schemas.Decision_Points = new SimpleSchema({
+  'label': {
+    type: String,
+    label: "Label"
+  },
+  'min': {
+    type: Number,
+    label: "Lower Bound",
+    optional: true
+  },
+  'max': {
+    type: Number,
+    label: "Upper Bound",
+    optional: true
+  },
+  'value': {
+    type: String,
+    label: "Value"
+  }
+});
+
+Question_Groups.attachSchema = new SimpleSchema(Schemas.Question_Groups);
+Question_Groups.allow({
   insert: function (userId, doc) {
     debugger;
     if(userId && Roles.userIsInRole(userId, ['admin'], 'default_group')) {
