@@ -142,6 +142,16 @@ Router.route('/buildings', {
     document.title = "GNWT PWS - Buildings";
   }
 });
+Router.route('/building/add', {
+  name: 'building_add',
+  template: 'building_add',
+  subscriptions: function() {
+    this.subscribe('buildings');
+  },
+  onAfterAction: function() {
+    document.title = "GNWT PWS - Add a Building";
+  }
+});
 Router.route('/building/:_id', {
   name: 'building_view',
   template: 'building_view',
@@ -158,16 +168,7 @@ Router.route('/building/:_id', {
     document.title = "GNWT PWS - Building";
   }
 });
-Router.route('/building/add', {
-  name: 'building_add',
-  template: 'building_add',
-  subscriptions: function() {
-    this.subscribe('buildings');
-  },
-  onAfterAction: function() {
-    document.title = "GNWT PWS - Add a Building";
-  }
-});
+
 Router.route('/building/update/:_id', {
   name: 'building_edit',
   template: 'building_edit',

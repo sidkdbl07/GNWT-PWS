@@ -1,6 +1,6 @@
 if (Meteor.isClient) {
   Template.page_add.onRendered(function() {
-    $.publish('page_changed',"books");
+    $.publish('page_changed',"pages");
   });
 
   Template.page_add.helpers({
