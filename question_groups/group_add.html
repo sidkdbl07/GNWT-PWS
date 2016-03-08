@@ -19,7 +19,9 @@
         <div class="col s5 offset-s1" style="padding: 10px 15px 0px 15px;">
           {{> afQuickField name="type"}}
           {{> afQuickField name="name"}}
-
+          {{#if afFieldValueIs name="type" value="Measurements at a Location"}}
+            {{> afQuickField name="multiple"}}
+          {{/if}}
         </div>
         <div class="col offset-s1 s4">
           <div class="card lime lighten-4">
