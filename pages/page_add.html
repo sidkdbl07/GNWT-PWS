@@ -18,6 +18,8 @@
       <div class="row">
         <div class="col s5 offset-s1" style="padding: 10px 15px 0px 15px;">
           {{> afQuickField name="name"}}
+          {{> afQuickField name='book_id' value=book._id type='hidden'}}
+          {{> afQuickField name='sort_order' value=sort_order type='hidden'}}
           {{#afEachArrayItem name="page_colors"}}
           <div class="card grey lighten-3">
             <div class="card-content">
@@ -32,7 +34,7 @@
             </div>
           </div>
           {{/afEachArrayItem}}
-          <button class="btn btn-primary autoform-add-item" data-autoform-field="allowed_values">Colour<i class="mdi-content-add left"></i></button>
+          <button class="btn btn-primary autoform-add-item" data-autoform-field="page_colors">Colour<i class="mdi-content-add left"></i></button>
         </div>
         <div class="col offset-s1 s4">
           <div class="card lime lighten-4">

@@ -15,7 +15,7 @@ if (Meteor.isClient) {
     'insert_page': {
       before: {
         insert: function(doc) {
-          doc.book_id = this.template.data.params.book_id;
+          // doc.book_id = this.template.data.params.book_id;
           return doc;
         }
       },

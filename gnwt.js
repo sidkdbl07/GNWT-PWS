@@ -193,7 +193,11 @@ Router.route('/page/add/:book_id', {
   name: 'page_add',
   template: 'page_add',
   data: function(book_id) {
-    return {'book': Books.findOne(this.params.book_id)};
+    let newestPage = Pages.findOne({}, { sort: {sort_order:-1}});
+    return {
+      'book': Books.findOne(this.params.book_id),
+      'sort_order': (newestPage ? newestPage.sort_order + 1 : 0)
+    };
   },
   waitOn: function() {
     this.subscribe('book', this.params.book_id);
