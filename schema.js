@@ -398,6 +398,33 @@ Schemas.Questions = new SimpleSchema({
     type: Number
   }
 });
+if (Meteor.isClient) {
+  Template.registerHelper('question_min_label', function() {
+    if(AutoForm.getFieldValue("type")=="Year")
+      return "Minimum Year";
+    else
+      return "Minimum Value";
+  });
+
+}
+Questions.attachSchema = new SimpleSchema(Schemas.Questions);
+Questions.allow({
+  insert: function (userId, doc) {
+    debugger;
+    if(userId && Roles.userIsInRole(userId, ['admin'], 'default_group')) {
+      return true;
+    } else {
+      return false
+    }
+  },
+  update: function(userId, doc, fields, modifier) {
+    if(userId && Roles.userIsInRole(userId, ['admin'], 'default_group')) {
+      return true;
+    } else {
+      return false
+    }
+  }
+});
 
 ///////////////////////////////////////////
 // QUESTION GROUPS
@@ -427,6 +454,10 @@ Schemas.Question_Groups = new SimpleSchema({
   'multiple': {
     type: Boolean,
     label: 'Allow multiple?'
+  },
+  'page_id': {
+    type: String,
+    optional: false
   },
   'decision_points': {
     type: [Schemas.Decision_Points],
@@ -475,24 +506,9 @@ Decision_Points = Schemas.Decision_Points = new SimpleSchema({
     label: "Value"
   }
 });
-// if(this.field('type').value == "Year") {
-      //   return "Minimum Year"
-      // }
-      // return "Minimum Value"
 
-if (Meteor.isClient) {
-
-  Template.registerHelper('question_min_label', function() {
-    if(AutoForm.getFieldValue("type")=="Year")
-      return "Minimum Year";
-    else
-      return "Minimum Value";
-  });
-
-}
-
-Questions.attachSchema = new SimpleSchema(Schemas.Questions);
-Questions.allow({
+Question_Groups.attachSchema = new SimpleSchema(Schemas.Question_Groups);
+Question_Groups.allow({
   insert: function (userId, doc) {
     debugger;
     if(userId && Roles.userIsInRole(userId, ['admin'], 'default_group')) {

@@ -113,12 +113,12 @@ Router.route('/book/:_id', {
   },
   waitOn: function() {
     this.subscribe('book', this.params._id);
+    this.subscribe('pages');
   },
   onAfterAction: function() {
     document.title = "GNWT PWS - Book";
   }
 });
-
 Router.route('/book/update/:_id', {
   name: 'book_edit',
   template: 'book_edit',
@@ -140,6 +140,19 @@ Router.route('/buildings', {
   },
   onAfterAction: function() {
     document.title = "GNWT PWS - Buildings";
+  }
+});
+Router.route('/building/:_id', {
+  name: 'building_view',
+  template: 'building_view',
+  data: function(id) {
+    return Buildings.findOne(this.params._id);
+  },
+  waitOn: function() {
+    this.subscribe('building', this.params._id);
+  },
+  onAfterAction: function() {
+    document.title = "GNWT PWS - Building";
   }
 });
 Router.route('/building/add', {
@@ -175,6 +188,50 @@ Router.route('/buildings_map', {
     document.title = "GNWT PWS - Buildings";
   }
 });
+Router.route('/group/:_id', {
+  name: 'group_view',
+  template: 'group_view',
+  data: function(_id) {
+    return Question_Groups.findOne(this.params._id)
+  },
+  waitOn: function() {
+    this.subscribe('pages');
+    this.subscribe('question_group', this.params._id);
+    this.subscribe('books');
+  },
+  onAfterAction: function() {
+    document.title = "GNWT PWS - Question Group";
+  }
+});
+Router.route('/group/add/:page_id', {
+  name: 'group_add',
+  template: 'group_add',
+  data: function(page_id) {
+    return {'page': Pages.findOne(this.params.page_id)};
+  },
+  waitOn: function() {
+    this.subscribe('pages');
+    this.subscribe('books');
+  },
+  onAfterAction: function() {
+    document.title = "GNWT PWS - Add Question Goup";
+  }
+});
+Router.route('/group/update/:_id', {
+  name: 'group_edit',
+  template: 'group_edit',
+  data: function(_id) {
+    return Question_Groups.findOne(this.params._id)
+  },
+  waitOn: function() {
+    this.subscribe('question_group', this.params._id);
+    this.subscribe('pages');
+    this.subscribe('books');
+  },
+  onAfterAction: function() {
+    document.title = "GNWT PWS - Edit Question Goup";
+  }
+});
 Router.route('/page/:_id', {
   name: 'page_view',
   template: 'page_view',
@@ -183,6 +240,7 @@ Router.route('/page/:_id', {
   },
   waitOn: function() {
     this.subscribe('page', this.params._id);
+    this.subscribe('question_groups');
     this.subscribe('books');
   },
   onAfterAction: function() {

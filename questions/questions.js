@@ -1,7 +1,6 @@
 if (Meteor.isClient) {
   Template.questions.onRendered(function() {
     $.publish('page_changed',"questions");
-    $(".collapsible").collapsible();
   });
 
   Template.questions.helpers({

@@ -24,20 +24,24 @@
             <p><span class="grey-text">Included in 8 books.</span>
             <span class="blue-grey-text right">Keywords: Location, Geography</span></p>
           </li>
-          {{#each all_questions}}
+          {{#if Template.subscriptionsReady}}
+            {{#if all_questions}}
+              {{#each all_questions}}
           <li class="collection-item">
             <span class="title">{{text}}</span>
             <button class="waves-effect waves-grey btn-flat white"><i class="mdi-toggle-check-box left"></i>5 choices</button>
             <button class="waves-effect waves-grey btn-flat green-text white"><i class="mdi-maps-place"></i>*</button>
             <button class="waves-effect waves-grey btn-flat red-text white"><i class="mdi-editor-insert-photo"></i></button>
-
-
             {{#if isInRole 'admin' 'default_group'}}<a href="{{pathFor 'question_edit' _id=this._id }}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="btn waves-effect waves-light secondary-content" >Edit<i class="mdi-image-edit left"></i></a>{{/if}}
 
             <p><span class="grey-text">Included in 8 books.</span>
             <span class="blue-grey-text right">Keywords: {{#each tags}}{{tag}}&nbsp;{{/each}}</span></p>
           </li>
-          {{/each}}
+              {{/each}}
+            {{else}}
+            <li class="collection-item">There are no questions</li>
+            {{/if}}
+          {{/if}}
         </ul>
       </div>
     </div>

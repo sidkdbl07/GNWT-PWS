@@ -24,8 +24,8 @@ Meteor.startup(function () {
   var book, page, question_group, question;
   if(Books.find().count() === 0) {
     book = Books.insert( {'name': "Field Book Beta Mar 6, 2016", 'locked': false});
-    page = Pages.insert( {'name': "Snow", "sort_order": 1, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
-
+    page = Pages.insert( {'name': "As Built", "sort_order": 1, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
+    question_group = Question_Groups.insert( {'name': 'Building Details', 'sort_order': 1, 'type': 'Simple', 'multiple': false, 'decision_points': [], 'questions': [], 'page_id': page});
   }
 
   if(Buildings.find().count() === 0) {
