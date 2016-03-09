@@ -211,10 +211,15 @@ Router.route('/group/add/:page_id', {
   name: 'group_add',
   template: 'group_add',
   data: function(page_id) {
-    return {'page': Pages.findOne(this.params.page_id)};
+    let newestGroups = Question_Groups.findOne({}, { sort: {sort_order:-1}});
+    return {
+      'page': Pages.findOne(this.params.page_id),
+      'sort_order': (newestGroups ? newestGroups.sort_order + 1 : 0)
+    };
   },
   waitOn: function() {
     this.subscribe('pages');
+    this.subscribe('question_groups');
     this.subscribe('books');
   },
   onAfterAction: function() {
