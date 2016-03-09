@@ -2,7 +2,7 @@
 	<div class="transitions-content">
     <div id="header" class="row">
   		<div class="col s12">
-  			<div id="header_page_title">Books > Book > Page</div>
+  			<div id="header_page_title">Page - {{name}}</div>
   		</div>
   	</div>
   	<div class="row toolbar">
@@ -13,7 +13,9 @@
   	<div class="content">
       <div class="row">
         <div class="col s11 offset-s1">
-          <h4>{{name}}</h4>
+					<a href="{{pathFor 'books'}}">Books</a> >
+          <a href="{{pathFor 'book_view' _id=book._id}}">{{book.name}}</a> >
+					{{name}}
         </div>
 			</div>
 			<div class="row">
@@ -35,7 +37,7 @@
 		          <table width="100%" class="striped">
 		            <thead>
 		              <tr>
-		                <th width="80%">Question Groups</th>
+		                <th width="80%"></th>
 		                <th width="20%"></th>
 		              </tr>
 		            </thead>

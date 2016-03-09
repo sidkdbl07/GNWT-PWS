@@ -7,7 +7,7 @@ if (Meteor.isClient) {
   Template.page_view.helpers({
     'book': function() {
       //console.log(this.book_id);
-      return Books.findOne({_id: this.book_id}).fetch();
+      return Books.findOne({_id: this.book_id});
     },
     'groups': function() {
       return Question_Groups.find({page_id: this._id},{sort: {'sort_order': 1}}).fetch();

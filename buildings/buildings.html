@@ -38,7 +38,7 @@
                   <td>{{name}}</td>
                   <td>{{address}}</td>
                   <td>{{region}}</td>
-                  <td>{{#if isInRole 'admin' 'default_group'}}
+                  <td style="white-space: nowrap;">{{#if isInRole 'admin' 'default_group'}}
                     <a href="{{pathFor 'building_edit' _id=this._id }}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="btn waves-effect waves-light teal " ><i class="mdi-content-create left"></i>Edit</a>
                     {{/if}}
                     <a href="{{pathFor 'building_view' _id=this._id }}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="waves-effect waves-light btn-large btn-flat teal-text transparent" ><i class="mdi-content-send"></i></a>
