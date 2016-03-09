@@ -2,7 +2,7 @@
 	<div class="transitions-content">
     <div id="header" class="row">
   		<div class="col s3">
-  			<div id="header_page_title">Books > Book Details</div>
+  			<div id="header_page_title">Books > Book</div>
   		</div>
   	</div>
   	<div class="row toolbar">
@@ -34,7 +34,7 @@
                   {{#each pages}}
                   <tr>
                     <td>{{name}}</td>
-                    <td>
+                    <td style="white-space: nowrap;">
                       <a href="{{pathFor 'page_edit' _id=_id }}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="btn waves-effect waves-light teal" ><i class="mdi-content-create left"></i>Edit</a>
                       <a href="{{pathFor 'page_view' _id=_id }}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="waves-effect waves-light btn-flat btn-large transparent teal-text" ><i class="large mdi-content-send"></i></a>
                     </td>

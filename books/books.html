@@ -18,8 +18,8 @@
           <table width="100%" class="striped">
             <thead>
               <tr>
-                <th width="80%">Book</th>
-                <th width="20%"></th>
+                <th style="width: 80%;">Book</th>
+                <th width="width: 20%; min-width: 300px;"></th>
               </tr>
             </thead>
             <tbody>
@@ -28,7 +28,7 @@
                   {{#each all_books}}
                   <tr>
                     <td>{{name}}</td>
-                    <td>
+                    <td style="white-space: nowrap;">
                       <a href="{{pathFor 'book_edit' _id=this._id }}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="btn waves-effect waves-light teal" ><i class="mdi-content-create left"></i>Edit</a>
                       <a href="{{pathFor 'book_view' _id=this._id }}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="waves-effect waves-light btn-flat btn-large transparent teal-text" ><i class="large mdi-content-send"></i></a>
                     </td>

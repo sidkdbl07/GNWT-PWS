@@ -55,7 +55,7 @@ h2 {
   height: 49px;
   background-color: #e1f5fe;
   border-bottom: 1px #bbdefb solid;
-  z-index: 1;
+  z-index: 2;
 }
 
 .header_button {
