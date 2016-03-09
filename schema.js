@@ -453,7 +453,8 @@ Schemas.Question_Groups = new SimpleSchema({
   },
   'multiple': {
     type: Boolean,
-    label: 'Allow multiple?'
+    label: 'Allow multiple?',
+    optional: true
   },
   'page_id': {
     type: String,

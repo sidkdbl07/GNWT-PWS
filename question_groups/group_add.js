@@ -15,7 +15,6 @@ if (Meteor.isClient) {
     'insert_group': {
       before: {
         insert: function(doc) {
-          doc.page_id = this.template.data.params.page_id;
           return doc;
         }
       },
