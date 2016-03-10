@@ -3,7 +3,7 @@ if (Meteor.isClient) {
     $.publish('page_changed',"buildings");
   });
 
-  var buildings, markers;
+  var buildings, markers, map;
   var defaultMarker = L.AwesomeMarkers.icon({
       icon: 'star',
       prefix: 'ion',
@@ -19,37 +19,35 @@ if (Meteor.isClient) {
   var redMarker = L.AwesomeMarkers.icon({
       icon: 'star',
       prefix: 'ion',
-      markerColor: 'red'
+      markerColor: 'darkred'
   });
 
   var yellowMarker = L.AwesomeMarkers.icon({
       icon: 'star',
       prefix: 'ion',
-      markerColor: 'orange'
+      markerColor: 'yellow'
   });
 
-  var pinkMarker = L.AwesomeMarkers.icon({
+  var orangeMarker = L.AwesomeMarkers.icon({
       icon: 'star',
       prefix: 'ion',
-      markerColor: 'pink'
+      markerColor: 'red'
   });
 
-  var brownMarker = L.AwesomeMarkers.icon({
+  var darkGreenMarker = L.AwesomeMarkers.icon({
       icon: 'star',
       prefix: 'ion',
-      markerColor: 'purple'
+      markerColor: 'darkgreen'
   });
 
-  var ColorMarkers = new Array(greenMarker, redMarker, yellowMarker, pinkMarker, brownMarker);
-
-  Meteor.subscribe("buildings");
+  var ColorMarkers = new Array(greenMarker, redMarker, yellowMarker, orangeMarker, darkGreenMarker);
 
   Template.buildings_map.onRendered(function() {
     buildings = Buildings.find().fetch();
     markers = [];
     L.Icon.Default.imagePath = 'packages/bevanhunt_leaflet/images';
 
-    var map = L.map('map').setView([buildings[0].location.coordinates[1], buildings[0].location.coordinates[0]], 5);
+    map = L.map('map', {zoomControl: false}).setView([buildings[0].location.coordinates[1], buildings[0].location.coordinates[0]], 5);
 
     L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -62,8 +60,8 @@ if (Meteor.isClient) {
         .bindPopup(building.name);
     }
 
-    $(".leaflet-map").height($("#map_wrapper").height() - 46).width($("#map_wrapper").width());
-    $("#map").height($("#map_wrapper").height() - 46).width($("#map_wrapper").width());
+    $(".leaflet-map").height($("#map_wrapper").height()).width($("#map_wrapper").width());
+    $("#map").height($("#map_wrapper").height()).width($("#map_wrapper").width());
     map.invalidateSize();
   });
 
@@ -104,8 +102,12 @@ if (Meteor.isClient) {
           return 'Colorize';
         }
       });
-
-
+    },
+    'click #btn_zoomin': function() {
+      map.zoomIn();
+    },
+    'click #btn_zoomout': function() {
+      map.zoomOut();
     }
   });
 }

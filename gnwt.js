@@ -185,7 +185,7 @@ Router.route('/building/update/:_id', {
 Router.route('/buildings_map', {
   name: 'buildings_map',
   template: 'buildings_map',
-  subscriptions: function() {
+  waitOn: function() {
     this.subscribe('buildings');
   },
   onAfterAction: function() {
