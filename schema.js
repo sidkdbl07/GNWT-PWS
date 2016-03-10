@@ -463,34 +463,6 @@ Schemas.Question_Groups = new SimpleSchema({
   'decision_points': {
     type: [Schemas.Decision_Points],
     optional: true
-  },
-  'questions': {
-    type: Array,
-    optional: true
-  },
-  'questions.$': {
-    type: Object
-  },
-  'questions.$.question': {
-    type: String
-  },
-  'questions.$.sort_order': {
-    type: Number,
-    decimal: false
-  },
-  'questions.$.operator': {
-    type: String,
-    label: "Operator",
-    optional: true,
-    allowedValues: ["No Operation", "Add next value", "subtract next value", "Multiply next value", "Divide by next value"],
-    autoform: {
-      firstOption: false,
-      options: 'allowed'
-    }
-  },
-  'questions.$.decision_points': {
-    type: [Schemas.Decision_Points],
-    optional: true
   }
 });
 Decision_Points = Schemas.Decision_Points = new SimpleSchema({
