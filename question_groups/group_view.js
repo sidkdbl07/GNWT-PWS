@@ -14,10 +14,12 @@ if (Meteor.isClient) {
     },
     'all_questions': function(group_id) {
       let questions_in_group = Question_In_Group.find({'group_id': group_id},{sort: {sort_order: 1}}).fetch();
-      for(question_in_group in questions_in_group) 
+      let condition_array = [];
+      for(question_in_group of questions_in_group) 
       {
-
+        condition_array.push({ _id: question_in_group.question_id });
       }
+      return Questions.find({ $or: condition_array});
     }
   });
 }

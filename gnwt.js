@@ -203,6 +203,7 @@ Router.route('/group/:_id', {
     this.subscribe('pages');
     this.subscribe('question_group', this.params._id);
     this.subscribe('question_in_groups');
+    this.subscribe('questions');
     this.subscribe('books');
   },
   onAfterAction: function() {
