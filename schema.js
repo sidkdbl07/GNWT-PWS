@@ -480,7 +480,13 @@ Schemas.Question_Groups = new SimpleSchema({
   },
   'questions.$.operator': {
     type: String,
-    label: "Operator"
+    label: "Operator",
+    optional: true,
+    allowedValues: ["No Operation", "Add next value", "subtract next value", "Multiply next value", "Divide by next value"],
+    autoform: {
+      firstOption: false,
+      options: 'allowed'
+    }
   },
   'questions.$.decision_points': {
     type: [Schemas.Decision_Points],

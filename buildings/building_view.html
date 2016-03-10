@@ -2,7 +2,7 @@
 	<div class="transitions-content">
     <div id="header" class="row">
   		<div class="col s12">
-  			<div id="header_page_title">Buildings > Building Details</div>
+  			<div id="header_page_title">Building - {{name}}</div>
   		</div>
   	</div>
   	<div class="row toolbar">
@@ -13,7 +13,7 @@
   	<div class="content">
       <div class="row">
         <div class="col s11 offset-s1">
-          <h4>{{name}}</h4>
+          <a href="{{pathFor 'buildings'}}">Buildings</a> > {{name}}
 					<div style="float: right">{{#if picture}}
 					<img src="{{picture.url stores='images'}}" width="50" height="50"/>
 					{{/if}}

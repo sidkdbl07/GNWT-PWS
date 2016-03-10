@@ -156,7 +156,7 @@ Router.route('/building/:_id', {
   name: 'building_view',
   template: 'building_view',
   data: function(id) {
-    var building = Buildings.findOne(this.params._id)
+    var building = Buildings.findOne(this.params._id);
     building.picture = Images.findOne({_id: building.picture});
     return building;
   },
@@ -196,7 +196,7 @@ Router.route('/group/:_id', {
   name: 'group_view',
   template: 'group_view',
   data: function(_id) {
-    return Question_Groups.findOne(this.params._id)
+    return Question_Groups.findOne(this.params._id);
   },
   waitOn: function() {
     this.subscribe('pages');

@@ -1,0 +1,63 @@
+<template name="group_view">
+	<div class="transitions-content">
+    <div id="header" class="row">
+  		<div class="col s12">
+  			<div id="header_page_title">Group - {{name}}</div>
+  		</div>
+  	</div>
+  	<div class="row toolbar">
+  		<div class="col s1">
+  			<a href="{{pathFor 'page_view' _id=page._id}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="back-button btn-large btn-floating waves-effect waves-light blue" ><i class="mdi-hardware-keyboard-backspace"></i></a>
+  		</div>
+  	</div>
+  	<div class="content">
+      <div class="row">
+        <div class="col s11 offset-s1">
+					<a href="{{pathFor 'books'}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn">Books</a> >
+          <a href="{{pathFor 'book_view' _id=book._id}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn">{{book.name}}</a> >
+					<a href="{{pathFor 'page_view' _id=page._id}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn">{{page.name}}</a> >
+					{{name}}
+        </div>
+			</div>
+			<div class="row">
+				<div class="col s8">
+      		<ul class="tabs">
+        		<li class="tab col s3"><a class="active" href="#questions">Questions</a></li>
+        		<li class="tab col s3"><a href="#decision_points">Decision Points</a></li>
+      		</ul>
+    		</div>
+        <div id="questions" class="col s12">
+					<div class="row">
+						<div class="col s12 grey lighten-3" style="height: 48px; line-height: 48px; border-bottom: 1px #cbd0de solid; background-color: rgba(235,235,235,0.95);">
+							<a href="{{pathFor 'group_add' page_id=_id}}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="waves-effect waves-light btn-floating btn-large green" ><i class="mdi-content-add"></i></a>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col s12">
+		          <table width="100%" class="striped">
+		            <thead>
+		              <tr>
+		                <th width="80%"></th>
+		                <th width="20%"></th>
+		              </tr>
+		            </thead>
+		            <tbody>
+									<tr>
+		                <td width="80%">Balh</td>
+		                <td width="20%"></td>
+		              </tr>
+		              {{#if Template.subscriptionsReady}}
+
+		              {{else}}
+		                {{> spinner}}
+		              {{/if}}
+		            </tbody>
+		          </table>
+						</div>
+					</div>
+        </div>
+				<div id="decision_points" class="col s12">Decisions</div>
+      </div>
+    </div>
+  </div>
+</template>
