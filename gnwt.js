@@ -202,6 +202,7 @@ Router.route('/group/:_id', {
   waitOn: function() {
     this.subscribe('pages');
     this.subscribe('question_group', this.params._id);
+    this.subscribe('question_in_groups');
     this.subscribe('books');
   },
   onAfterAction: function() {
@@ -245,9 +246,11 @@ Router.route('/group/update/:_id', {
 Router.route('/group/add/question/:group_id', {
   name: 'add_question_to_group',
   template: 'add_question_to_group',
-  data: function(group_id) {
+  data: function() {
+    let newestQuestionInGroup = Question_In_Group.findOne({}, { sort: {sort_order:-1}});
     return {
       'group': Question_Groups.findOne(this.params.group_id),
+      'sort_order': (newestQuestionInGroup ? newestQuestionInGroup.sort_order + 1 : 0)
     };
   },
   waitOn: function() {
@@ -264,7 +267,7 @@ Router.route('/group/add/question/:group_id', {
 Router.route('/page/:_id', {
   name: 'page_view',
   template: 'page_view',
-  data: function(_id) {
+  data: function() {
     return Pages.findOne(this.params._id)
   },
   waitOn: function() {

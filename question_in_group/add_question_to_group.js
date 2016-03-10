@@ -28,6 +28,9 @@ if (Meteor.isClient) {
     'insert_question_in_group': {
       before: {
         insert: function(doc) {
+          // doc.group_id = this.group._id;
+          // var newestQuestionInGroup = Question_In_Group.findOne({}, { sort: {sort_order: -1} });
+          // doc.sort_order = newestQuestionInGroup ? newestQuestionInGroup.sort_order + 1 : 0 ;
           return doc;
         }
       },

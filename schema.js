@@ -568,7 +568,6 @@ Schemas.Question_In_Group = new SimpleSchema({
 Question_In_Group.attachSchema = new SimpleSchema(Schemas.Question_In_Group);
 Question_In_Group.allow({
   insert: function (userId, doc) {
-    debugger;
     if(userId && Roles.userIsInRole(userId, ['admin'], 'default_group')) {
       return true;
     } else {

@@ -13,7 +13,11 @@ if (Meteor.isClient) {
       return Pages.findOne({_id: this.page_id});
     },
     'all_questions': function(group_id) {
-      return Question_In_Group.find({'group_id': group_id},{sort: {sort_order: 1}}).fetch();
+      let questions_in_group = Question_In_Group.find({'group_id': group_id},{sort: {sort_order: 1}}).fetch();
+      for(question_in_group in questions_in_group) 
+      {
+
+      }
     }
   });
 }

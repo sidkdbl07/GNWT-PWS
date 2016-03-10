@@ -26,7 +26,10 @@
 			</div>
       <div class="row" style="height: 100%;">
         <div class="col s5 offset-s1" style="padding: 10px 15px 0px 15px;">
+          {{> afQuickField name='group_id' value=group._id type='hidden'}}
+          {{> afQuickField name='sort_order' value=sort_order type='hidden'}}
           {{> afFieldInput name="question_id" options=all_questions}}
+          
         </div>
         <div class="col offset-s1 s4">
           <div class="card lime lighten-4">
