@@ -6,13 +6,14 @@ if (Meteor.isClient) {
 
   Template.group_view.helpers({
     'book': function() {
-      //console.log(this.book_id);
       var page = Pages.findOne({_id: this.page_id});
       return Books.findOne({_id: page.book_id});
     },
     'page': function() {
-      //console.log(this.book_id);
       return Pages.findOne({_id: this.page_id});
+    },
+    'all_questions': function(group_id) {
+      return Question_In_Group.find({'group_id': group_id},{sort: {sort_order: 1}}).fetch();
     }
   });
 }

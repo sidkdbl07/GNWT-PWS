@@ -30,6 +30,10 @@ body {
   z-index: 1;
 }
 
+form {
+  height: 100%;
+}
+
 .form_label {
   color: #7F8C8D;
   font-size: 10pt;

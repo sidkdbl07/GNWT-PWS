@@ -241,6 +241,25 @@ Router.route('/group/update/:_id', {
     document.title = "GNWT PWS - Edit Question Goup";
   }
 });
+Router.route('/group/add/question/:group_id', {
+  name: 'add_question_to_group',
+  template: 'add_question_to_group',
+  data: function(group_id) {
+    return {
+      'group': Question_Groups.findOne(this.params.group_id),
+    };
+  },
+  waitOn: function() {
+    this.subscribe('pages');
+    this.subscribe('questions');
+    this.subscribe('question_groups');
+    this.subscribe('question_in_group');
+    this.subscribe('books');
+  },
+  onAfterAction: function() {
+    document.title = "GNWT PWS - Add Question to Goup";
+  }
+});
 Router.route('/page/:_id', {
   name: 'page_view',
   template: 'page_view',

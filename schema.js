@@ -532,3 +532,54 @@ Question_Groups.allow({
     }
   }
 });
+
+///////////////////////////////////////////
+// QUESTION IN GROUP
+Question_In_Group = Collections.Question_In_Group = new Meteor.Collection("Question_In_Group");
+if (Meteor.isCordova) Ground.Collection(Question_In_Group);
+
+Schemas.Question_In_Group = new SimpleSchema({
+  'group_id': {
+    type: String
+  },
+  'question_id': {
+    type: String
+  },
+  'sort_order': {
+    type: Number,
+    decimal: false
+  },
+  'operator': {
+    type: String,
+    label: "Operator",
+    optional: true,
+    allowedValues: ["No Operation", "Add next value", "subtract next value", "Multiply next value", "Divide by next value"],
+    autoform: {
+      firstOption: false,
+      options: 'allowed'
+    }
+  },
+  'decision_points': {
+    type: [Schemas.Decision_Points],
+    optional: true
+  }
+});
+
+Question_In_Group.attachSchema = new SimpleSchema(Schemas.Question_In_Group);
+Question_In_Group.allow({
+  insert: function (userId, doc) {
+    debugger;
+    if(userId && Roles.userIsInRole(userId, ['admin'], 'default_group')) {
+      return true;
+    } else {
+      return false
+    }
+  },
+  update: function(userId, doc, fields, modifier) {
+    if(userId && Roles.userIsInRole(userId, ['admin'], 'default_group')) {
+      return true;
+    } else {
+      return false
+    }
+  }
+});
