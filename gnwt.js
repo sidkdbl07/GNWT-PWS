@@ -155,13 +155,14 @@ Router.route('/building/add', {
 Router.route('/building/:_id', {
   name: 'building_view',
   template: 'building_view',
-  data: function(id) {
+  data: function(_id) {
     var building = Buildings.findOne(this.params._id);
     building.picture = Images.findOne({_id: building.picture});
     return building;
   },
   waitOn: function() {
-    this.subscribe('building', this.params._id);
+    this.subscribe('buildings');
+    //this.subscribe('building', this.params._id);
     this.subscribe('images');
   },
   onAfterAction: function() {
