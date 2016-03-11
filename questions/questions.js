@@ -8,7 +8,7 @@ if (Meteor.isClient) {
       return Questions.find({},{sort: {text: 1}}).fetch();
     },
     'number_of_choices': function(id) {
-      return Questions.findOne({_id: id}).allowed_values.length;
+      return Questions.findOne({_id: id}).allowed_values ? Questions.findOne({_id: id}).allowed_values.length : 0;
     },
     'pictures_enabled': function(id) {
       var question = Questions.findOne({_id: id});
