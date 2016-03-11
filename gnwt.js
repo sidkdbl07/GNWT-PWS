@@ -160,6 +160,11 @@ Router.route('/building/:_id', {
     building.picture = Images.findOne({_id: building.picture});
     return building;
   },
+  subscriptions: function() {
+    this.subscribe('inspections');
+    this.subscribe('users');
+    this.subscribe('books');
+  },
   waitOn: function() {
     this.subscribe('buildings');
     //this.subscribe('building', this.params._id);

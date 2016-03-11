@@ -52,6 +52,10 @@ Meteor.publish("question_in_groups", function() {
   return Question_In_Group.find();
 });
 
+Meteor.publish("users", function() {
+  return Meteor.users.find({});
+})
+
 Meteor.publish("user", function() {
   return Meteor.users.find({
     _id: this.userId

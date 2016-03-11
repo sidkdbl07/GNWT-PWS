@@ -200,10 +200,16 @@ Schemas.Inspections = new SimpleSchema({
     type: String
   },
   'date': {
-    type: Date
+    type: Date,
+    autoValue: function() {
+      return new Date();
+    }
   },
-  'user': { // User that attached the book
-    type: String
+  'user_id': { // User that attached the book
+    type: String, 
+    autoValue: function() {
+      return Meteor.userId();
+    }
   }
 });
 Inspections.attachSchema(Schemas.Inspections);
