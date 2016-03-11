@@ -37,16 +37,16 @@
 		          <table width="100%" class="striped">
 		            <thead>
 		              <tr>
-		                <th width="80%">Questions In Group</th>
-		                <th width="20%"></th>
+		                <th width="90%">Questions In Group</th>
+		                <th width="10%"></th>
 		              </tr>
 		            </thead>
 		            <tbody>
 		              {{#if Template.subscriptionsReady}}
-										{{#if all_questions _id}}
-											{{#each all_questions _id}}
+										{{#if all_questions_in_group _id}}
+											{{#each all_questions_in_group _id}}
 											<tr>
-													<td>{{text}}</td>
+													<td>{{#with question question_id}}{{text}}{{/with}}</td>
 													<td><a href="{{pathFor 'question_in_group_view' _id=_id }}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="waves-effect waves-light btn-flat btn-large transparent teal-text" ><i class="large mdi-content-send"></i></a></td>
 											</tr>
 											{{/each}}

@@ -23,9 +23,19 @@ Meteor.startup(function () {
 
   var book, page, question_group, question;
   if(Books.find().count() === 0) {
-    book = Books.insert( {'name': "Field Book Beta Mar 6, 2016", 'locked': false});
+    book = Books.insert( {'name': "Field Book v.20160306r1", 'locked': false});
     page = Pages.insert( {'name': "As Built", "sort_order": 1, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
     question_group = Question_Groups.insert( {'name': 'Building Details', 'sort_order': 1, 'type': 'Simple', 'multiple': false, 'decision_points': [], 'page_id': page});
+    question = Questions.insert( {'text': 'Are the drawings available for this building?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '',
+                                  'allowed_values': [{'value': 'Yes'},{'value': 'No'},{'value': 'Unknown'}],
+                                  //'apply_min': false, 'min': null, 'apply_max': false, 'max': null,
+                                  //'min_year': null, 'max_year': null,
+                                  //'possible_units': [],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'As-Built'}] });
+
     page = Pages.insert( {'name': "Change of use / Importance", "sort_order": 2, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
     page = Pages.insert( {'name': "Deterioration", "sort_order": 3, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
     page = Pages.insert( {'name': "Snow", "sort_order": 4, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
