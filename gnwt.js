@@ -193,6 +193,21 @@ Router.route('/buildings_map', {
     document.title = "GNWT PWS - Buildings";
   }
 });
+Router.route('/building/inspection/add/:building_id', {
+  name: 'inspection_add',
+  template: 'inspection_add',
+  data: function(id) {
+    return Buildings.findOne(this.params.building_id);
+  },
+  waitOn: function() {
+    this.subscribe('books');
+    this.subscribe('building', this.params.building_id);
+    this.subscribe('inspections');
+  },
+  onAfterAction: function() {
+    document.title = "GNWT PWS - Add Inspection";
+  }
+});
 Router.route('/group/:_id', {
   name: 'group_view',
   template: 'group_view',

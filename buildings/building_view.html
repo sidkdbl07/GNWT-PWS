@@ -20,7 +20,7 @@
 				<div class="col s6">
       		<ul class="tabs">
         		<li class="tab col s3"><a class="active" href="#details">Details</a></li>
-        		<li class="tab col s3"><a href="#books">Books</a></li>
+        		<li class="tab col s3"><a href="#inspections">Inspections</a></li>
       		</ul>
     		</div>
 				<div id="details" class="col s12">
@@ -55,10 +55,10 @@
 						</div>
 					</div>
 				</div>
-				<div id="books" class="col s12">
+				<div id="inspections" class="col s12">
 					<div class="row">
 						<div class="col s12 grey lighten-3" style="height: 48px; line-height: 48px; border-bottom: 1px #cbd0de solid; background-color: rgba(235,235,235,0.95);">
-							<a href="{{pathFor 'add_book_to_building' building_id=_id}}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="waves-effect waves-light btn-floating btn-large green" ><i class="mdi-content-add"></i></a>
+							{{#if isInRole 'admin' 'default_group'}}<a href="{{pathFor 'inspection_add' building_id=_id}}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="waves-effect waves-light btn-floating btn-large green" ><i class="mdi-content-add"></i></a>{{/if}}
 						</div>
 					</div>
 				</div>

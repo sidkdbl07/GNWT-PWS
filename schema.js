@@ -189,6 +189,50 @@ if( Meteor.isClient ) {
 }
 
 /////////////////////////////////////////////
+// Inpections
+Inspections = Collections.Inspections = new Meteor.Collection("Inspections");
+if(Meteor.isCordova) Ground.Collection(Inspections);
+Schemas.Inspections = new SimpleSchema({
+  'book_id': {
+    type: String
+  },
+  'building_id': {
+    type: String
+  },
+  'date': {
+    type: Date
+  },
+  'user': { // User that attached the book
+    type: String
+  }
+});
+Inspections.attachSchema(Schemas.Inspections);
+Inspections.allow({
+  insert: function() {
+    return true;
+  },
+  update: function() {
+    return true;
+  }
+});
+Meteor.methods({
+  addInspection: function(doc) {
+    check(doc, Schemas.Inspections);
+    var obj = {name: doc.name, locked: doc.locked, pages: doc.pages};
+    return Books.insert(obj);
+  },
+  editInspection: function(obj) {
+    check(obj._id, String);
+    check(obj.updateDoc.$set, Schemas.Inspections);
+    return Inspections.update({_id: obj._id}, obj.updateDoc);
+  },
+  removeInspection: function(id) {
+    check(id, String);
+    return Inspections.remove(id);
+  }
+});
+
+/////////////////////////////////////////////
 // Pages
 Pages = Collections.Pages = new Meteor.Collection("Pages");
 if(Meteor.isCordova) Ground.Collection(Pages);

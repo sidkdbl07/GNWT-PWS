@@ -20,6 +20,12 @@ Meteor.publish("directory", function() {
     return [];
   }
 });
+Meteor.publish("inspections", function() {
+  return Inspections.find();
+});
+Meteor.publish("inspection", function(id) {
+  return Inspections.find({_id: id});
+});
 Meteor.publish("pages", function() {
   return Pages.find();
 });
