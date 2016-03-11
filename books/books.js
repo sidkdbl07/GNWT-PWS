@@ -6,6 +6,7 @@ if (Meteor.isClient) {
   Template.books.onCreated(function() {
     var self = this;
     self.autorun(function() {
+      console.log("books 1");
       if( Meteor.status().connected ) {
         Meteor.subscribe("books");
       };
@@ -14,6 +15,7 @@ if (Meteor.isClient) {
 
   Template.books.helpers({
     'all_books': function() {
+      console.log("books 2");
       var books = Books.find().fetch();
       return books;
     }

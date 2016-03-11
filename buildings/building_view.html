@@ -61,6 +61,29 @@
 						<div class="col s12 grey lighten-3" style="height: 48px; line-height: 48px; border-bottom: 1px #cbd0de solid; background-color: rgba(235,235,235,0.95);">
 							{{#if isInRole 'admin' 'default_group'}}<a href="{{pathFor 'inspection_add' building_id=_id}}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="waves-effect waves-light btn-floating btn-large green" ><i class="mdi-content-add"></i></a>{{/if}}
 						</div>
+						<div class="content">
+					      <div>
+					        <ul class="collection">
+					          {{#if Template.subscriptionsReady}}
+					            {{#if all_inspects _id}}
+					              {{#each all_inspects _id}}
+					          <li class="collection-item">
+					            <div class="row">
+					              <div class="col s10 title">{{#with book book_id}}{{name}}{{/with}}</div>
+					              
+					            </div>
+					            <div class="row">
+					              <div class="col s10 title">{{#with user user_id}}{{profile.fullname}}{{/with}}</div>
+					            </div>
+					          </li>
+					              {{/each}}
+					            {{else}}
+					            <li class="collection-item">There are no inspections yet</li>
+					            {{/if}}
+					          {{/if}}
+					        </ul>
+					      </div>
+					    </div>
 					</div>
 				</div>
 				<div id="reports" class="col s12">
