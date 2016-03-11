@@ -98,12 +98,13 @@ Schemas.Buildings = new SimpleSchema({
     type: String,
     max: 200,
     optional: true,
+    label: " ",
     autoform: {
       afFieldInput: {
         type: 'fileUpload',
         collection: 'Images',
         accept: 'image/*',
-        label: 'Choose file'
+        label: 'Choose Aerial Image'
       }
     }
   },

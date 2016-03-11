@@ -4,7 +4,7 @@ if (Meteor.isClient) {
     $("ul.tabs").tabs();
   });
 
-  Template.page_view.helpers({
+  Template.building_view.helpers({
 
   });
 }
