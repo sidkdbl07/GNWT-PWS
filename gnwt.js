@@ -160,15 +160,12 @@ Router.route('/building/:_id', {
     building.picture = Images.findOne({_id: building.picture});
     return building;
   },
-  subscriptions: function() {
-    this.subscribe('inspections');
+  waitOn: function() {
+    this.subscribe('building', this.params._id);
+    this.subscribe('images');
     this.subscribe('users');
     this.subscribe('books');
-  },
-  waitOn: function() {
-    this.subscribe('buildings');
-    //this.subscribe('building', this.params._id);
-    this.subscribe('images');
+    this.subscribe('inspections');
   },
   onAfterAction: function() {
     document.title = "GNWT PWS - Building";
