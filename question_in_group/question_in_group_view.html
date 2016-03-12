@@ -1,0 +1,33 @@
+<template name="question_in_group_view">
+	<div class="transitions-content">
+    <div id="header" class="row">
+  		<div class="col s12">
+  			<div id="header_page_title">Question - {{question.text}}</div>
+  		</div>
+  	</div>
+  	<div class="row toolbar">
+  		<div class="col s1">
+  			<a href="{{pathFor 'group_view' _id=group._id}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="back-button btn-large btn-floating waves-effect waves-light blue" ><i class="mdi-hardware-keyboard-backspace"></i></a>
+  		</div>
+  	</div>
+  	<div class="content">
+      <div class="row">
+        <div class="col s11 offset-s1">
+					<a href="{{pathFor 'books'}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn">Books</a> >
+          <a href="{{pathFor 'book_view' _id=book._id}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn">{{book.name}}</a> >
+					<a href="{{pathFor 'page_view' _id=page._id}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn">{{page.name}}</a> >
+					<a href="{{pathFor 'group_view' _id=group._id}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn">{{group.name}}</a> >
+					{{question.text}}
+        </div>
+			</div>
+			<div class="row">
+				<div class="col s4">
+      		<ul class="tabs">
+        		<li class="tab col s3"><a href="#decision_points" class="active">Decision Points</a></li>
+      		</ul>
+    		</div>
+				<div id="decision_points" class="col s12">Decisions</div>
+      </div>
+    </div>
+  </div>
+</template>

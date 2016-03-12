@@ -261,7 +261,7 @@ Router.route('/group/update/:_id', {
     document.title = "GNWT PWS - Edit Question Goup";
   }
 });
-Router.route('/group/add/question/:group_id', {
+Router.route('/group/question/add/:group_id', {
   name: 'add_question_to_group',
   template: 'add_question_to_group',
   data: function() {
@@ -280,6 +280,23 @@ Router.route('/group/add/question/:group_id', {
   },
   onAfterAction: function() {
     document.title = "GNWT PWS - Add Question to Goup";
+  }
+});
+Router.route('/group/question/:_id', {
+  name: 'question_in_group_view',
+  template: 'question_in_group_view',
+  data: function() {
+    return Question_In_Group.findOne(this.params._id);
+  },
+  waitOn: function() {
+    this.subscribe('pages');
+    this.subscribe('questions');
+    this.subscribe('question_groups');
+    this.subscribe('question_in_group', this.params._id);
+    this.subscribe('books');
+  },
+  onAfterAction: function() {
+    document.title = "GNWT PWS - Question to Goup";
   }
 });
 Router.route('/page/:_id', {

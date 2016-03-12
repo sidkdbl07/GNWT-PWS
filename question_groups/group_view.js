@@ -12,14 +12,18 @@ if (Meteor.isClient) {
     'page': function() {
       return Pages.findOne({_id: this.page_id});
     },
-    'all_questions': function(group_id) {
-      let questions_in_group = Question_In_Group.find({'group_id': group_id},{sort: {sort_order: 1}}).fetch();
-      let condition_array = [];
-      for(question_in_group of questions_in_group) 
-      {
-        condition_array.push({ _id: question_in_group.question_id });
-      }
-      return Questions.find({ $or: condition_array});
+    'all_questions_in_group': function(group_id) {
+      //let questions_in_group = Question_In_Group.find({'group_id': group_id},{sort: {sort_order: 1}}).fetch();
+      //let condition_array = [];
+      //for(question_in_group of questions_in_group)
+      //{
+      //  condition_array.push({ _id: question_in_group.question_id });
+      //}
+      //return Questions.find({ $or: condition_array});
+      return Question_In_Group.find({'group_id': group_id},{sort: {sort_order: 1}}).fetch();
+    },
+    'question': function(question_id) {
+      return Questions.findOne({_id: question_id});
     }
   });
 }
