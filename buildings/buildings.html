@@ -25,8 +25,7 @@
           <thead>
             <tr>
               <th width="20%">Name</th>
-              <th width="20%">Address</th>
-              <th width="10%">Region</th>
+              <th width="30%">Region</th>
               <th width="10%"></th>
             </tr>
           </thead>
@@ -36,7 +35,6 @@
                 {{#each all_buildings}}
                 <tr>
                   <td>{{name}}</td>
-                  <td>{{address}}</td>
                   <td>{{region}}</td>
                   <td style="white-space: nowrap;">{{#if isInRole 'admin' 'default_group'}}
                     <a href="{{pathFor 'building_edit' _id=this._id }}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="btn waves-effect waves-light teal " ><i class="mdi-content-create left"></i>Edit</a>

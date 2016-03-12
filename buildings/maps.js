@@ -91,17 +91,15 @@ if (Meteor.isClient) {
   Template.buildings_map.events({
     'click #color_btn': function() {
       $('#color_btn').text(function(i, text) {
-        if(text === 'Colorize')
-        {
+        if(text === 'Colorize') {
           Decolorize();
           return 'Decolorize';
-        }
-        else
-        {
+        } else {
           Colorize();
           return 'Colorize';
         }
       });
+      $.publish('toast',["Colour by risk rating is not in place for the beta trial","Not done yet!",'warning']);
     },
     'click #btn_zoomin': function() {
       map.zoomIn();
