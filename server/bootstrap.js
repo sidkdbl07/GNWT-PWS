@@ -21,6 +21,10 @@ Meteor.startup(function () {
     });
   }
 
+  debugger;
+
+  Ground.Collection(Meteor.users);
+
   var book, page, question_group, question;
   if(Books.find().count() === 0) {
     book = Books.insert( {'name': "Field Book v.20160306r1", 'locked': false});
