@@ -19,12 +19,12 @@
       <div class="row">
         <div class="col s6" style="padding: 15px;">
           {{> afQuickField name="name"}}
+          {{> afQuickField name="address"}}
+          {{> afQuickField name="region"}}
           {{#unless isCordova}}
           <div style="padding: 20px;">{{> afQuickField name="picture"}}</div>
           {{> afQuickField name='bounding_box'}}
           {{/unless}}
-          {{> afQuickField name="address"}}
-          {{> afQuickField name="region"}}
           {{> afQuickField name="location"}}
         </div>
         <div class="col offset-s1 s4">

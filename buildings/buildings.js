@@ -15,7 +15,7 @@ if (Meteor.isClient) {
 
   Template.buildings.helpers({
     'all_buildings': function() {
-      return Buildings.find().fetch();
+      return Buildings.find({},{sort: {name: 1}}).fetch();
     },
     'formatted_year': function(datestamp) {
       return moment(datestamp).format("YYYY")+" ("+moment(datestamp).fromNow()+")";

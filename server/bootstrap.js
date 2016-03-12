@@ -133,11 +133,85 @@ Meteor.startup(function () {
   }
 
   if(Buildings.find().count() === 0) {
-    Buildings.insert( {'name': 'Building #1', 'address': '123 Main St', 'region': 'Fort Smith', 'location': { 'type': 'Point', 'coordinates': [-119, 60]}});
-    Buildings.insert( {'name': 'Building #2', 'address': '123 Elm St', 'region': 'Fort Smith', 'location': { 'type': 'Point', 'coordinates': [-119.1, 60.2]}});
-    Buildings.insert( {'name': 'Building #3', 'address': '456 Elm St', 'region': 'Fort Simpson', 'location': { 'type': 'Point', 'coordinates': [-119.2, 60.3]}});
-    Buildings.insert( {'name': 'Building #4', 'address': '456 Elm St', 'region': 'Yellowknife', 'location': { 'type': 'Point', 'coordinates': [-119.05, 60.12]}});
-    Buildings.insert( {'name': 'Building #5', 'address': '456 Elm St', 'region': 'Fort Simpson', 'location': { 'type': 'Point', 'coordinates': [-119.12, 60.31]}});
-    Buildings.insert( {'name': 'Building #6', 'address': '456 Elm St', 'region': 'Pink Paradise', 'location': { 'type': 'Point', 'coordinates': [-119.23, 60.23]}});
+    Buildings.insert( {'name': 'DOT Airport Combined Services', 'address': 'Unknown', 'region': 'Yellowknife',
+                      'bounding_box': '[[62.4658007641611,-114.450533917207],[62.4670926867988,-114.44751361509]]',
+                      'location': { 'type': 'Point', 'coordinates': [-114.4491216533, 62.4664625654]}}
+    );
+    Buildings.insert( {'name': 'Air Terminal Building', 'address': 'Unknown', 'region': 'Yellowknife',
+                       'bounding_box': '[[62.470475055072,-114.439726515251],[62.4717667382517,-114.436705274588]]',
+                       'location': { 'type': 'Point', 'coordinates': [-114.4397265153, 62.4711650084]}}
+    );
+    Buildings.insert( {'name': 'Regional Services Complex', 'address': 'Unknown', 'region': 'Yellowknife',
+                       'bounding_box': '[[62.4693992356345,-114.427871768144],[62.4706906602649,-114.424850131112]]',
+                       'location': { 'type': 'Point', 'coordinates': [-114.4263904504, 62.4701031231]}}
+    );
+    Buildings.insert( {'name': 'Legislative Assembly Building', 'address': 'Unknown', 'region': 'Yellowknife',
+                       'bounding_box': '[[62.4588789107256,-114.383942794008],[62.4601693813013,-114.380920356839]]',
+                       'location': { 'type': 'Point', 'coordinates': [-114.3825279552, 62.4596318888]}}
+    );
+    Buildings.insert( {'name': 'Prince Of Wales Northern Heritage', 'address': 'Unknown', 'region': 'Yellowknife',
+                       'bounding_box': '[[62.4557804625125,-114.381855487022],[62.4570708895191,-114.378833277157]]',
+                       'location': { 'type': 'Point', 'coordinates': [-114.3802426274, 62.4564284676]}}
+    );
+    Buildings.insert( {'name': 'Arthur Laing Building', 'address': 'Unknown', 'region': 'Yellowknife',
+                       'bounding_box': '[[62.4537434831913,-114.371107851382],[62.4550336763205,-114.368085391382]]',
+                       'location': { 'type': 'Point', 'coordinates': [-114.3701928837, 62.4545877452]}}
+    );
+    Buildings.insert( {'name': 'Stuart Hodgson Building', 'address': 'Unknown', 'region': 'Yellowknife',
+                       'bounding_box': '[[62.4537434831913,-114.371107851382],[62.4550336763205,-114.368085391382]]',
+                       'location': { 'type': 'Point', 'coordinates': [-114.3694379143, 62.4543295046]}}
+    );
+    Buildings.insert( {'name': 'PWS Maintenance Shop', 'address': 'Unknown', 'region': 'Yellowknife',
+                       'bounding_box': '[[62.4552240389814,-114.362870278526],[62.4565140507372,-114.359847316383]]',
+                       'location': { 'type': 'Point', 'coordinates': [-114.3614416725, 62.4561461408]}}
+    );
+    Buildings.insert( {'name': 'PWS North Slave Office', 'address': 'Unknown', 'region': 'Yellowknife',
+                       'bounding_box': '[[62.4552240389814,-114.362870278526],[62.4565140507372,-114.359847316383]]',
+                       'location': { 'type': 'Point', 'coordinates': [-114.3613373648, 62.4558162323]}}
+    );
+    Buildings.insert( {'name': 'Tiaga Laboratory', 'address': 'Unknown', 'region': 'Yellowknife',
+                       'bounding_box': '[[62.4531798152431,-114.362840162858],[62.4544698277454,-114.359817408129]]',
+                       'location': { 'type': 'Point', 'coordinates': [-114.3618911999, 62.4539589051]}}
+    );
+    Buildings.insert( {'name': 'CS Lord Geoscience', 'address': 'Unknown', 'region': 'Yellowknife',
+                       'bounding_box': '[[62.4531798152431,-114.362840162858],[62.4544698277454,-114.359817408129]]',
+                       'location': { 'type': 'Point', 'coordinates': [-114.3610392107, 62.4537289121]}}
+    );
+    Buildings.insert( {'name': 'Rockhill - Apartments', 'address': 'Unknown', 'region': 'Yellowknife',
+                       'bounding_box': '[[62.4485585396088,-114.363600275595],[62.4498485719321,-114.360578024915]]',
+                       'location': { 'type': 'Point', 'coordinates': [-114.3620969985, 62.4492114181]}}
+    );
+    Buildings.insert( {'name': 'Stanton Hospital', 'address': 'Unknown', 'region': 'Yellowknife',
+                       'bounding_box': '[[62.4468074471432,-114.4065947799],[62.44809842164,-114.403574539987]]',
+                       'location': { 'type': 'Point', 'coordinates': [-114.4047627701, 62.4474133093]}}
+    );
+    Buildings.insert( {'name': 'Central Warehouse', 'address': 'Unknown', 'region': 'Yellowknife',
+                       'bounding_box': '[[62.443973176952,-114.408076236109],[62.4452641857846,-114.40505634828]]',
+                       'location': { 'type': 'Point', 'coordinates': [-114.4071226425, 62.444748241]}}
+    );
+    Buildings.insert( {'name': 'Data Center', 'address': 'Unknown', 'region': 'Yellowknife',
+                       'bounding_box': '[[62.443973176952,-114.408076236109],[62.4452641857846,-114.40505634828]]',
+                       'location': { 'type': 'Point', 'coordinates': [-114.4059290005, 62.4444646421]}}
+    );
+    Buildings.insert( {'name': 'NSCF - Young Offenders', 'address': 'Unknown', 'region': 'Yellowknife',
+                       'bounding_box': '[[62.4354808437939,-114.406723738804],[62.4367718288122,-114.403704658681]]',
+                       'location': { 'type': 'Point', 'coordinates': [-114.4052411237, 62.4360010041]}}
+    );
+    Buildings.insert( {'name': 'NSCF - Adult Facility', 'address': 'Unknown', 'region': 'Yellowknife',
+                       'bounding_box': '[[62.4340929004302,-114.406203040457],[62.4353838750019,-114.403184079526]]',
+                       'location': { 'type': 'Point', 'coordinates': [-114.4046048057, 62.43482358]}}
+    );
+    Buildings.insert( {'name': 'ENR Warehouse', 'address': 'Unknown', 'region': 'Yellowknife',
+                       'bounding_box': '[[62.4618949301684,-114.352659623079],[62.4631847137302,-114.349635544551]]',
+                       'location': { 'type': 'Point', 'coordinates': [-114.351271272, 62.4627292558]}}
+    );
+    Buildings.insert( {'name': 'ENR Regional Office', 'address': 'Unknown', 'region': 'Yellowknife',
+                       'bounding_box': '[[62.4618949301684,-114.352659623079],[62.4631847137302,-114.349635544551]]',
+                       'location': { 'type': 'Point', 'coordinates': [-114.35169238, 62.4624948647]}}
+    );
+    Buildings.insert( {'name': 'ENR Lab Complex', 'address': 'Unknown', 'region': 'Yellowknife',
+                       'bounding_box': '[[62.4618949301684,-114.352659623079],[62.4631847137302,-114.349635544551]]',
+                       'location': { 'type': 'Point', 'coordinates': [-114.3511075912, 62.4623174136]}}
+    );
   }
 });
