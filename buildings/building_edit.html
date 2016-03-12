@@ -20,7 +20,8 @@
         <div class="col s6" style="padding: 15px;">
           {{> afQuickField name="name"}}
           {{#unless isCordova}}
-          {{> afQuickField name="picture"}}
+          <div style="padding: 20px;">{{> afQuickField name="picture"}}</div>
+          {{> afQuickField name='bounding_box'}}
           {{/unless}}
           {{> afQuickField name="address"}}
           {{> afQuickField name="region"}}

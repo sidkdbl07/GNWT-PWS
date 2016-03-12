@@ -108,6 +108,11 @@ Schemas.Buildings = new SimpleSchema({
       }
     }
   },
+  'bounding_box': {
+    type: String,
+    label: 'Bounding Box',
+    optional: true
+  },
   'address': {
     type: String,
     label: "What is the street address?",
@@ -207,7 +212,7 @@ Schemas.Inspections = new SimpleSchema({
     }
   },
   'user_id': { // User that attached the book
-    type: String, 
+    type: String,
     autoValue: function() {
       return Meteor.userId();
     }
@@ -369,7 +374,6 @@ Schemas.Questions = new SimpleSchema({
   'allowed_values': {
     type: Array,
     minCount: 0,
-    maxCount: 5,
     optional: true
   },
   'allowed_values.$': {
