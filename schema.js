@@ -12,7 +12,7 @@ if (Meteor.isClient) {
 }
 
 Images = new FS.Collection("images", {
-  stores: [new FS.Store.FileSystem("images")]
+  stores: [new FS.Store.FileSystem("images", {path: "../web.browser/app/images"})]
 });
 Images.allow({
  insert: function(){
