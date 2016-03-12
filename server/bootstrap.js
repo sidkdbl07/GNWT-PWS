@@ -21,8 +21,6 @@ Meteor.startup(function () {
     });
   }
 
-  debugger;
-
   Ground.Collection(Meteor.users);
 
   var book, page, question_group, question;
@@ -151,10 +149,40 @@ Meteor.startup(function () {
 
   }
 
+  // if(cfs.images.filerecord.find().count() === 0) {
+  //   cfs.images.filerecord.insert(
+  //     {
+  //       "_id" : "7TvM876g2KrvAedAR",
+  //       "original" : {
+  //         "name" : "Adult Offender.jpg",
+  //         "updatedAt" : ISODate("2016-03-12T05:52:15Z"),
+  //         "size" : 32152,
+  //         "type" : "image/jpeg"
+  //       },
+  //       "owner" : "t7AkFT93iDhKS8nkX",
+  //       "metadata" : {
+  //         "owner" : "t7AkFT93iDhKS8nkX"
+  //       },
+  //       "uploadedAt" : ISODate("2016-03-12T13:27:43.452Z"),
+  //       "copies" : {
+  //         "images" : {
+  //           "name" : "Adult Offender.jpg",
+  //           "type" : "image/jpeg",
+  //           "size" : 32152,
+  //           "key" : "images-7TvM876g2KrvAedAR-Adult Offender.jpg",
+  //           "updatedAt" : ISODate("2016-03-12T13:27:43Z"),
+  //           "createdAt" : ISODate("2016-03-12T13:27:43Z")
+  //         }
+  //       }
+  //     }
+  //   );
+  // }
+
   if(Buildings.find().count() === 0) {
     Buildings.insert( {'name': 'DOT Airport Combined Services', 'address': 'Unknown', 'region': 'Yellowknife',
                       'bounding_box': '[[62.4658007641611,-114.450533917207],[62.4670926867988,-114.44751361509]]',
-                      'location': { 'type': 'Point', 'coordinates': [-114.4491216533, 62.4664625654]}}
+                      'location': { 'type': 'Point', 'coordinates': [-114.4491216533, 62.4664625654]},
+                      "picture" : "7TvM876g2KrvAedAR" }
     );
     Buildings.insert( {'name': 'Air Terminal Building', 'address': 'Unknown', 'region': 'Yellowknife',
                        'bounding_box': '[[62.470475055072,-114.439726515251],[62.4717667382517,-114.436705274588]]',
