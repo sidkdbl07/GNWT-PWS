@@ -21,6 +21,10 @@ Meteor.startup(function () {
     });
   }
 
+  debugger;
+
+  Ground.Collection(Meteor.users);
+
   var book, page, question_group, question;
   if(Books.find().count() === 0) {
     book = Books.insert( {'name': "Field Book Beta Mar 6, 2016", 'locked': false});
