@@ -334,7 +334,7 @@ Schemas.Questions = new SimpleSchema({
   },
   'type': {
     type: String,
-    allowedValues: ['Multiple Choice', 'Numeric', 'Year', 'Geo-Point'],
+    allowedValues: ['Multiple Choice', 'Numeric', 'Year', 'Geo-Point', 'Geo-Area'],
     label: 'What type of question are you asking?',
     autoform: {
       firstOption: "Please select one type",
@@ -500,7 +500,7 @@ Schemas.Question_Groups = new SimpleSchema({
   'type': {
     type: String,
     label: 'Type of Group',
-    allowedValues: ['Simple', 'Math', 'Lookup', 'Measurements at a Location'],
+    allowedValues: ['Simple', 'Math', 'Lookup', 'Measurements at a Location', 'Draw at a Location'],
     autoform: {
       firstOption: false,
       options: 'allowed'

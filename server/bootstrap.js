@@ -25,6 +25,25 @@ Meteor.startup(function () {
 
   var book, page, question_group, question;
   if(Books.find().count() === 0) {
+    // Fake Dummy Book
+    book = Books.insert( {'name': "Dummy Book", 'locked': false});
+    page = Pages.insert( {'name': "Snow", "sort_order": 1, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
+    question_group = Question_Groups.insert( {'name': 'Snow, Wind and Roof Details', 'sort_order': 1, 'type': 'Draw at a Location', 'multiple': true, 'decision_points': [], 'page_id': page});
+    question = Questions.insert( {'text': 'Mark the highest point on the roof',
+                                  'type': 'Geo-Point',
+                                  'help_text': 'Touch your finder on the highest point on the roof.',
+                                  'label': 'High Point',
+                                  'show_history': false, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Snow'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
+    question = Questions.insert( {'text': 'Trace one of the roof areas',
+                                  'type': 'Geo-Point',
+                                  'help_text': 'Trace a polygon with your finger to trace an area of the roof.',
+                                  'label': 'Area Descriptor',
+                                  'show_history': false, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Snow'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
+    // Real Book
     book = Books.insert( {'name': "Field Book v.20160306r1", 'locked': false});
     page = Pages.insert( {'name': "As Built", "sort_order": 1, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
     question_group = Question_Groups.insert( {'name': 'Building Details', 'sort_order': 1, 'type': 'Simple', 'multiple': false, 'decision_points': [], 'page_id': page});
@@ -37,7 +56,7 @@ Meteor.startup(function () {
                                   'possible_units': [{'unit': 'year', 'multiplier': 1}],
                                   'show_history': true, 'use_history': false, 'pictures': 'disabled',
                                   'tags': [{'tag': 'As-Built'}] });
-    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1})
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
     question = Questions.insert( {'text': 'In what year was the building constructed?',
                                   'type': 'Year',
                                   'help_text': '',

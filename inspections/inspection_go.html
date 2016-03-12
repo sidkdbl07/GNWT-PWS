@@ -1,0 +1,39 @@
+<template name="inspection_go">
+	<div class="transitions-content">
+    <div id="header" class="row">
+  		<div class="col s12">
+  			<div id="header_page_title">Inspection of {{building.name}}</div>
+  		</div>
+  	</div>
+  	<div class="row toolbar">
+  		<div class="col s1">
+  			<a href="{{pathFor 'inspection_view' _id=inspection._id}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="back-button btn-large btn-floating waves-effect waves-light blue" ><i class="mdi-hardware-keyboard-backspace"></i></a>
+  		</div>
+  	</div>
+  	<div class="content">
+      <div class="row">
+        <div class="col s11 offset-s1">
+          <a href="{{pathFor 'buildings'}}">Buildings</a> >
+					<a href="{{pathFor 'building_view' _id=building._id}}#inspections" data-transition-out="slideRightOut" data-transition-in="slideRightIn" >{{building.name}}</a> >
+					<a href="{{pathFor 'inspection_view' _id=inspection._id}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn">Inspection {{date_of_inspection}}</a>
+        </div>
+			</div>
+			<div class="row">
+        <div class="col s12">
+          <ul class="tabs">
+						{{#each pages}}
+							<li><a href="">{{name}}</a></li>
+						{{/each}}
+					</ul>
+        </div>
+			</div>
+      <div class="row">
+        <div class="col s12">
+          {{#if is_draw_at_a_location}}
+            {{> answer_draw_at_a_location group=current_group}}
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

@@ -1,0 +1,52 @@
+<template name="inspection_view">
+	<div class="transitions-content">
+    <div id="header" class="row">
+  		<div class="col s12">
+  			<div id="header_page_title">Inspection of {{building.name}} in {{date_of_inspection}}</div>
+  		</div>
+  	</div>
+  	<div class="row toolbar">
+  		<div class="col s1">
+  			<a href="{{pathFor 'building_view' _id=building._id}}#inspections" data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="back-button btn-large btn-floating waves-effect waves-light blue" ><i class="mdi-hardware-keyboard-backspace"></i></a>
+  		</div>
+  	</div>
+  	<div class="content">
+      <div class="row">
+        <div class="col s11 offset-s1">
+          <a href="{{pathFor 'buildings'}}">Buildings</a> >
+					<a href="{{pathFor 'building_view' _id=building._id}}#inspections" data-transition-out="slideRightOut" data-transition-in="slideRightIn" >{{building.name}}</a> >
+					Inspection {{date_of_inspection}}
+        </div>
+			</div>
+			<div class="row">
+				<div class="col s5 offset-s1">
+					<h4>Inspections</h4>
+					<p>Welcome to the inspection launch page. From here, you'll begin your inspection.</p>
+					<p>Every inspection is guided by a book. The book assigned to this inspection is <b>{{book.name}}</b>.
+						It is a prescribed set of questions that will gather the required information about the {{building.name}}.</p>
+					<p>To begin answering questions cick the green button below.</p>
+					<br/>
+					<div class="row">
+						<div class="col s12 center">
+							<a href="{{pathFor 'inspection_go' inspection_id=_id group_id='begin'}}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="btn-large waves-effect waves-light green" ><i class="mdi-content-send right"></i>Begin</a>
+						</div>
+					</div>
+    		</div>
+				<div class="col s5 offset-s1">
+          <div class="card grey lighten-3">
+            <div class="card-content">
+							<span class="card-title">Your Field Book</span>
+              <p>This inspection is being done according to <b>{{book.name}}</b>. This book evaluates the following parameters:
+								<ul>
+									{{#each pages}}
+										<li>{{name}}</li>
+									{{/each}}
+								</ul>
+							</p>
+            </div>
+          </div>
+				</div>
+      </div>
+    </div>
+  </div>
+</template>
