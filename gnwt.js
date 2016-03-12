@@ -299,6 +299,41 @@ Router.route('/group/question/:_id', {
     document.title = "GNWT PWS - Question to Goup";
   }
 });
+Router.route('/inspection/:_id', {
+  name: 'inspection_view',
+  template: 'inspection_view',
+  data: function() {
+    return Inspections.findOne(this.params._id)
+  },
+  waitOn: function() {
+    this.subscribe('books');
+    this.subscribe('buildings');
+    this.subscribe('inspection', this.params._id);
+    this.subscribe('pages');
+    this.subscribe('question_groups');
+  },
+  onAfterAction: function() {
+    document.title = "GNWT PWS - Inpsection";
+  }
+});
+Router.route('/inspection/go/:inspection_id', {
+  name: 'inspection_go',
+  template: 'inspection_go',
+  data: function() {
+    return Inspections.findOne({_id: this.params.inspection_id});
+  },
+  waitOn: function() {
+    this.subscribe('books');
+    this.subscribe('buildings');
+    this.subscribe('inspection', this.params.inspection_id);
+    this.subscribe('pages');
+    this.subscribe('question_groups');
+    this.subscribe('question_in_groups');
+  },
+  onAfterAction: function() {
+    document.title = "GNWT PWS - Inpsection";
+  }
+});
 Router.route('/page/:_id', {
   name: 'page_view',
   template: 'page_view',

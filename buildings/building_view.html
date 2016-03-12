@@ -67,8 +67,8 @@
 							<table width="100%" class="striped">
 								<thead>
 									<tr>
-										<th width="80%"></th>
-										<th width="20%"></th>
+										<th width="90%"></th>
+										<th width="10%"></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -81,7 +81,7 @@
 															<b>{{#with user user_id}}{{profile.fullname}}{{/with}}</b> using
 															<b>{{#with book book_id}}{{name}}{{/with}}</b>
 														</td>
-														<td></td>
+														<td><a href="{{pathFor 'inspection_view' _id=_id }}" data-transition-out="slideLeftOut" data-transition-in="slideLeftIn" class="waves-effect waves-light btn-large btn-flat teal-text transparent" ><i class="mdi-content-send"></i></a></td>
 													</tr>
 					              {{/each}}
 					            {{else}}
