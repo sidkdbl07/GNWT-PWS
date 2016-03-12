@@ -37,6 +37,36 @@ if (Meteor.isClient) {
       // Change the following to false wen the helper call is working.
       return false;
     },
+    'next_group': function() {
+      var current_group = group_or_first(this.group, this.inspection);
+      var next_group = Question_Groups.find({'page_id': current_group.page_id, sort_order: {$gt: current_group.sort_order}}, {sort: {sort_order: 1}, limit: 1});
+      if(next_group.count() > 0) {
+        $.publish('toast',["next group found in same page","Found Group on same page",'info']);
+        return next_group.fetch();
+      } else {
+        $.publish('toast',["","Group not found on same page",'info']);
+        var book = Books.findOne({_id: this.inspection.book_id});
+        var current_page = Pages.findOne({_id: current_group.page_id});
+        var np = Pages.find({book_id: book._id, sort_order: {$gt: current_page.sort_order}},{sort: {sort_order: 1}, limit: 1});
+        if(np.count() > 0) {
+          $.publish('toast',["","Page found",'info']);
+          next_page = np.fetch();
+          $.publish('toast',[next_page.name,"Next Page",'info']);
+          next_group =  Question_Groups.find({page_id: next_page._id}, {sort: {sort_order: 1}, limit: 1});
+        } else {
+          $.publish('toast',["no more pages","Next Page not found",'error']);
+          return false;
+        }
+      }
+      if(next_group.count() > 0) {
+        var g = next_group.fetch();
+        $.publish('toast',[g.name,"Next group",'info']);
+        return g;
+      } else {
+        $.publish('toast',["no more groups","Group not found",'error']);
+        return false;
+      }
+    },
     'page': function() {
       var book = Books.findOne({_id: this.inspection.book_id});
       return Pages.findOne({book_id: book._id}, {sort: {sort_order: 1}});
@@ -50,6 +80,22 @@ if (Meteor.isClient) {
         result.push({'group_id': first_group._id, 'page_name': row.name});
       });
       return result;
+    },
+    'previous_group': function() {
+      var current_group = group_or_first(this.group, this.inspection);
+      var previous_group = Question_Groups.findOne({'page_id': current_group.page_id, sort_order: {$lt: current_group.sort_order}}, {sort: {sort_order: 1}});
+      if(previous_group) {
+        return previous_group;
+      } else {
+        var book = Books.findOne({_id: inspection.book_id});
+        var previous_page = Pages.findOne({book_id: book__id, sort_order: {$lt: page.sort_order}},{sort: {sort_order: 1}});
+        previous_group =  Question_Groups.findOne({page_id: previous_page._id}, {sort: {sort_order: 1}});
+      }
+      if(previous_group) {
+        return previous_group;
+      } else {
+        return false;
+      }
     }
   });
 }
