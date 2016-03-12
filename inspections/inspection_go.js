@@ -39,18 +39,29 @@ if (Meteor.isClient) {
     },
     'next_group': function() {
       var current_group = group_or_first(this.group, this.inspection);
-      var next_group = Question_Groups.find({'page_id': current_group.page_id, sort_order: {$gt: current_group.sort_order}}, {sort: {sort_order: 1}}).limit(1);
-      if(next_group.count() == 1) {
-        $.publish('toast',["next group found in same page","Found Group",'info']);
+      var next_group = Question_Groups.find({'page_id': current_group.page_id, sort_order: {$gt: current_group.sort_order}}, {sort: {sort_order: 1}, limit: 1});
+      if(next_group.count() > 0) {
+        $.publish('toast',["next group found in same page","Found Group on same page",'info']);
         return next_group.fetch();
       } else {
-        var book = Books.findOne({_id: inspection.book_id});
-        var next_page = Pages.findOne({book_id: book__id, sort_order: {$gt: page.sort_order}},{sort: {sort_order: 1}});
-        next_group =  Question_Groups.find({page_id: next_page._id}, {sort: {sort_order: 1}}).limit(1);
+        $.publish('toast',["","Group not found on same page",'info']);
+        var book = Books.findOne({_id: this.inspection.book_id});
+        var current_page = Pages.findOne({_id: current_group.page_id});
+        var np = Pages.find({book_id: book._id, sort_order: {$gt: current_page.sort_order}},{sort: {sort_order: 1}, limit: 1});
+        if(np.count() > 0) {
+          $.publish('toast',["","Page found",'info']);
+          next_page = np.fetch();
+          $.publish('toast',[next_page.name,"Next Page",'info']);
+          next_group =  Question_Groups.find({page_id: next_page._id}, {sort: {sort_order: 1}, limit: 1});
+        } else {
+          $.publish('toast',["no more pages","Next Page not found",'error']);
+          return false;
+        }
       }
-      if(next_group.count() == 1) {
-        $.publish('toast',["next group found in next page","Found Group",'info']);
-        return next_group.fetch();
+      if(next_group.count() > 0) {
+        var g = next_group.fetch();
+        $.publish('toast',[g.name,"Next group",'info']);
+        return g;
       } else {
         $.publish('toast',["no more groups","Group not found",'error']);
         return false;
