@@ -40,7 +40,6 @@ if (Meteor.isClient) {
       var current_group = group_or_first(this.group, this.inspection);
       var next_group = Question_Groups.findOne({'page_id': current_group.page_id, sort_order: {$gt: current_group.sort_order}}, {sort: {sort_order: 1}});
       if(next_group) {
-        $.publish('toast',[next_group.name,"Next Group",'info']);
         return next_group;
       } else {
         var book = Books.findOne({_id: this.inspection.book_id});
@@ -53,7 +52,6 @@ if (Meteor.isClient) {
         }
       }
       if(next_group) {
-        $.publish('toast',[next_group.name,"Next Group",'info']);
         return next_group;
       } else {
         return false;
@@ -77,7 +75,6 @@ if (Meteor.isClient) {
       var current_group = group_or_first(this.group, this.inspection);
       var previous_group = Question_Groups.findOne({'page_id': current_group.page_id, sort_order: {$lt: current_group.sort_order}}, {sort: {sort_order: 1}});
       if(previous_group) {
-        $.publish('toast',[previous_group.name,"Previous Group",'info']);
         return previous_group;
       } else {
         var book = Books.findOne({_id: this.inspection.book_id});
@@ -90,7 +87,6 @@ if (Meteor.isClient) {
         }
       }
       if(previous_group) {
-        $.publish('toast',[previous_group.name,"Previous Group",'info']);
         return previous_group;
       } else {
         return false;
