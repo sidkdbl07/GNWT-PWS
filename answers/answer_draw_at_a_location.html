@@ -1,6 +1,5 @@
 <template name="answer_draw_at_a_location">
-  <div class="row">
-    <br/>
+  <div class="row" style="margin-top: 20px;">
     {{#if group.use_map}}
     <div class="col s7">
       <div style="width: 100%; height: 300px;" class="grey lighten-3">
@@ -16,19 +15,71 @@
       </div>
     </div>
     {{/if}}
-    <div class="col s5">
-      <div>
-        <p>Mark the highest point on the roof</p>
-        <button class="btn waves-effect waves-light teal"><i class="mdi-content-add left"></i>Highest Point</button>
-      </div>
-      <div>
-        <p>Mark the lowest point on the roof</p>
-        <button class="btn waves-effect waves-light teal"><i class="mdi-content-add left"></i>Lowest Point</button>
-      </div>
-
+    <div class="col {{#if group.use_map}}s5{{else}}s11 offset-s1{{/if}}">
       {{#each questions_in_group}}
-      Blah
+        <div style="width: 100%;">{{> question_to_answer question_id}}</div>
       {{/each}}
     </div>
   </div>
+</template>
+
+<template name="question_to_answer">
+  {{#with question this}}
+    <form id="{{_id}}">
+      <input type="hidden" name="question_id" value="{{_id}}" />
+
+    {{#if is_multiple_choice _id}}
+      <div class="row" style="margin-bottom: 20px;">
+        <div class="input-field col s11">
+          <select>
+            <option value="">No Answer Given</option>
+          {{#each allowed_values}}
+            <option value="{{value}}">{{value}}</option>
+          {{/each}}
+          </select>
+          <label>{{text}}</label>
+        </div>
+      </div>
+    {{/if}}
+
+    {{#if is_geo_point _id}}
+      <div class="row" style="margin-bottom: 40px;">
+        <div class="grey-text" style="font-size: 9pt; margin-bottom: 5px;">{{text}}</div>
+        <div class="input-field col s12">
+          <button id="btn_{{_id}}" class="btn waves-effect waves-light teal"><i class="mdi-content-add left"></i>{{label}}</button>
+        </div>
+      </div>
+    {{/if}}
+
+    {{#if is_numeric _id}}
+      <div class="row" style="margin-bottom: 20px;">
+        <div class="input-field col s7">
+          <input type="text" id="value_{{_id}}"/>
+          <label for="value_{{_id}}">{{text}}</label>
+        </div>
+        <div class="input-field col s3 offset-s1">
+          <select name="units_{{_id}}">
+            <option value="">No Units</option>
+            {{#each possible_units}}
+              <option>{{unit}}</option>
+            {{/each}}
+          </select>
+          <label for="units_{{_id}}">Units</label>
+        </div>
+      </div>
+    {{/if}}
+
+    {{#if is_year _id}}
+      <div class="row" style="margin-bottom: 20px;">
+        <div class="input-field col s11">
+          <select name="year_{{_id}}">
+            <option value="">No Answer Given</option>
+            <!-- Need a way to display all the of the years from min to current year -->
+          </select>
+          <label for="year_{{_id}}">{{text}}</label>
+        </div>
+      </div>
+    {{/if}}
+    </form>
+  {{/with}}
 </template>
