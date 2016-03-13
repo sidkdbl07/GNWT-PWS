@@ -28,7 +28,7 @@ Meteor.startup(function () {
     // Fake Dummy Book
     book = Books.insert( {'name': "Dummy Book", 'locked': false});
     page = Pages.insert( {'name': "Snow", "sort_order": 1, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
-    question_group = Question_Groups.insert( {'name': 'Snow, Wind and Roof Details', 'sort_order': 1, 'type': 'Draw at a Location', 'multiple': true, 'decision_points': [], 'page_id': page});
+    question_group = Question_Groups.insert( {'name': 'Snow, Wind and Roof Details', 'sort_order': 1, 'type': 'Simple', 'use_map': true, 'multiple': true, 'decision_points': [], 'page_id': page});
     question = Questions.insert( {'text': 'Mark the highest point on the roof',
                                   'type': 'Geo-Point',
                                   'help_text': 'Touch your finder on the highest point on the roof.',
@@ -46,7 +46,7 @@ Meteor.startup(function () {
     // Real Book
     book = Books.insert( {'name': "Field Book v.20160306r1", 'locked': false});
     page = Pages.insert( {'name': "As Built", "sort_order": 1, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
-    question_group = Question_Groups.insert( {'name': 'Building Details', 'sort_order': 1, 'type': 'Simple', 'multiple': false, 'decision_points': [], 'page_id': page});
+    question_group = Question_Groups.insert( {'name': 'Building Details', 'sort_order': 1, 'type': 'Simple', 'use_map': false, 'multiple': false, 'decision_points': [], 'page_id': page});
     question = Questions.insert( {'text': 'In what year was the building designed?',
                                   'type': 'Year',
                                   'help_text': '',
@@ -94,7 +94,7 @@ Meteor.startup(function () {
                                   'tags': [{'tag': 'As-Built'}] });
     qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 5});
     page = Pages.insert( {'name': "Change of use / Importance", "sort_order": 2, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
-    question_group = Question_Groups.insert( {'name': 'Importance', 'sort_order': 1, 'type': 'Simple', 'multiple': false, 'decision_points': [], 'page_id': page});
+    question_group = Question_Groups.insert( {'name': 'Importance', 'sort_order': 1, 'type': 'Simple', 'use_map': false, 'multiple': false, 'decision_points': [], 'page_id': page});
     question = Questions.insert( {'text': 'What is the current primary use of the building?',
                                   'type': 'Multiple Choice',
                                   'help_text': '',
@@ -132,7 +132,7 @@ Meteor.startup(function () {
                                   'show_history': true, 'use_history': false, 'pictures': 'disabled',
                                   'tags': [{'tag': 'Importance'}, {'tag': 'Change of Use'}] });
     qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 2});
-    question_group = Question_Groups.insert( {'name': 'Change of Use', 'sort_order': 2, 'type': 'Simple', 'multiple': false, 'decision_points': [], 'page_id': page});
+    question_group = Question_Groups.insert( {'name': 'Change of Use', 'sort_order': 2, 'type': 'Simple', 'use_map': false, 'multiple': false, 'decision_points': [], 'page_id': page});
     question = Questions.insert( {'text': 'Has the building always been used for this purpose?',
                                   'type': 'Multiple Choice',
                                   'help_text': '',

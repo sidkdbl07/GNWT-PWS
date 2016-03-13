@@ -21,9 +21,8 @@
           {{> afQuickField name='page_id' value=page._id type='hidden'}}
           {{> afQuickField name='sort_order' value=sort_order type='hidden'}}
           {{> afQuickField name="name"}}
-          {{#if afFieldValueIs name="type" value="Measurements at a Location"}}
-            {{> afQuickField name="multiple"}}
-          {{/if}}
+          {{> afQuickField name="use_map"}}
+          {{> afQuickField name="multiple"}}
         </div>
         <div class="col offset-s1 s4">
           <div class="card lime lighten-4">

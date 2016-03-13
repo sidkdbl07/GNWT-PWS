@@ -500,7 +500,7 @@ Schemas.Question_Groups = new SimpleSchema({
   'type': {
     type: String,
     label: 'Type of Group',
-    allowedValues: ['Simple', 'Math', 'Lookup', 'Measurements at a Location', 'Draw at a Location'],
+    allowedValues: ['Simple', 'Math', 'Lookup'],
     autoform: {
       firstOption: false,
       options: 'allowed'
@@ -509,6 +509,11 @@ Schemas.Question_Groups = new SimpleSchema({
   'multiple': {
     type: Boolean,
     label: 'Allow multiple?',
+    optional: true
+  },
+  'use_map': {
+    type: Boolean,
+    label: "Display map?",
     optional: true
   },
   'page_id': {
