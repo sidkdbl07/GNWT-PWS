@@ -1,6 +1,8 @@
 if (Meteor.isClient) {
   var map;
 
+  Meteor.subscribe("images");
+
   Template.answer_draw_at_a_location.onRendered(function() {
     $.publish('page_changed',"buildings");
 
@@ -18,6 +20,8 @@ if (Meteor.isClient) {
       //}
 
       if (building.picture) {
+        console.log("All Images: ", Images.find({}).fetch());
+        console.log("Build Picture: ", building.picture);
         imageUrl = Images.findOne({_id: building.picture}).url();
         if(building.bounding_box){
           imageBounds = JSON.parse(building.bounding_box);
