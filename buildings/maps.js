@@ -47,7 +47,7 @@ if (Meteor.isClient) {
     markers = [];
     L.Icon.Default.imagePath = 'packages/bevanhunt_leaflet/images';
 
-    map = L.map('map', {zoomControl: false}).setView([buildings[0].location.coordinates[1], buildings[0].location.coordinates[0]], 5);
+    map = L.map('map', {zoomControl: false}).setView([buildings[0].location.coordinates[1], buildings[0].location.coordinates[0]], 12);
 
     L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
