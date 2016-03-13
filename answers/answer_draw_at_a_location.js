@@ -12,12 +12,12 @@ if (Meteor.isClient) {
       let building = this.data.building;
       let imageUrl, imageBounds;
 
-      map = L.map('answer-map', {zoomControl: false}).setView([building.location.coordinates[1], building.location.coordinates[0]], 15);
+      map = L.map('answer-map', {zoomControl: false, minZoom: 14}).setView([building.location.coordinates[1], building.location.coordinates[0]], 15);
 
       //only display open streetmap for web users
-      if(!Meteor.isCordova){
-        L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png').addTo(map);
-      }
+      //if(!Meteor.isCordova){
+      //  L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png').addTo(map);
+      //}
 
       if (building.picture) {
         console.log("All Images: ", Images.find({}).fetch());
