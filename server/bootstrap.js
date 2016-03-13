@@ -38,7 +38,7 @@ Meteor.startup(function () {
                                   'tags': [{'tag': 'Snow'}] });
     qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
     question = Questions.insert( {'text': 'Trace one of the roof areas',
-                                  'type': 'Geo-Point',
+                                  'type': 'Geo-Area',
                                   'help_text': 'Trace a polygon with your finger to trace an area of the roof.',
                                   'label': 'Area Descriptor',
                                   'show_history': false, 'use_history': false, 'pictures': 'disabled',
