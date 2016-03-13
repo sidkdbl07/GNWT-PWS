@@ -142,9 +142,221 @@ Meteor.startup(function () {
                                   'show_history': true, 'use_history': false, 'pictures': 'disabled',
                                   'tags': [{'tag': 'Importance'}, {'tag': 'Change of Use'}] });
     qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
+    question = Questions.insert( {'text': 'What was the intended use of the building when it was design / constructed?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '',
+                                  'allowed_values': [{'value': "Don't know"},
+                                                     {'value': 'Minor Storage Building'},
+                                                     {'value': 'Low Occupancy Building'},
+                                                     {'value': 'Elementary School'},
+                                                     {'value': 'Middle School'},
+                                                     {'value': 'Secondary School'},
+                                                     {'value': 'Community Centre'},
+                                                     {'value': 'Hospital'},
+                                                     {'value': 'Emergency Treatment Facility'},
+                                                     {'value': 'Telephone Exchange'},
+                                                     {'value': 'Power Station'},
+                                                     {'value': 'Logistical Control Center'},
+                                                     {'value': 'Water Treatment Facility'},
+                                                     {'value': 'Sewage Treatment Fecility'},
+                                                     {'value': 'Critical National Defense'},
+                                                     {'value': 'Emergency Response Building'},
+                                                     {'value': 'Fire Station'},
+                                                     {'value': 'Rescure Station'},
+                                                     {'value': 'Police Station'},
+                                                     {'value': 'Housing for Vehicles (Air or Land)'},
+                                                     {'value': 'Communication Facility'},
+                                                     {'value': 'Other'}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Importance'}, {'tag': 'Change of Use'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 2});
+    question = Questions.insert( {'text': 'Have structural changes been made to the building to address any change of use?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '',
+                                  'allowed_values': [{'value': 'Yes'},
+                                                     {'value': 'No'},
+                                                     {'value': "Don't know"}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Importance'}, {'tag': 'Change of Use'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 3});
+    question = Questions.insert( {'text': 'In what year were the structural changes made?',
+                                  'type': 'Year',
+                                  'help_text': '',
+                                  'apply_min': true, 'apply_max': false,
+                                  'min': 1900, 'min_year': 1900,
+                                  //'max': null, 'max_year': null,
+                                  'possible_units': [{'unit': 'year', 'multiplier': 1}],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Importance'}, {'tag': 'Change of Use'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 4});
+    question = Questions.insert( {'text': 'Have these changes been appropriately documented and signed?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '',
+                                  'allowed_values': [{'value': 'Yes'},
+                                                     {'value': 'No'}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Importance'}, {'tag': 'Change of Use'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 5});
+    question = Questions.insert( {'text': 'Have there been any other significant renovations, repairs or additions t othe building since it was first constructed?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '',
+                                  'allowed_values': [{'value': 'Yes'},
+                                                     {'value': 'No'},
+                                                     {'value': "Don't know"}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Importance'}, {'tag': 'Change of Use'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 6});
+    question = Questions.insert( {'text': 'Have these changes been appropriately documented and signed?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '',
+                                  'allowed_values': [{'value': 'Yes'},
+                                                     {'value': 'No'}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Importance'}, {'tag': 'Change of Use'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 7});
 
     page = Pages.insert( {'name': "Deterioration", "sort_order": 3, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
-    page = Pages.insert( {'name': "Snow", "sort_order": 4, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
+    question_group = Question_Groups.insert( {'name': 'Maintenance', 'sort_order': 1, 'type': 'Simple', 'use_map': false, 'multiple': false, 'decision_points': [], 'page_id': page});
+    question = Questions.insert( {'text': 'How much maintenance and other remedial work has the building required over the last two years?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '',
+                                  'allowed_values': [{'value': 'None'},
+                                                     {'value': 'Less than the average for all our buildings'},
+                                                     {'value': 'About average for all our buildings'},
+                                                     {'value': 'More than the average for all our buildings'}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Deterioration'}, {'tag': 'Maintenance'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
+    question = Questions.insert( {'text': 'In the last 2 years, have there been any leaks in the roof?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '',
+                                  'allowed_values': [{'value': 'Yes'},
+                                                     {'value': 'No'},
+                                                     {'value': "N/A"}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Deterioration'}, {'tag': 'Maintenance'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 2});
+    question = Questions.insert( {'text': 'Does water significantly pool on any part of the roof after rain?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '',
+                                  'allowed_values': [{'value': 'Yes'},
+                                                     {'value': 'No'}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Deterioration'}, {'tag': 'Maintenance'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 3});
+
+    question_group = Question_Groups.insert( {'name': 'Deterioration', 'sort_order': 2, 'type': 'Simple', 'use_map': false, 'multiple': false, 'decision_points': [], 'page_id': page});
+    question = Questions.insert( {'text': 'How deteriorated is the roof structure?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '<p>None / minor: No evidence or some minor evidence of  roof sagging or hogging, mold build-up, water damage from leaks, cracking or twisting of roof structure.</p>'+
+                                               '<p>Moderate: Wider evidence of minor to moderate roof sagging or hogging, mold build-up, water damage from leaks, cracking or twisting of roof structure.</p>'+
+                                               '<p>Major: Extensive evidence of moderate to major roof sagging or hogging, mold build-up, water damage from leaks, cracking or twisting of roof structure.</p>',
+                                  'allowed_values': [{'value': 'None / minor'},
+                                                     {'value': 'Moderate'},
+                                                     {'value': 'Major'}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Deterioration'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
+    question = Questions.insert( {'text': 'How deteriorated is the foundation?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '<p>None / minor: No evidence or some minor evidence of  small foundation cracks, rot or mold.</p>'+
+                                               '<p>Moderate: Wider evidence of  small to medium foundation cracks. More common rot or mold.</p>'+
+                                               '<p>Major: Extensive evidence of medium to large foundation cracks. Rot or mold is common.</p>',
+                                  'allowed_values': [{'value': 'None / minor'},
+                                                     {'value': 'Moderate'},
+                                                     {'value': 'Major'}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Deterioration'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 2});
+    question = Questions.insert( {'text': 'How deteriorated are the walls?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '',
+                                  'allowed_values': [{'value': 'None / minor'},
+                                                     {'value': 'Moderate'},
+                                                     {'value': 'Major'}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Deterioration'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 3});
+    question = Questions.insert( {'text': 'How deteriorated is the floor structure?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '',
+                                  'allowed_values': [{'value': 'None / minor'},
+                                                     {'value': 'Moderate'},
+                                                     {'value': 'Major'}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Deterioration'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 4});
+    question = Questions.insert( {'text': 'How deteriorated or damaged are the guttering, downspouts or roof seams?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '',
+                                  'allowed_values': [{'value': 'None / minor'},
+                                                     {'value': 'Moderate'},
+                                                     {'value': 'Major'},
+                                                     {'value': 'N/A'}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Deterioration'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 5});
+
+    page = Pages.insert( {'name': "Snow, wind & roof details", "sort_order": 4, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
+    question_group = Question_Groups.insert( {'name': 'Wind Direction', 'sort_order': 1, 'type': 'Simple', 'use_map': true, 'multiple': false, 'decision_points': [], 'page_id': page});
+    question = Questions.insert( {'text': 'In which direction does the prevailing wind come from at the building location?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '<p>Wind direction is determined by which direction the wind is coming from (as opposed to which direction the wind is going to). This information is available from or by asking those likely to know within your community (e.g. airport staff, those reporting weather)</p>',
+                                  'allowed_values': [{'value': 'North'},
+                                                     {'value': 'South'},
+                                                     {'value': 'West'},
+                                                     {'value': 'East'},
+                                                     {'value': 'Northeast'},
+                                                     {'value': 'Southeast'},
+                                                     {'value': 'Northwest'},
+                                                     {'value': 'Southwest'}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Snow'}, {'tag': 'Wind'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
+    question = Questions.insert( {'text': 'In which direction do the "storm" or "high winds" come from in this area?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '<p>Wind direction is determined by which direction the wind is coming from (as opposed to which direction the wind is going to). This information is available from or by asking those likely to know within your community (e.g. airport staff, those reporting weather)</p>',
+                                  'allowed_values': [{'value': 'North'},
+                                                     {'value': 'South'},
+                                                     {'value': 'West'},
+                                                     {'value': 'East'},
+                                                     {'value': 'Northeast'},
+                                                     {'value': 'Southeast'},
+                                                     {'value': 'Northwest'},
+                                                     {'value': 'Southwest'}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Snow'}, {'tag': 'Wind'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
+
+    question_group = Question_Groups.insert( {'name': 'Exposure', 'sort_order': 2, 'type': 'Simple', 'use_map': true, 'multiple': false, 'decision_points': [], 'page_id': page});
+    question = Questions.insert( {'text': 'How open is the building location?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '<p>Open: The roof is completely exposed and the building is situated in open and level terrain.</p>'+
+                                               '<p>Mixed: Only scattered trees, buildings and/or other minor obstructions are located in the vicinity of the building.</p>'+
+                                               '<p>Sheltered: Houses, trees and/or other structures are located around and in close proximity to the building.</p>',
+                                  'allowed_values': [{'value': 'Open'},
+                                                     {'value': 'Mixed'},
+                                                     {'value': 'Sheltered'}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Exposure'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
+
     page = Pages.insert( {'name': "Permafrost", "sort_order": 5, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
 
   }

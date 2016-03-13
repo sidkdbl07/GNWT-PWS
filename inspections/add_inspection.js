@@ -38,7 +38,7 @@ if (Meteor.isClient) {
         return false;
       },
       onSuccess: function(formType, result) {
-        $.publish('toast',["Your addition was successful!","Insepction Added",'success']);
+        $.publish('toast',["Your addition was successful!","Inspection Added",'success']);
       },
       onError: function(formType, error) {
         $.publish('toast',[error,"Whoops! That didn't work!",'error']);

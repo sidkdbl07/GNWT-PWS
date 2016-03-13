@@ -30,6 +30,102 @@ Images.allow({
 });
 
 /////////////////////////////////////////////
+// Answers
+Answers = Collections.Answers = new Meteor.Collection("Answers");
+if(Meteor.isCordova) Ground.Collection(Answers);
+Schemas.Answers = new SimpleSchema({
+  'inspection_id': {
+    type: String
+  },
+  'quesion_id': {
+    type: String
+  },
+  'sort_order': {
+    type: Number
+  },
+  'value': {
+    type: String,
+    optional: true
+  },
+  'number_value': {
+    type: Number,
+    optional: true
+  },
+  'location': {
+    type: Object,
+    optional: true
+  },
+  'location.type': {
+    type: String,
+    allowedValues: ["Point", "Polygon"]
+  },
+  'location.coordinates': {
+    type: [Number]
+  },
+  'units': {
+    type: String,
+    optional: true
+  },
+  'user_id': {
+    type: String
+  },
+  'date': {
+    type: Date
+  },
+  'override_user': {
+    type: String,
+    optional: true
+  },
+  'override_date': {
+    type: Date,
+    optional: true
+  },
+  'photos': {
+    type: [Object],
+    optional: true
+  },
+  'photos.$.caption': {
+    type: String
+  },
+  'comments': {
+    type: String,
+    optional: true
+  }
+});
+Answers.attachSchema(Schemas.Answers);
+Answers.allow({
+  insert: function() {
+    return true;
+  },
+  update: function() {
+    return true;
+  }
+});
+Meteor.methods({
+  addAnswer: function(doc) {
+    check(doc, Schemas.Answers);
+    var obj = {name: doc.label};
+    return Answers.insert(obj);
+  },
+  editAnswer: function(obj) {
+    check(obj._id, String);
+    check(obj.updateDoc.$set, Schemas.Answers);
+    return Answers.update({_id: obj._id}, obj.updateDoc);
+  },
+  removeAnswer: function(id) {
+    check(id, String);
+    return Answers.remove(id);
+  }
+});
+if( Meteor.isClient ) {
+  Ground.methodResume([
+    'addAnswer',
+    'editAnswer',
+    'removeAnswer'
+  ]);
+}
+
+/////////////////////////////////////////////
 // Books
 Books = Collections.Books = new Meteor.Collection("Books");
 if(Meteor.isCordova) Ground.Collection(Books);
