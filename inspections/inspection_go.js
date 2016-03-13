@@ -58,8 +58,8 @@ if (Meteor.isClient) {
       }
     },
     'page': function() {
-      var book = Books.findOne({_id: this.inspection.book_id});
-      return Pages.findOne({book_id: book._id}, {sort: {sort_order: 1}});
+      var current_group = group_or_first(this.group, this.inspection);
+      return Pages.findOne({_id: current_group.page_id}, {sort: {sort_order: 1}});
     },
     'pages': function() {
       var book = Books.findOne({_id: this.inspection.book_id});
