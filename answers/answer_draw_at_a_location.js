@@ -7,12 +7,28 @@ if (Meteor.isClient) {
     {
       // building = Buildings.findOne({_id: this.building._id}).fetch();
       let building = this.data.building;
+      let imageUrl, imageBounds;
 
       map = L.map('map', {zoomControl: false}).setView([building.location.coordinates[1], building.location.coordinates[0]], 5);
 
       L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png').addTo(map);
-      var imageUrl = 'http://localhost:3000/images/Hospital.jpg',
-        imageBounds = [[62.4658007641611,-114.450533917207],[82.4670926867988,-84.44751361509]];
+      if (building.picture) {
+        debugger;
+        imageUrl = Images.findOne({_id: building.picture}).url();
+      }
+      else {
+        imageUrl = 'http://localhost:3000/images/Hospital.jpg';
+      }
+
+      if(building.bounding_box)
+      {
+        imageBounds = JSON.parse(building.bounding_box);
+      }
+      else 
+      {
+        imageBounds = [[62.4658007641611,-114.450533917207],[82.4670926867988,-84.44751361509]];  
+      }      
+      
       L.imageOverlay(imageUrl, imageBounds).addTo(map);
     }
     

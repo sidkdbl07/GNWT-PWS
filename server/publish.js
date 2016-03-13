@@ -20,6 +20,7 @@ Meteor.publish("directory", function() {
     return [];
   }
 });
+
 Meteor.publish("inspections", function() {
   return Inspections.find();
 });
