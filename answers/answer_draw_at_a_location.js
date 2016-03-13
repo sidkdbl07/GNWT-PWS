@@ -3,14 +3,19 @@ if (Meteor.isClient) {
     $.publish('page_changed',"buildings");
 
     // building = Buildings.findOne({_id: this.building_id}).fetch();
-    building = Buildings.findOne({_id: this.building._id}).fetch();
+    if(this.data.building)
+    {
+      // building = Buildings.findOne({_id: this.building._id}).fetch();
+      let building = this.data.building;
 
-    map = L.map('map', {zoomControl: false}).setView([building.location.coordinates[1], building.location.coordinates[0]], 5);
+      map = L.map('map', {zoomControl: false}).setView([building.location.coordinates[1], building.location.coordinates[0]], 5);
 
-    L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png').addTo(map);
-    var imageUrl = 'http://localhost:3000/images/Hospital.jpg',
-    	imageBounds = [[62.4658007641611,-114.450533917207],[62.4670926867988,-114.44751361509]];
-    L.imageOverlay(imageUrl, imageBounds).addTo(map);
+      L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png').addTo(map);
+      var imageUrl = 'http://localhost:3000/images/Hospital.jpg',
+        imageBounds = [[62.4658007641611,-114.450533917207],[82.4670926867988,-84.44751361509]];
+      L.imageOverlay(imageUrl, imageBounds).addTo(map);
+    }
+    
   });
 
   Template.answer_draw_at_a_location.helpers({

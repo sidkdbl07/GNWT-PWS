@@ -22,6 +22,7 @@ Meteor.startup(function () {
   }
 
   Ground.Collection(Meteor.users);
+  if(Meteor.isCordova) Ground.Collection(Roles);
 
   var book, page, question_group, question;
   if(Books.find().count() === 0) {
