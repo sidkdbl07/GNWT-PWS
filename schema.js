@@ -291,6 +291,79 @@ if( Meteor.isClient ) {
 }
 
 /////////////////////////////////////////////
+// Decision Points
+Decision_Points = Collections.Decision_Points = new Meteor.Collection("Decision_Points");
+if(Meteor.isCordova) Ground.Collection(Decision_Points);
+Schemas.Decision_Points = new SimpleSchema({
+  'type': {
+    type: String,
+    allowedValues: ["Range","Value/Label"],
+    autoform: {
+      firstOption: "Choose a type",
+      options: 'allowed'
+    }
+  },
+  'qig_id': {
+    type: String
+  },
+  'label': {
+    type: String,
+    label: "Label"
+  },
+  'value': {
+    type: String,
+    label: "Value",
+    optional: true
+  },
+  'min': {
+    type: Number,
+    label: "Minimum",
+    optional: true
+  },
+  'max': {
+    type: Number,
+    label: "Maximum",
+    optional: true
+  },
+  'sort_order': {
+    type: Number,
+    decimal: false
+  }
+});
+Decision_Points.attachSchema(Schemas.Decision_Points);
+Decision_Points.allow({
+  insert: function() {
+    return true;
+  },
+  update: function() {
+    return true;
+  }
+});
+Meteor.methods({
+  addDecision_Point: function(doc) {
+    check(doc, Schemas.Books);
+    var obj = {name: doc.name};
+    return Decision_Points.insert(obj);
+  },
+  editDecision_Point: function(obj) {
+    check(obj._id, String);
+    check(obj.updateDoc.$set, Schemas.Decision_Points);
+    return Decision_Points.update({_id: obj._id}, obj.updateDoc);
+  },
+  removeDecision_Point: function(id) {
+    check(id, String);
+    return Decision_Points.remove(id);
+  }
+});
+if( Meteor.isClient ) {
+  Ground.methodResume([
+    'addDecision_Point',
+    'editDecision_Point',
+    'removeDecision_Point'
+  ]);
+}
+
+/////////////////////////////////////////////
 // Inpections
 Inspections = Collections.Inspections = new Meteor.Collection("Inspections");
 if(Meteor.isCordova) Ground.Collection(Inspections);
@@ -617,28 +690,8 @@ Schemas.Question_Groups = new SimpleSchema({
     optional: false
   },
   'decision_points': {
-    type: [Schemas.Decision_Points],
+    type: [String],
     optional: true
-  }
-});
-Decision_Points = Schemas.Decision_Points = new SimpleSchema({
-  'label': {
-    type: String,
-    label: "Label"
-  },
-  'min': {
-    type: Number,
-    label: "Lower Bound",
-    optional: true
-  },
-  'max': {
-    type: Number,
-    label: "Upper Bound",
-    optional: true
-  },
-  'value': {
-    type: String,
-    label: "Value"
   }
 });
 
@@ -688,7 +741,7 @@ Schemas.Question_In_Group = new SimpleSchema({
     }
   },
   'decision_points': {
-    type: [Schemas.Decision_Points],
+    type: [String],
     optional: true
   }
 });

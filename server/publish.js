@@ -7,11 +7,11 @@ Meteor.publish("book", function(id) {
 Meteor.publish("buildings", function() {
   return Buildings.find();
 });
-Meteor.publish('images', function() {
-  return Images.find();
-});
 Meteor.publish("building", function(id) {
   return Buildings.find({_id: id});
+});
+Meteor.publish("decision_points", function() {
+  return Decision_Points.find();
 });
 Meteor.publish("directory", function() {
   if(this.userId && Roles.userIsInRole(this.userId, ['admin'], 'default_group')) {
@@ -20,7 +20,9 @@ Meteor.publish("directory", function() {
     return [];
   }
 });
-
+Meteor.publish('images', function() {
+  return Images.find();
+});
 Meteor.publish("inspections", function() {
   return Inspections.find();
 });
