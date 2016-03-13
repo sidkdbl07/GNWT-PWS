@@ -31,7 +31,7 @@ Meteor.startup(function () {
     question_group = Question_Groups.insert( {'name': 'Snow, Wind and Roof Details', 'sort_order': 1, 'type': 'Simple', 'use_map': true, 'multiple': true, 'decision_points': [], 'page_id': page});
     question = Questions.insert( {'text': 'Mark the highest point on the roof',
                                   'type': 'Geo-Point',
-                                  'help_text': 'Touch your finder on the highest point on the roof.',
+                                  'help_text': 'Touch your finger on the highest point on the roof.',
                                   'label': 'High Point',
                                   'show_history': false, 'use_history': false, 'pictures': 'disabled',
                                   'tags': [{'tag': 'Snow'}] });
@@ -200,7 +200,7 @@ Meteor.startup(function () {
                                   'show_history': true, 'use_history': false, 'pictures': 'disabled',
                                   'tags': [{'tag': 'Importance'}, {'tag': 'Change of Use'}] });
     qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 5});
-    question = Questions.insert( {'text': 'Have there been any other significant renovations, repairs or additions t othe building since it was first constructed?',
+    question = Questions.insert( {'text': 'Have there been any other significant renovations, repairs or additions to the building since it was first constructed?',
                                   'type': 'Multiple Choice',
                                   'help_text': '',
                                   'allowed_values': [{'value': 'Yes'},
@@ -357,8 +357,272 @@ Meteor.startup(function () {
                                   'tags': [{'tag': 'Exposure'}] });
     qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
 
-    page = Pages.insert( {'name': "Permafrost", "sort_order": 5, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
+    question_group = Question_Groups.insert( {'name': 'Snow from other buildings', 'sort_order': 3, 'type': 'Simple', 'use_map': true, 'multiple': false, 'decision_points': [], 'page_id': page});
+    question = Questions.insert( {'text': 'Could snow fall from another building onto this building?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '',
+                                  'allowed_values': [{'value': 'Yes'},
+                                                     {'value': 'No'}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Other buildings'}, {'tag': 'Snow'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
 
+    question_group = Question_Groups.insert( {'name': 'Roof Access', 'sort_order': 4, 'type': 'Simple', 'use_map': false, 'multiple': false, 'decision_points': [], 'page_id': page});
+    question = Questions.insert( {'text': 'If possible, gain safe access to the roof. Is safe roof access possible?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': "<p>Access to the roof is helpful, but not essential. Access makes taking snow depth and density measurements easier later on.</p>"+
+                                               "<p>For more information as to what constitutes safe access, please consult GNWT's safety and health representatives for more information.</p>",
+                                  'allowed_values': [{'value': 'Yes'},
+                                                     {'value': 'No'}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Roof Access'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
+
+    question_group = Question_Groups.insert( {'name': 'Roof Area Details', 'sort_order': 5, 'type': 'Simple', 'use_map': true, 'multiple': true, 'decision_points': [], 'page_id': page});
+    question = Questions.insert( {'text': 'Trace one of the roof areas',
+                                  'type': 'Geo-Area',
+                                  'help_text': 'Trace a polygon with your finger to trace an area of the roof.',
+                                  'label': 'Describe the Area',
+                                  'show_history': false, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Roof'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
+    question = Questions.insert( {'text': 'What is the roof pitch of the roof area?',
+                                  'type': 'Numeric',
+                                  'help_text': '<p>Stand away from the building so you can see the roof side on. Use the roof pitch chart to help determine roof pitch. Roof pitch is measured as the angle of the roof surface from the horizontal, e.g. a flat roof has a roof pitch of 0 degrees.</p>',
+                                  //'allowed_values': [{'value': 'Yes'},{'value': 'No'}],
+                                  'apply_min': true, 'min': 0, 'apply_max': true, 'max': 1000,
+                                  //'min_year': null, 'max_year': null,
+                                  'possible_units': [{'unit': 'degrees', 'multiplier': 1}],
+                                  'show_history': false, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Roof'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 2});
+    question = Questions.insert( {'text': 'Describe the roof surface',
+                                  'type': 'Multiple Choice',
+                                  'help_text': "<p>Smooth and slippery: Glass, smooth metal or plastic materials.</p>"+
+                                               "<p>Medium coarse: Roof tiles, asphalt or wood shingles.</p>"+
+                                               "<p>Very coarse: The surface of the roof has integrated features that will prevent snow from sliding off the roof , e.g. snow guards, lateral raised edges, extra larger roof bolts etc.</p>",
+                                  'allowed_values': [{'value': 'Smooth and slippery'},
+                                                     {'value': 'Medium Coarse'},
+                                                     {'value': 'Very Coarse'}
+                                                   ],
+                                  'show_history': false, 'use_history': false, 'pictures': 'enabled',
+                                  'tags': [{'tag': 'Roof'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 3});
+
+    question_group = Question_Groups.insert( {'name': 'Snow Slides', 'sort_order': 6, 'type': 'Simple', 'use_map': true, 'multiple': true, 'decision_points': [], 'page_id': page});
+    question = Questions.insert( {'text': 'Could snow slide from one roof level to another roof level on this building?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '',
+                                  'allowed_values': [{'value': 'Yes'},
+                                                     {'value': 'No'}
+                                                   ],
+                                  'show_history': false, 'use_history': false, 'pictures': 'enabled',
+                                  'tags': [{'tag': 'Roof'}, {'tag': 'Snow Slide'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
+    question = Questions.insert( {'text': 'Choose which roof area snow could slide from',
+                                  'type': 'Geo-Point',
+                                  'help_text': '<p>Touch your finger on the roof from which the snow falls.</p>',
+                                  'label': 'Source Roof',
+                                  'show_history': false, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Roof'}, {'tag': 'Snow Slide'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 2});
+    question = Questions.insert( {'text': 'Choose the roof area where the snow would accumulate',
+                                  'type': 'Geo-Point',
+                                  'help_text': '<p>Touch your finger on the roof to which the snow falls.</p>',
+                                  'label': 'Recipient Roof',
+                                  'show_history': false, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Roof'}, {'tag': 'Snow Slide'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 3});
+    question = Questions.insert( {'text': 'How high is the drop between these two roof areas?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '<p>This is the height between where the snow leaves the top roof area and lands on the roof of the lower roof area (not on the snow on the lower roof area) - i.e. roof surface to roof surface.</p>',
+                                  'allowed_values': [{'value': 'Small (<1m)'},
+                                                     {'value': 'Medium (1m to 2m)'},
+                                                     {'value': 'Large (>2m)'}
+                                                   ],
+                                  'show_history': false, 'use_history': false, 'pictures': 'enabled',
+                                  'tags': [{'tag': 'Roof'}, {'tag': 'Snow Slide'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 4});
+    question = Questions.insert( {'text': 'Is there anything on the higher roof area that could stop snow from sliding off?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '<p>Large parapets or snow guards</p>',
+                                  'allowed_values': [{'value': 'Yes'},
+                                                     {'value': 'No'}
+                                                   ],
+                                  'show_history': false, 'use_history': false, 'pictures': 'enabled',
+                                  'tags': [{'tag': 'Roof'}, {'tag': 'Snow Slide'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 5});
+
+    question_group = Question_Groups.insert( {'name': 'Snow Drop', 'sort_order': 7, 'type': 'Simple', 'use_map': true, 'multiple': true, 'decision_points': [], 'page_id': page});
+    question = Questions.insert( {'text': 'Are there other areas where snow could potentially fall (but not slide) from one roof level to another roof level?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '',
+                                  'allowed_values': [{'value': 'Yes'},
+                                                     {'value': 'No'}
+                                                   ],
+                                  'show_history': false, 'use_history': false, 'pictures': 'enabled',
+                                  'tags': [{'tag': 'Roof'}, {'tag': 'Snow Drop'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
+    question = Questions.insert( {'text': 'Choose which roof area snow could fall from',
+                                  'type': 'Geo-Point',
+                                  'help_text': '<p>Touch your finger on the roof from which the snow falls.</p>',
+                                  'label': 'Source Roof',
+                                  'show_history': false, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Roof'}, {'tag': 'Snow Fall'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 2});
+    question = Questions.insert( {'text': 'Choose the roof area where the snow would land',
+                                  'type': 'Geo-Point',
+                                  'help_text': '<p>Touch your finger on the roof to which the snow falls.</p>',
+                                  'label': 'Recipient Roof',
+                                  'show_history': false, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Roof'}, {'tag': 'Snow Fall'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 3});
+    question = Questions.insert( {'text': 'How high is the drop between these two roof areas?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '<p>This is the height between where the snow leaves the top roof area and lands on the roof of the lower roof area (not on the snow on the lower roof area) - i.e. roof surface to roof surface.</p>',
+                                  'allowed_values': [{'value': 'Small (<1m)'},
+                                                     {'value': 'Medium (1m to 2m)'},
+                                                     {'value': 'Large (>2m)'}
+                                                   ],
+                                  'show_history': false, 'use_history': false, 'pictures': 'enabled',
+                                  'tags': [{'tag': 'Roof'}, {'tag': 'Snow Slide'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 4});
+    question = Questions.insert( {'text': 'Is there a parapet or other similar feature on the edge of the high roof area that would stop snow from falling off?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '<p>This feature needs to be right on the edge of the higher roof area and configured so that snow cannot accumulate through wind action. If accumulation is evident, answer "No".</p>',
+                                  'allowed_values': [{'value': 'Yes'},
+                                                     {'value': 'No'}
+                                                   ],
+                                  'show_history': false, 'use_history': false, 'pictures': 'enabled',
+                                  'tags': [{'tag': 'Roof'}, {'tag': 'Snow Slide'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 5});
+
+    question_group = Question_Groups.insert( {'name': 'Snow Depth and Density', 'sort_order': 8, 'type': 'Simple', 'use_map': true, 'multiple': true, 'decision_points': [], 'page_id': page});
+    question = Questions.insert( {'text': 'Indicate where you took a snow measurement',
+                                  'type': 'Geo-Point',
+                                  'help_text': '<p>Touch your finger on the roof where you took your measurement.</p>',
+                                  'label': 'Measurement',
+                                  'show_history': false, 'use_history': false, 'pictures': 'enabled',
+                                  'tags': [{'tag': 'Roof'}, {'tag': 'Snow Depth'}, {'tag': 'Density'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
+    question = Questions.insert( {'text': 'What is the value of the snow density measurement?',
+                                  'type': 'Numeric',
+                                  'help_text': '<p>These measurements are to ascertain an average "normal" snow density for the roof.</p>'+
+                                               '<p>Combining depth and density allows us to compare actual pressure of snow with what the building is rated for, thereby calculating potential snowloading capacity.</p>',
+                                  'apply_min': true, 'min': 0, 'apply_max': true, 'max': 1000,
+                                  'possible_units': [{'unit': 'kg per cubic metre', 'multiplier': 1}],
+                                  'show_history': false, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Roof'}, {'tag': 'Snow Depth'}, {'tag': 'Snow Density'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 2});
+    question = Questions.insert( {'text': 'What is the value of the snow depth measurement?',
+                                  'type': 'Numeric',
+                                  'help_text': '<p>These measurements are to ascertain an average "normal" snow depth for the roof.</p>'+
+                                               '<p>Combining depth and density allows us to compare actual pressure of snow with what the building is rated for, thereby calculating potential snowloading capacity.</p>',
+                                  'apply_min': true, 'min': 0, 'apply_max': true, 'max': 1000,
+                                  'possible_units': [{'unit': 'metres', 'multiplier': 1},
+                                                     {'unit': "centimetres", 'multiplier': 100}],
+                                  'show_history': false, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Roof'}, {'tag': 'Snow Depth'}, {'tag': 'Snow Density'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 3});
+
+    question_group = Question_Groups.insert( {'name': 'Ice build-up', 'sort_order': 9, 'type': 'Simple', 'use_map': true, 'multiple': true, 'decision_points': [], 'page_id': page});
+    question = Questions.insert( {'text': 'Indicate an area of ice build-up',
+                                  'type': 'Geo-Point',
+                                  'help_text': '<p>Touch your finger on the roof where you observe ice build-up.</p>',
+                                  'label': 'Ice Observed',
+                                  'show_history': false, 'use_history': false, 'pictures': 'enabled',
+                                  'tags': [{'tag': 'Roof'}, {'tag': 'Ice'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
+    question = Questions.insert( {'text': 'How thick is the ice?',
+                                  'type': 'Numeric',
+                                  'help_text': '<p>If you find ice buildup, measure the depth of the ice - taking care not to damage the roof surface.</p>',
+                                  'apply_min': true, 'min': 0, 'apply_max': true, 'max': 1000,
+                                  'possible_units': [{'unit': 'metres', 'multiplier': 1},
+                                                     {'unit': "centimetres", 'multiplier': 100}],
+                                  'show_history': false, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Roof'}, {'tag': 'Ice'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 2});
+
+
+    page = Pages.insert( {'name': "Permafrost", "sort_order": 5, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
+    question_group = Question_Groups.insert( {'name': 'Permafrost Considerations', 'sort_order': 1, 'type': 'Simple', 'use_map': false, 'multiple': false, 'decision_points': [], 'page_id': page});
+    question = Questions.insert( {'text': 'Is the building located on permafrost?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '',
+                                  'allowed_values': [{'value': 'Yes'},
+                                                     {'value': 'No'},
+                                                     {'value': "Don't Know"}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Permafrost'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
+    question = Questions.insert( {'text': 'Is there a properly-maintained and functioning thermo siphon installed in the building foundations?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '',
+                                  'allowed_values': [{'value': 'Yes'},
+                                                     {'value': 'No'}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Permafrost'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 2});
+    question = Questions.insert( {'text': 'Is there a free airspace beneath the building?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '',
+                                  'allowed_values': [{'value': 'Yes'},
+                                                     {'value': 'No'}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Permafrost'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 3});
+    question = Questions.insert( {'text': 'Is there guttering on the roof?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '',
+                                  'allowed_values': [{'value': 'Yes'},
+                                                     {'value': 'No'}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Permafrost'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 4});
+    question = Questions.insert( {'text': 'Are there downspouts from the guttering and associated stormwater drainage that moves stormwater at least 0.5m (2 foot) from the edge of the building?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '',
+                                  'allowed_values': [{'value': 'Yes'},
+                                                     {'value': 'No'},
+                                                     {'value': 'N/A'}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Permafrost'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 5});
+    question = Questions.insert( {'text': 'Is there properly-engineered hard surfacing all around the building?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '',
+                                  'allowed_values': [{'value': 'Yes'},
+                                                     {'value': 'No'}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Permafrost'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 6});
+    question = Questions.insert( {'text': 'Does the ground slope away all around the building?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '',
+                                  'allowed_values': [{'value': 'Yes'},
+                                                     {'value': 'No'},
+                                                     {'value': 'N/A'}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Permafrost'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 7});
+    question = Questions.insert( {'text': 'Is snow regularly cleared from areas surrounding the building during snow season?',
+                                  'type': 'Multiple Choice',
+                                  'help_text': '',
+                                  'allowed_values': [{'value': 'Yes'},
+                                                     {'value': 'No'}
+                                                   ],
+                                  'show_history': true, 'use_history': false, 'pictures': 'disabled',
+                                  'tags': [{'tag': 'Permafrost'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 8});
   }
 
   // if(cfs.images.filerecord.find().count() === 0) {
