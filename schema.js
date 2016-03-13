@@ -11,8 +11,10 @@ if (Meteor.isClient) {
   });
 }
 
+if(Meteor.isCordova) Ground.Collection(Meteor.users);
+
 Images = new FS.Collection("images", {
-  stores: [new FS.Store.FileSystem("images", {path: "../web.browser/app/images"})]
+  stores: [new FS.Store.FileSystem("images")]
 });
 Images.allow({
  insert: function(){

@@ -322,6 +322,8 @@ Router.route('/inspection/go/:inspection_id/:group_id', {
   data: function() {
     var inspection = Inspections.findOne({_id: this.params.inspection_id});
     var group = Question_Groups.findOne({_id: this.params.group_id});
+    // var images = Images.find({}).fetch();
+    // console.log("Images in data: ", images);
     return {
       'inspection': inspection,
       'group': group
@@ -334,7 +336,7 @@ Router.route('/inspection/go/:inspection_id/:group_id', {
     this.subscribe('pages');
     this.subscribe('question_groups');
     this.subscribe('question_in_groups');
-    this.subscribe('images');
+    // this.subscribe('images');
   },
   onAfterAction: function() {
     document.title = "GNWT PWS - Inpsection";
