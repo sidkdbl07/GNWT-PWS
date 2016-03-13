@@ -13,7 +13,6 @@ if (Meteor.isClient) {
 
       L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png').addTo(map);
       if (building.picture) {
-        debugger;
         imageUrl = Images.findOne({_id: building.picture}).url();
       }
       else {

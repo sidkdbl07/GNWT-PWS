@@ -10,11 +10,7 @@ if (Meteor.isClient) {
   /////////////////////////////////////////
   Template.menu.helpers({
     'currentUser': function() {
-      if(Meteor.isCordova) {
-        return Session.get("user_name");
-      } else {
-        return Meteor.user();
-      }
+      return Meteor.user();
     }
   });
   Template.menu.events({
@@ -59,25 +55,16 @@ if (Meteor.isClient) {
       $('#form_login').submit();
     },
     'submit form': function(e){
-      if(Meteor.isCordova){
-        Session.set("user_name", $("#name").val());
-        if(!Session.get("user_name")) {
+      e.preventDefault();
+      var email = $('#email').val();
+      var password = $('#password').val();
+      Meteor.loginWithPassword(email, password, function(error) {
+        if(error) {
           $.publish('toast', ["That didnt work. Check your email and password", "Login Not Successful!", "error"]);
         } else {
           $.publish('toast', ["You are now logged in", "Login Successful!", "success"]);
         }
-      } else {
-        e.preventDefault();
-        var email = $('#email').val();
-        var password = $('#password').val();
-        Meteor.loginWithPassword(email, password, function(error) {
-          if(error) {
-            $.publish('toast', ["That didnt work. Check your email and password", "Login Not Successful!", "error"]);
-          } else {
-            $.publish('toast', ["You are now logged in", "Login Successful!", "success"]);
-          }
-        });
-      }
+      });
       $('#login_modal').closeModal();
     }
   });
@@ -347,6 +334,7 @@ Router.route('/inspection/go/:inspection_id/:group_id', {
     this.subscribe('pages');
     this.subscribe('question_groups');
     this.subscribe('question_in_groups');
+    this.subscribe('images');
   },
   onAfterAction: function() {
     document.title = "GNWT PWS - Inpsection";
@@ -451,18 +439,17 @@ Router.route('/users/update/:_id', {
 
 var IronRouter_BeforeHooks = {
   is_logged_in: function() {
-    if(Meteor.isCordova) {
-      if(Session.get('user_name') === "" || !Session.get("user_name")) {
-        $.publish('toast', ["Click the button above to access the features of this application.", "I don't know you!", "info"]);
-        Router.go('/buildings');
-      }
-    } else {
-      if(Meteor.user() === null) {
-        $.publish('toast', ["Click the button above to access the features of this application.", "You are not logged in!", "info"]);
-        Router.go('/buildings');
-      }
-      this.next();
+    if(Meteor.user() === null) {
+      $.publish('toast', ["Click the button above to access the features of this application.", "You are not logged in!", "info"]);
+      Router.go('/buildings');
+      //$.publish('page_changed', [Router.current().route.getName()]);
+      // this.next();
     }
+    if (!userData.ready()) {
+      //this.render('logingInLoading');
+      //$.publish('page_changed', [Router.current().route.getName()]);
+    }
+    this.next();
   }
 }
 Router.before( IronRouter_BeforeHooks.is_logged_in, {except: ['buildings','buildings_map']});
