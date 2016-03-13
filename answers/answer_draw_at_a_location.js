@@ -22,7 +22,10 @@ if (Meteor.isClient) {
         if(building.bounding_box){
           imageBounds = JSON.parse(building.bounding_box);
           L.imageOverlay(imageUrl, imageBounds).addTo(map);
+          $.publish('toast',['Drawing an ImageOverlay','Image Overlay','info']);
         }
+      } else {
+        $.publish('toast',['Functionality may be restricted','No Aerial Image!','warning']);
       }
     }
   });
@@ -39,6 +42,46 @@ if (Meteor.isClient) {
     },
     'click #btn_zoomout': function() {
       map.zoomOut();
+    }
+  });
+
+
+  Template.question_to_answer.onRendered(function() {
+    $('select').material_select();
+  });
+
+  Template.question_to_answer.helpers({
+    'is_geo_point': function(question_id) {
+      var question = Questions.findOne({_id: question_id});
+      if(question.type === "Geo-Point") {
+        return true;
+      }
+      return false;
+    },
+    'is_multiple_choice': function(question_id) {
+      var question = Questions.findOne({_id: question_id});
+      if(question.type === "Multiple Choice") {
+        return true;
+      }
+      return false;
+    },
+    'is_numeric': function(question_id) {
+      var question = Questions.findOne({_id: question_id});
+      if(question.type === "Numeric") {
+        return true;
+      }
+      return false;
+    },
+    'is_year': function(question_id) {
+      var question = Questions.findOne({_id: question_id});
+      if(question.type === "Year") {
+        return true;
+      }
+      return false;
+    },
+    'question': function(question_id) {
+      //$.publish('toast',[question_id,"Getting Question", 'info']);
+      return Questions.findOne({_id: question_id});
     }
   });
 }

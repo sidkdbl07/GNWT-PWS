@@ -332,6 +332,7 @@ Router.route('/inspection/go/:inspection_id/:group_id', {
     this.subscribe('buildings');
     this.subscribe('inspection', this.params.inspection_id);
     this.subscribe('pages');
+    this.subscribe('questions');
     this.subscribe('question_groups');
     this.subscribe('question_in_groups');
     this.subscribe('images');
