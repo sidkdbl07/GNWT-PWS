@@ -67,7 +67,20 @@
 						</div>
 					</div>
         </div>
-				<div id="navigation_rules" class="col s12">Rules</div>
+				<div id="navigation_rules" class="col s12">
+					<ul class="collapsible" data-collapsible="accordian">
+						{{#each groups}}
+							{{#each questions_in_group _id}}
+								{{#each decision_points _id}}
+						<li>
+							<div class="collapsible-header">{{#with question question_id}}{{text}}{{/with}} - Answer {{label}}</div>
+							<div class="collapsible-body grey lighten-3">You</div>
+						</li>
+								{{/each}}
+							{{/each}}
+						{{/each}}
+					</ul>
+				</div>
     		<div id="scenarios" class="col s12">
 					<div class="row">
 						<div class="col s6 offset-s3">

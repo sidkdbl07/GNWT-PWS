@@ -2,7 +2,6 @@ if (Meteor.isClient) {
   ////////////////////////////////////////
   // Setup Subscriptions
   ////////////////////////////////////////
-  Meteor.subscribe("site_pages");
   var userData = Meteor.subscribe('user');
 
   /////////////////////////////////////////
@@ -352,6 +351,9 @@ Router.route('/page/:_id', {
   waitOn: function() {
     this.subscribe('page', this.params._id);
     this.subscribe('question_groups');
+    this.subscribe('question_in_groups');
+    this.subscribe('questions');
+    this.subscribe('decision_points');
     this.subscribe('books');
   },
   onAfterAction: function() {

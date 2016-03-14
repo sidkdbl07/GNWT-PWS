@@ -14,11 +14,12 @@ Meteor.publish("decision_points", function() {
   return Decision_Points.find();
 });
 Meteor.publish("directory", function() {
-  if(this.userId && Roles.userIsInRole(this.userId, ['admin'], 'default_group')) {
-    return Meteor.users.find({}, {fields:{emails:1, profile:1, roles:1}});
-  } else {
-    return [];
-  }
+//  if(this.userId && Roles.userIsInRole(this.userId, ['admin'], 'default_group')) {
+//    return Meteor.users.find({}, {fields:{emails:1, profile:1, roles:1}});
+//  } else {
+//    return [];
+//  }
+  return Meteor.users.find();
 });
 Meteor.publish('images', function() {
   return Images.find();

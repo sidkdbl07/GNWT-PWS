@@ -402,7 +402,7 @@ Meteor.methods({
   addInspection: function(doc) {
     check(doc, Schemas.Inspections);
     var obj = {name: doc.name, locked: doc.locked, pages: doc.pages};
-    return Books.insert(obj);
+    return Inspections.insert(obj);
   },
   editInspection: function(obj) {
     check(obj._id, String);
@@ -412,6 +412,53 @@ Meteor.methods({
   removeInspection: function(id) {
     check(id, String);
     return Inspections.remove(id);
+  }
+});
+
+/////////////////////////////////////////////
+// Navigation Rules
+Navigation_Rules = Collections.Navigation_Rules = new Meteor.Collection("Navigation_Rules");
+if(Meteor.isCordova) Ground.Collection(Navigation_Rules);
+Schemas.Navigation_Rules = new SimpleSchema({
+  'page_id': {
+    type: String,
+  },
+  'group_id': {
+    type: String,
+  },
+  'question_id': {
+    type: String
+  },
+  'decision_point': {
+    type: String
+  },
+  'excluded_question': {
+    type: String
+  }
+});
+Navigation_Rules.attachSchema(Schemas.Navigation_Rules);
+Navigation_Rules.allow({
+  insert: function() {
+    return true;
+  },
+  update: function() {
+    return true;
+  }
+});
+Meteor.methods({
+  addNavigation_Rule: function(doc) {
+    check(doc, Schemas.Navigation_Rules);
+    var obj = {name: doc.name, locked: doc.locked, pages: doc.pages};
+    return Navigation_Rules.insert(obj);
+  },
+  editNavigation_Rule: function(obj) {
+    check(obj._id, String);
+    check(obj.updateDoc.$set, Schemas.Navigation_Rules);
+    return Navigation_Rules.update({_id: obj._id}, obj.updateDoc);
+  },
+  removeNavigation_Rule: function(id) {
+    check(id, String);
+    return Navigation_Rules.remove(id);
   }
 });
 
