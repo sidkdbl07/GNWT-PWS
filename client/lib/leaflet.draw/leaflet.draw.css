@@ -10,6 +10,10 @@
 	margin-top: 12px;
 }
 
+/*.leaflet-draw {
+	display: none;
+}*/
+
 .leaflet-draw-toolbar-top {
 	margin-top: 0;
 }

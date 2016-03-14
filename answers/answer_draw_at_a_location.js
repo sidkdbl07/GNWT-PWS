@@ -1,7 +1,25 @@
 if (Meteor.isClient) {
   var map;
+  var marker_id = null;
 
   Meteor.subscribe("images");
+
+  let deleteAnswer = function() {
+
+  };
+
+  let deleteMarker = function(_id) {
+    debugger;
+    let layers = map._layers;
+    for (let key in layers)
+    {
+      let val = layers[key];
+      if(val._leaflet_id  === _id) {
+        map.removeLayer(val);
+        break;
+      }
+    }
+  };
 
   Template.answer_draw_at_a_location.onRendered(function() {
     $.publish('page_changed',"buildings");
@@ -37,7 +55,7 @@ if (Meteor.isClient) {
       map.addControl(new L.Control.Draw({
         draw: {
           polyline: false,
-          polygon: false,
+          circle: false,
           rectangle: false
         },
         edit: {
@@ -58,6 +76,36 @@ if (Meteor.isClient) {
       // });
       // map.addControl(drawControl);
 
+      var markersInsert = function(feature) {
+        switch(feature.layerType) {
+          case 'marker':
+            let marker = L.marker(feature.latlng);
+            marker._leaflet_id = feature._id;
+            marker.addTo(drawnItems);
+            break;
+          case 'polygon':
+            var polygon = L.polygon(feature.latlngs);
+            polygon._leaflet_id = feature._id;
+            polygon.addTo(drawnItems);
+            break;
+        }
+      };
+
+      var handleButtons = function(quesiton_id, hide = true) {
+        let question_btn = $("#btn_" + quesiton_id);
+        if(hide)
+        {
+          question_btn.addClass("btn-invisible");
+          question_btn.siblings("button").removeClass("btn-invisible");
+        }
+        else 
+        {
+          question_btn.removeClass("btn-invisible");
+          question_btn.siblings("button").addClass("btn-invisible"); 
+        }
+        
+      };
+
       map.on('draw:created', function(event) {
         var layer = event.layer;
         console.log(event.layer);
@@ -65,19 +113,20 @@ if (Meteor.isClient) {
         console.log(drawnItems);
         var feature = {
           options: event.layer.options,
-          layerType: event.layerType
+          layerType: event.layerType,
+          _id: marker_id
         };
         switch (event.layerType) {
         case 'marker':
           feature.latlng = event.layer._latlng;
           break;
-        case 'circle':
-          feature.latlng = event.layer._latlng;
-          feature.radius = event.layer._mRadius;
+        case 'polygon':
+          feature.latlngs = event.layer._latlngs;
           break;
         }
         console.log(feature);
-        // Markers.insert(feature);
+        markersInsert(feature);
+        handleButtons(feature._id);
       });
 
       map.on('draw:deleted', function(event) {
@@ -104,6 +153,23 @@ if (Meteor.isClient) {
     },
     'click #btn_zoomout': function() {
       map.zoomOut();
+    }, 
+    'click .btn-geo-point': function(event) {
+      event.stopImmediatePropagation();
+      console.log('geo point button clicked');
+      marker_id = event.target.id.substr(4);
+      $(".leaflet-draw-draw-marker")[0].click();
+    },
+    'click .btn-geo-area': function(event) {
+      event.stopImmediatePropagation();
+      console.log('geo area button clicked');
+      marker_id = event.target.id.substr(4);
+      $(".leaflet-draw-draw-polygon")[0].click();
+    }, 
+    'click .btn-delete': function(event) {
+      let question_id = $(event.target).siblings(".btn-geo")[0].id.substr(4);
+      deleteAnswer(question_id);
+      deleteMarker(question_id);
     }
   });
 

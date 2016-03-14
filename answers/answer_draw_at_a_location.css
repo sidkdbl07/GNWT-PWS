@@ -4,3 +4,7 @@
   max-height: 300px;
   min-width: 100%;
 }
+
+.btn-invisible {
+	display: none;
+}
