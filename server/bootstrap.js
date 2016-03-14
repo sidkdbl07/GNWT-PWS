@@ -27,9 +27,9 @@ Meteor.startup(function () {
   var book, page, question_group, question;
   if(Books.find().count() === 0) {
     // Fake Dummy Book
-    book = Books.insert( {'name': "Dummy Book", 'locked': false});
-    page = Pages.insert( {'name': "Snow", "sort_order": 1, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
-    question_group = Question_Groups.insert( {'name': 'Snow, Wind and Roof Details', 'sort_order': 1, 'type': 'Simple', 'use_map': true, 'multiple': true, 'decision_points': [], 'page_id': page});
+    book = Books.insert( {'name': "Tesing Book (Developer Only)", 'locked': false});
+    page = Pages.insert( {'name': "A Parameter", "sort_order": 1, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
+    question_group = Question_Groups.insert( {'name': 'A Group', 'sort_order': 1, 'type': 'Simple', 'use_map': true, 'multiple': true, 'decision_points': [], 'page_id': page});
     question = Questions.insert( {'text': 'Mark the highest point on the roof',
                                   'type': 'Geo-Point',
                                   'help_text': 'Touch your finger on the highest point on the roof.',
@@ -67,14 +67,16 @@ Meteor.startup(function () {
                                   'possible_units': [{'unit': 'year', 'multiplier': 1}],
                                   'show_history': true, 'use_history': false, 'pictures': 'disabled',
                                   'tags': [{'tag': 'As-Built'}] });
-    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 2})
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 2});
     question = Questions.insert( {'text': 'Are the drawings available for this building?',
                                   'type': 'Multiple Choice',
                                   'help_text': '',
                                   'allowed_values': [{'value': 'Yes'},{'value': 'No'}],
                                   'show_history': true, 'use_history': false, 'pictures': 'disabled',
                                   'tags': [{'tag': 'As-Built'}] });
-    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 3})
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 3});
+    Decision_Points.insert({'type': 'Value/Label', 'qig_id': qig, 'value': 'Yes', 'label': 'Yes', 'sort_order': 1});
+    Decision_Points.insert({'type': 'Value/Label', 'qig_id': qig, 'value': 'No', 'label': 'No', 'sort_order': 2});
     question = Questions.insert( {'text': "Is there a snow load factor specified on the building's drawings",
                                   'type': 'Multiple Choice',
                                   'help_text': '',

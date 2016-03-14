@@ -73,8 +73,23 @@
 							{{#each questions_in_group _id}}
 								{{#each decision_points _id}}
 						<li>
-							<div class="collapsible-header">{{#with question question_id}}{{text}}{{/with}} - Answer {{label}}</div>
-							<div class="collapsible-body grey lighten-3">You</div>
+							<div class="collapsible-header">{{#with question qig_id}}{{text}}{{/with}} - Answer {{label}}</div>
+							<div class="collapsible-body grey lighten-3">
+								Boo
+								<form>
+									<div class="row">
+										<div class="input-field col s6 offset-s1">
+											<select id="{{qig_id}}:{{label}}">
+												<option value="">Choose a question to skip</option>
+												{{#each questions_after_this qig_id}}
+													<option value=""></option>
+												{{/each}}
+											</select>
+											<label for="{{qig_id}}:{{label}}">Question to Skip</label>
+										</div>
+									</div>
+								</form>
+							</div>
 						</li>
 								{{/each}}
 							{{/each}}
