@@ -30,7 +30,7 @@ if (Meteor.isClient) {
         $.publish('toast',['Functionality may be restricted','No Aerial Image!','warning']);
       }
 
-      L.Icon.Default.imagePath = 'http://localhost:3000/packages/bevanhunt_leaflet/images';
+      L.Icon.Default.imagePath = Meteor.absoluteUrl() + 'packages/bevanhunt_leaflet/images';
 
       let drawnItems = L.featureGroup().addTo(map);
 
@@ -46,6 +46,17 @@ if (Meteor.isClient) {
           remove: true
         }
       }));
+
+      // var drawnItems = new L.FeatureGroup();
+      // map.addLayer(drawnItems);
+
+      // // Initialise the draw control and pass it the FeatureGroup of editable layers
+      // var drawControl = new L.Control.Draw({
+      //     edit: {
+      //         featureGroup: drawnItems
+      //     }
+      // });
+      // map.addControl(drawControl);
 
       map.on('draw:created', function(event) {
         var layer = event.layer;
@@ -105,6 +116,13 @@ if (Meteor.isClient) {
     'is_geo_point': function(question_id) {
       var question = Questions.findOne({_id: question_id});
       if(question.type === "Geo-Point") {
+        return true;
+      }
+      return false;
+    },
+    'is_geo_area': function(question_id) {
+      var question = Questions.findOne({_id: question_id});
+      if(question.type === "Geo-Area") {
         return true;
       }
       return false;

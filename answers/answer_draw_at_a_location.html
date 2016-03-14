@@ -46,7 +46,16 @@
       <div class="row" style="margin-bottom: 40px;">
         <div class="grey-text" style="font-size: 9pt; margin-bottom: 5px;">{{text}}</div>
         <div class="input-field col s12">
-          <button id="btn_{{_id}}" class="btn waves-effect waves-light teal"><i class="mdi-content-add left"></i>{{label}}</button>
+          <button id="btn_{{_id}}" class="btn btn-geo-point waves-effect waves-light teal"><i class="mdi-content-add left"></i>{{label}}</button>
+        </div>
+      </div>
+    {{/if}}
+
+    {{#if is_geo_area _id}}
+      <div class="row" style="margin-bottom: 40px;">
+        <div class="grey-text" style="font-size: 9pt; margin-bottom: 5px;">{{text}}</div>
+        <div class="input-field col s12">
+          <button id="btn_{{_id}}" class="btn btn-geo-area waves-effect waves-light teal"><i class="mdi-content-add left"></i>{{label}}</button>
         </div>
       </div>
     {{/if}}
