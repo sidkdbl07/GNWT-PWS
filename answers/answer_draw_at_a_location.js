@@ -1,24 +1,88 @@
 if (Meteor.isClient) {
-  var map;
+  var map, drawnItems;
   var marker_id = null;
 
   Meteor.subscribe("images");
+  Meteor.subscribe("answers");
 
-  let deleteAnswer = function() {
+  let deleteAnswer = function(question_id, inspection_id) {
+    let answer = Answers.findOne({'question_id': question_id, 'inspection_id': inspection_id});
+    if (answer)
+    {
+      // Answers.remove(answer._id);
+       Meteor.call("deleteAnswer", answer._id);
+    }
+  };
 
+  let saveAnswer = function(question_id, inspection_id) {
+    let answerObject = {
+      'inspection_id': inspection_id, 
+      'question_id': question_id, 
+      'sort_order': -1,
+      'user_id': Meteor.userId(),
+      'date': new Date()
+    };
+    let question = Questions.findOne({_id: question_id});
+    let coordinates = [];
+    if(question.type === "Geo-Point") {
+      coordinates.push(`[${map._layers[question_id]._latlng.lng}, ${map._layers[question_id]._latlng.lat}]`);
+      answerObject.location = {
+        'type': "Point", 
+        'coordinates': coordinates 
+      };
+    }
+    else if(question.type === "Geo-Area") {
+      for(let latlng of map._layers[question_id]._latlngs) {
+        coordinates.push(`[${latlng.lng}, ${latlng.lat}]`);
+      }
+
+      answerObject.location = {
+        'type': "Polygon", 
+        'coordinates': coordinates
+      };
+    }
+
+    let originalAnswer = Answers.findOne({'question_id': question_id, 'inspection_id': inspection_id});
+
+    if (originalAnswer)
+    {
+      // Answers.update(originalAnswer._id, {
+      //   $set: answerObject
+      // });
+      Meteor.call("updateAnswer", originalAnswer._id, answerObject);
+    }
+    else
+    {
+      // Answers.insert(answerObject);
+      Meteor.call("insertAnswer", answerObject);
+    }
+    
   };
 
   let deleteMarker = function(_id) {
-    debugger;
-    let layers = map._layers;
+    let layers = drawnItems._layers;
     for (let key in layers)
     {
       let val = layers[key];
       if(val._leaflet_id  === _id) {
-        map.removeLayer(val);
+        drawnItems.removeLayer(val);
         break;
       }
     }
+  };
+
+  let handleButtons = function(quesiton_id, hide = true) {
+    let question_btn = $("#btn_" + quesiton_id);
+    if(hide)
+    {
+      question_btn.addClass("btn-invisible");
+      question_btn.siblings("button").removeClass("btn-invisible");
+    }
+    else 
+    {
+      question_btn.removeClass("btn-invisible");
+      question_btn.siblings("button").addClass("btn-invisible"); 
+    }    
   };
 
   Template.answer_draw_at_a_location.onRendered(function() {
@@ -50,7 +114,7 @@ if (Meteor.isClient) {
 
       L.Icon.Default.imagePath = Meteor.absoluteUrl() + 'packages/bevanhunt_leaflet/images';
 
-      let drawnItems = L.featureGroup().addTo(map);
+      drawnItems = L.featureGroup().addTo(map);
 
       map.addControl(new L.Control.Draw({
         draw: {
@@ -91,26 +155,11 @@ if (Meteor.isClient) {
         }
       };
 
-      var handleButtons = function(quesiton_id, hide = true) {
-        let question_btn = $("#btn_" + quesiton_id);
-        if(hide)
-        {
-          question_btn.addClass("btn-invisible");
-          question_btn.siblings("button").removeClass("btn-invisible");
-        }
-        else 
-        {
-          question_btn.removeClass("btn-invisible");
-          question_btn.siblings("button").addClass("btn-invisible"); 
-        }
-        
-      };
-
       map.on('draw:created', function(event) {
         var layer = event.layer;
-        console.log(event.layer);
-        console.log(event.layerType);
-        console.log(drawnItems);
+        // console.log(event.layer);
+        // console.log(event.layerType);
+        // console.log(drawnItems);
         var feature = {
           options: event.layer.options,
           layerType: event.layerType,
@@ -124,19 +173,19 @@ if (Meteor.isClient) {
           feature.latlngs = event.layer._latlngs;
           break;
         }
-        console.log(feature);
+        // console.log(feature);
         markersInsert(feature);
         handleButtons(feature._id);
       });
 
-      map.on('draw:deleted', function(event) {
-        console.log(event);
-        console.log(event.layers._layers);
-        for (var l in event.layers._layers) {
-          console.log(l);
-          // Markers.remove({_id: l});
-        }
-      });
+      // map.on('draw:deleted', function(event) {
+      //   console.log(event);
+      //   console.log(event.layers._layers);
+      //   for (var l in event.layers._layers) {
+      //     console.log(l);
+      //     // Markers.remove({_id: l});
+      //   }
+      // });
 
     }
   });
@@ -168,8 +217,14 @@ if (Meteor.isClient) {
     }, 
     'click .btn-delete': function(event) {
       let question_id = $(event.target).siblings(".btn-geo")[0].id.substr(4);
-      deleteAnswer(question_id);
+      deleteAnswer(question_id, Template.instance().data.inspection_id);
       deleteMarker(question_id);
+      handleButtons(question_id, hide=false);
+    },
+    'click .btn-save': function(event) {
+      let question_id = $(event.target).siblings(".btn-geo")[0].id.substr(4);
+      saveAnswer(question_id, Template.instance().data.inspection_id);
+      $(event.target).addClass("btn-invisible");
     }
   });
 
@@ -220,3 +275,20 @@ if (Meteor.isClient) {
     }
   });
 }
+
+Meteor.methods({
+  insertAnswer: function (answerObject) {
+    // Make sure the user is logged in before inserting a task
+    if (! Meteor.userId()) {
+      throw new Meteor.Error("not-authorized");
+    }
+ 
+    Answers.insert(answerObject);
+  },
+  deleteAnswer: function (id) {
+    Answers.remove(id);
+  },
+  updateAnswer: function (id, answerObject) {
+    Answers.update(id, { $set: answerObject });
+  }
+});

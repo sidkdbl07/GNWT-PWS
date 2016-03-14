@@ -24,6 +24,9 @@ Meteor.publish("directory", function() {
 Meteor.publish('images', function() {
   return Images.find();
 });
+Meteor.publish('answers', function() {
+  return Answers.find();
+});
 Meteor.publish("inspections", function() {
   return Inspections.find();
 });

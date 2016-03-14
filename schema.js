@@ -39,7 +39,7 @@ Schemas.Answers = new SimpleSchema({
   'inspection_id': {
     type: String
   },
-  'quesion_id': {
+  'question_id': {
     type: String
   },
   'sort_order': {
@@ -62,7 +62,7 @@ Schemas.Answers = new SimpleSchema({
     allowedValues: ["Point", "Polygon"]
   },
   'location.coordinates': {
-    type: [Number]
+    type: [String]
   },
   'units': {
     type: String,
@@ -104,20 +104,20 @@ Answers.allow({
   }
 });
 Meteor.methods({
-  addAnswer: function(doc) {
-    check(doc, Schemas.Answers);
-    var obj = {name: doc.label};
-    return Answers.insert(obj);
-  },
-  editAnswer: function(obj) {
-    check(obj._id, String);
-    check(obj.updateDoc.$set, Schemas.Answers);
-    return Answers.update({_id: obj._id}, obj.updateDoc);
-  },
-  removeAnswer: function(id) {
-    check(id, String);
-    return Answers.remove(id);
-  }
+  // addAnswer: function(doc) {
+  //   check(doc, Schemas.Answers);
+  //   var obj = {name: doc.label};
+  //   return Answers.insert(obj);
+  // },
+  // editAnswer: function(obj) {
+  //   check(obj._id, String);
+  //   check(obj.updateDoc.$set, Schemas.Answers);
+  //   return Answers.update({_id: obj._id}, obj.updateDoc);
+  // },
+  // removeAnswer: function(id) {
+  //   check(id, String);
+  //   return Answers.remove(id);
+  // }
 });
 if( Meteor.isClient ) {
   Ground.methodResume([
