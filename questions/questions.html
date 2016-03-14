@@ -29,6 +29,7 @@
                 {{#if is_numeric _id}}<i class="mdi-image-looks-one small left"></i>Numeric{{/if}}
                 {{#if is_year _id}}<i class="mdi-editor-insert-invitation small left"></i>Year{{/if}}
                 {{#if is_geo_point _id}}<i class="mdi-action-room small left"></i>Point{{/if}}
+                {{#if is_geo_area _id}}<i class="mdi-maps-layers small left"></i>Area{{/if}}
               </div>
               <div class="col s2"><i class="mdi-editor-insert-photo small {{#if pictures_enabled _id}}green-text{{else}}red-text{{/if}}"></i></div>
               <div class="col s6 blue-grey-text right-align">Tags: {{#each tags}}{{tag}}&nbsp;{{/each}}</div>

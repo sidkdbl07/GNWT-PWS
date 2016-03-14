@@ -106,7 +106,7 @@ if (Meteor.isClient) {
         if(building.bounding_box){
           imageBounds = JSON.parse(building.bounding_box);
           L.imageOverlay(imageUrl, imageBounds).addTo(map);
-          $.publish('toast',['Drawing an ImageOverlay','Image Overlay','info']);
+          //$.publish('toast',['Drawing an ImageOverlay','Image Overlay','info']);
         }
       } else {
         $.publish('toast',['Functionality may be restricted','No Aerial Image!','warning']);
@@ -154,7 +154,7 @@ if (Meteor.isClient) {
             break;
         }
       };
-      
+
 
       map.on('draw:created', function(event) {
         var layer = event.layer;
@@ -319,7 +319,6 @@ if (Meteor.isClient) {
       //$.publish('toast',["asking for years","Years",'info']);
       var question = Questions.findOne({_id: question_id});
       var this_year = parseInt(moment().format("YYYY"));
-      $.publish('toast',[typeof(this_year)+" and "+typeof(question.min),"Years",'info']);
       return _.map(_.range(question.min, this_year), function(i) {
         return {'year': i};
       });

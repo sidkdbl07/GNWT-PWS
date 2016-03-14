@@ -71,27 +71,12 @@
 					<ul class="collapsible" data-collapsible="accordian">
 						{{#each groups}}
 							{{#each questions_in_group _id}}
-								{{#each decision_points _id}}
+								{{#with question question_id}}
 						<li>
-							<div class="collapsible-header">{{#with question qig_id}}{{text}}{{/with}} - Answer {{label}}</div>
-							<div class="collapsible-body grey lighten-3">
-								Boo
-								<form>
-									<div class="row">
-										<div class="input-field col s6 offset-s1">
-											<select id="{{qig_id}}:{{label}}">
-												<option value="">Choose a question to skip</option>
-												{{#each quigs_after_this qig_id}}
-													{{#with question _id}}<option value="{{_id}}">{{text}}</option>{{/with}}
-												{{/each}}
-											</select>
-											<label for="{{qig_id}}:{{label}}">Question to Skip</label>
-										</div>
-									</div>
-								</form>
-							</div>
+							<div class="collapsible-header">{{text}}</div>
+							<div class="collapsible-body grey lighten-3">You</div>
 						</li>
-								{{/each}}
+								{{/with}}
 							{{/each}}
 						{{/each}}
 					</ul>

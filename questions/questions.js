@@ -44,6 +44,13 @@ if (Meteor.isClient) {
         return true;
       }
       return false;
+    },
+    'is_geo_area': function(id) {
+      var question = Questions.findOne({_id: id});
+      if(question.type === "Geo-Area") {
+        return true;
+      }
+      return false;
     }
   });
 
