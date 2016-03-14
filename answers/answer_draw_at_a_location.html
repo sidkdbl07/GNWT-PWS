@@ -46,9 +46,15 @@
       <div class="row" style="margin-bottom: 40px;">
         <div class="grey-text" style="font-size: 9pt; margin-bottom: 5px;">{{text}}</div>
         <div class="input-field col s12">
-          <button type="button" id="btn_{{_id}}" class="btn btn-geo-point btn-geo waves-effect waves-light teal"><i class="mdi-content-add left"></i>{{label}}</button>
-          <button type="button" class="btn btn-invisible btn-save waves-effect waves-light teal">Save</button>
-          <button type="button" class="btn btn-invisible btn-delete waves-effect waves-light teal">Delete</button>
+          {{#if has_answer _id}}
+            <button type="button" id="btn_{{_id}}" class="btn btn-invisible btn-geo-point btn-geo waves-effect waves-light teal"><i class="mdi-content-add left"></i>{{label}}</button>
+            <button type="button" class="btn btn-invisible btn-save waves-effect waves-light teal">Save</button>
+            <button type="button" class="btn btn-delete waves-effect waves-light teal">Delete</button>
+          {{else}}
+            <button type="button" id="btn_{{_id}}" class="btn btn-geo-point btn-geo waves-effect waves-light teal"><i class="mdi-content-add left"></i>{{label}}</button>
+            <button type="button" class="btn btn-invisible btn-save waves-effect waves-light teal">Save</button>
+            <button type="button" class="btn btn-invisible btn-delete waves-effect waves-light teal">Delete</button>
+          {{/if}}          
         </div>
       </div>
     {{/if}}
@@ -57,9 +63,15 @@
       <div class="row" style="margin-bottom: 40px;">
         <div class="grey-text" style="font-size: 9pt; margin-bottom: 5px;">{{text}}</div>
         <div class="input-field col s12">
-          <button type="button" id="btn_{{_id}}" class="btn btn-geo-area btn-geo waves-effect waves-light teal"><i class="mdi-content-add left"></i>{{label}}</button>
-          <button type="button" class="btn btn-invisible btn-save waves-effect waves-light teal">Save</button>
-          <button type="button" class="btn btn-invisible btn-delete waves-effect waves-light teal">Delete</button>
+          {{#if has_answer _id}}
+            <button type="button" id="btn_{{_id}}" class="btn btn-invisible btn-geo-area btn-geo waves-effect waves-light teal"><i class="mdi-content-add left"></i>{{label}}</button>
+            <button type="button" class="btn btn-invisible btn-save waves-effect waves-light teal">Save</button>
+            <button type="button" class="btn btn-delete waves-effect waves-light teal">Delete</button>
+          {{else}}
+            <button type="button" id="btn_{{_id}}" class="btn btn-geo-area btn-geo waves-effect waves-light teal"><i class="mdi-content-add left"></i>{{label}}</button>
+            <button type="button" class="btn btn-invisible btn-save waves-effect waves-light teal">Save</button>
+            <button type="button" class="btn btn-invisible btn-delete waves-effect waves-light teal">Delete</button>
+          {{/if}} 
         </div>
       </div>
     {{/if}}

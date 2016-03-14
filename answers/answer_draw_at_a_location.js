@@ -25,7 +25,7 @@ if (Meteor.isClient) {
     let question = Questions.findOne({_id: question_id});
     let coordinates = [];
     if(question.type === "Geo-Point") {
-      coordinates.push(`[${map._layers[question_id]._latlng.lng}, ${map._layers[question_id]._latlng.lat}]`);
+      coordinates.push(`[${map._layers[question_id]._latlng.lat}, ${map._layers[question_id]._latlng.lng}]`);
       answerObject.location = {
         'type': "Point", 
         'coordinates': coordinates 
@@ -33,7 +33,7 @@ if (Meteor.isClient) {
     }
     else if(question.type === "Geo-Area") {
       for(let latlng of map._layers[question_id]._latlngs) {
-        coordinates.push(`[${latlng.lng}, ${latlng.lat}]`);
+        coordinates.push(`[${latlng.lat}, ${latlng.lng}]`);
       }
 
       answerObject.location = {
@@ -154,6 +154,7 @@ if (Meteor.isClient) {
             break;
         }
       };
+      
 
       map.on('draw:created', function(event) {
         var layer = event.layer;
@@ -186,6 +187,32 @@ if (Meteor.isClient) {
       //     // Markers.remove({_id: l});
       //   }
       // });
+
+      let answers = Answers.find().fetch();
+      for (let answer of answers)
+      {
+        if (answer.location)
+        {
+          // $("#btn_" + answer.question_id).addClass("btn-invisible").siblings(".btn-delete").removeClass("btn-invisible");
+          let feature = {
+            _id: answer.question_id
+          };
+          if (answer.location.type === "Point") {
+            feature.layerType = 'marker';
+            feature.latlng = JSON.parse(answer.location.coordinates[0]);
+          }
+          else {
+            feature.layerType = 'polygon';
+            feature.latlngs = [];
+            debugger;
+            for(let coordinate of answer.location.coordinates)
+            {
+              feature.latlngs.push(JSON.parse(coordinate));
+            }
+          }
+          markersInsert(feature);
+        }
+      }
 
     }
   });
@@ -234,6 +261,12 @@ if (Meteor.isClient) {
   });
 
   Template.question_to_answer.helpers({
+    'has_answer': function(question_id) {
+      let answer = Answers.findOne({'question_id': question_id, 'inspection_id': Template.instance().parent().data.inspection_id});
+      if (answer)
+        return true;
+      return false;
+    },
     'is_geo_point': function(question_id) {
       var question = Questions.findOne({_id: question_id});
       if(question.type === "Geo-Point") {
@@ -284,11 +317,14 @@ Meteor.methods({
     }
  
     Answers.insert(answerObject);
+    // $.publish('toast',['New Answer inserted','Answer Added!','info']);
   },
   deleteAnswer: function (id) {
     Answers.remove(id);
+    // $.publish('toast',['Corresponding Answer removed','Answer Deleted!','info']);
   },
   updateAnswer: function (id, answerObject) {
     Answers.update(id, { $set: answerObject });
+    // $.publish('toast',['Corresponding Answer modified','Answer Updated!','info']);
   }
 });
