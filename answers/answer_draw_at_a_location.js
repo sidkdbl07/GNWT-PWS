@@ -15,13 +15,11 @@ if (Meteor.isClient) {
       map = L.map('answer-map', {zoomControl: false, minZoom: 14}).setView([building.location.coordinates[1], building.location.coordinates[0]], 15);
 
       //only display open streetmap for web users
-      //if(!Meteor.isCordova){
-      //  L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png').addTo(map);
-      //}
+      if(!Meteor.isCordova){
+       L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png').addTo(map);
+      }
 
       if (building.picture) {
-        console.log("All Images: ", Images.find({}).fetch());
-        console.log("Build Picture: ", building.picture);
         imageUrl = Images.findOne({_id: building.picture}).url();
         if(building.bounding_box){
           imageBounds = JSON.parse(building.bounding_box);
@@ -31,6 +29,66 @@ if (Meteor.isClient) {
       } else {
         $.publish('toast',['Functionality may be restricted','No Aerial Image!','warning']);
       }
+
+      L.Icon.Default.imagePath = Meteor.absoluteUrl() + 'packages/bevanhunt_leaflet/images';
+
+      let drawnItems = L.featureGroup().addTo(map);
+
+      map.addControl(new L.Control.Draw({
+        draw: {
+          polyline: false,
+          polygon: false,
+          rectangle: false
+        },
+        edit: {
+          featureGroup: drawnItems,
+          edit: false,
+          remove: true
+        }
+      }));
+
+      // var drawnItems = new L.FeatureGroup();
+      // map.addLayer(drawnItems);
+
+      // // Initialise the draw control and pass it the FeatureGroup of editable layers
+      // var drawControl = new L.Control.Draw({
+      //     edit: {
+      //         featureGroup: drawnItems
+      //     }
+      // });
+      // map.addControl(drawControl);
+
+      map.on('draw:created', function(event) {
+        var layer = event.layer;
+        console.log(event.layer);
+        console.log(event.layerType);
+        console.log(drawnItems);
+        var feature = {
+          options: event.layer.options,
+          layerType: event.layerType
+        };
+        switch (event.layerType) {
+        case 'marker':
+          feature.latlng = event.layer._latlng;
+          break;
+        case 'circle':
+          feature.latlng = event.layer._latlng;
+          feature.radius = event.layer._mRadius;
+          break;
+        }
+        console.log(feature);
+        // Markers.insert(feature);
+      });
+
+      map.on('draw:deleted', function(event) {
+        console.log(event);
+        console.log(event.layers._layers);
+        for (var l in event.layers._layers) {
+          console.log(l);
+          // Markers.remove({_id: l});
+        }
+      });
+
     }
   });
 
@@ -58,6 +116,13 @@ if (Meteor.isClient) {
     'is_geo_point': function(question_id) {
       var question = Questions.findOne({_id: question_id});
       if(question.type === "Geo-Point") {
+        return true;
+      }
+      return false;
+    },
+    'is_geo_area': function(question_id) {
+      var question = Questions.findOne({_id: question_id});
+      if(question.type === "Geo-Area") {
         return true;
       }
       return false;
