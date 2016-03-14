@@ -292,6 +292,7 @@ Router.route('/group/question/:_id', {
     this.subscribe('questions');
     this.subscribe('question_groups');
     this.subscribe('question_in_group', this.params._id);
+    this.subscribe('decision_points');
     this.subscribe('books');
   },
   onAfterAction: function() {
