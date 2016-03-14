@@ -17,6 +17,7 @@
     {{/if}}
     <div class="col {{#if group.use_map}}s5{{else}}s11 offset-s1{{/if}}">
       {{#each questions_in_group}}
+        <!-- Use has_decision_point qig_id here -->
         <div style="width: 100%;">{{> question_to_answer question_id}}</div>
       {{/each}}
     </div>
@@ -87,7 +88,10 @@
         <div class="input-field col s11">
           <select name="year_{{_id}}">
             <option value="">No Answer Given</option>
+            {{#each years_for_year_question _id}}
+              <option value="{{year}}">{{year}}</option>
             <!-- Need a way to display all the of the years from min to current year -->
+            {{/each}}
           </select>
           <label for="year_{{_id}}">{{text}}</label>
         </div>

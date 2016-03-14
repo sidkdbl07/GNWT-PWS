@@ -75,9 +75,9 @@ Meteor.startup(function () {
                                   'show_history': true, 'use_history': false, 'pictures': 'disabled',
                                   'tags': [{'tag': 'As-Built'}] });
     qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 3});
-    Decision_Points.insert({'type': 'Value/Label', 'qig_id': qig, 'value': 'Yes', 'label': 'Yes', 'sort_order': 1});
-    Decision_Points.insert({'type': 'Value/Label', 'qig_id': qig, 'value': 'No', 'label': 'No', 'sort_order': 2});
-    question = Questions.insert( {'text': "Is there a snow load factor specified on the building's drawings",
+    dp1 = Decision_Points.insert({'type': 'Value/Label', 'qig_id': qig, 'value': 'Yes', 'label': 'Yes', 'sort_order': 1});
+    dp2 = Decision_Points.insert({'type': 'Value/Label', 'qig_id': qig, 'value': 'No', 'label': 'No', 'sort_order': 2});
+    q1 = question = Questions.insert( {'text': "Is there a snow load factor specified on the building's drawings",
                                   'type': 'Multiple Choice',
                                   'help_text': '',
                                   'allowed_values': [{'value': 'Yes'},{'value': 'No'}],
@@ -96,6 +96,7 @@ Meteor.startup(function () {
                                   'show_history': true, 'use_history': false, 'pictures': 'disabled',
                                   'tags': [{'tag': 'As-Built'}] });
     qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 5});
+    Navigation_Rules.insert({'page_id': page, 'group_id': question_group, 'question_id': q1, 'decision_point': dp2, 'excluded_question': question});
     page = Pages.insert( {'name': "Change of use / Importance", "sort_order": 2, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
     question_group = Question_Groups.insert( {'name': 'Importance', 'sort_order': 1, 'type': 'Simple', 'use_map': false, 'multiple': false, 'decision_points': [], 'page_id': page});
     question = Questions.insert( {'text': 'What is the current primary use of the building?',

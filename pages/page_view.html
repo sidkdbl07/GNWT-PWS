@@ -81,8 +81,8 @@
 										<div class="input-field col s6 offset-s1">
 											<select id="{{qig_id}}:{{label}}">
 												<option value="">Choose a question to skip</option>
-												{{#each questions_after_this qig_id}}
-													<option value=""></option>
+												{{#each quigs_after_this qig_id}}
+													{{#with question _id}}<option value="{{_id}}">{{text}}</option>{{/with}}
 												{{/each}}
 											</select>
 											<label for="{{qig_id}}:{{label}}">Question to Skip</label>

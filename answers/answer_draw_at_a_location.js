@@ -16,8 +16,8 @@ if (Meteor.isClient) {
 
   let saveAnswer = function(question_id, inspection_id) {
     let answerObject = {
-      'inspection_id': inspection_id, 
-      'question_id': question_id, 
+      'inspection_id': inspection_id,
+      'question_id': question_id,
       'sort_order': -1,
       'user_id': Meteor.userId(),
       'date': new Date()
@@ -27,8 +27,8 @@ if (Meteor.isClient) {
     if(question.type === "Geo-Point") {
       coordinates.push(`[${map._layers[question_id]._latlng.lng}, ${map._layers[question_id]._latlng.lat}]`);
       answerObject.location = {
-        'type': "Point", 
-        'coordinates': coordinates 
+        'type': "Point",
+        'coordinates': coordinates
       };
     }
     else if(question.type === "Geo-Area") {
@@ -37,7 +37,7 @@ if (Meteor.isClient) {
       }
 
       answerObject.location = {
-        'type': "Polygon", 
+        'type': "Polygon",
         'coordinates': coordinates
       };
     }
@@ -56,7 +56,7 @@ if (Meteor.isClient) {
       // Answers.insert(answerObject);
       Meteor.call("insertAnswer", answerObject);
     }
-    
+
   };
 
   let deleteMarker = function(_id) {
@@ -78,11 +78,11 @@ if (Meteor.isClient) {
       question_btn.addClass("btn-invisible");
       question_btn.siblings("button").removeClass("btn-invisible");
     }
-    else 
+    else
     {
       question_btn.removeClass("btn-invisible");
-      question_btn.siblings("button").addClass("btn-invisible"); 
-    }    
+      question_btn.siblings("button").addClass("btn-invisible");
+    }
   };
 
   Template.answer_draw_at_a_location.onRendered(function() {
@@ -190,6 +190,15 @@ if (Meteor.isClient) {
     }
   });
 
+  Template.registerHelper("has_decision_point", function(qig_id){
+    var n = Decision_Points.find({qig_id: qig_id}).count();
+    $.publish('toast',[n,"Decision Points",'info']);
+    if(n > 0) {
+      return true;
+    }
+    return false;
+  });
+
   Template.answer_draw_at_a_location.helpers({
     'questions_in_group': function() {
       return Question_In_Group.find({group_id: this.group._id},{sort: {sort_order: 1}}).fetch();
@@ -202,7 +211,7 @@ if (Meteor.isClient) {
     },
     'click #btn_zoomout': function() {
       map.zoomOut();
-    }, 
+    },
     'click .btn-geo-point': function(event) {
       event.stopImmediatePropagation();
       console.log('geo point button clicked');
@@ -214,7 +223,7 @@ if (Meteor.isClient) {
       console.log('geo area button clicked');
       marker_id = event.target.id.substr(4);
       $(".leaflet-draw-draw-polygon")[0].click();
-    }, 
+    },
     'click .btn-delete': function(event) {
       let question_id = $(event.target).siblings(".btn-geo")[0].id.substr(4);
       deleteAnswer(question_id, Template.instance().data.inspection_id);
@@ -272,6 +281,15 @@ if (Meteor.isClient) {
     'question': function(question_id) {
       //$.publish('toast',[question_id,"Getting Question", 'info']);
       return Questions.findOne({_id: question_id});
+    },
+    'years_for_year_question': function(question_id) {
+      //$.publish('toast',["asking for years","Years",'info']);
+      var question = Questions.findOne({_id: question_id});
+      var this_year = parseInt(moment().format("YYYY"));
+      $.publish('toast',[typeof(this_year)+" and "+typeof(question.min),"Years",'info']);
+      return _.map(_.range(question.min, this_year), function(i) {
+        return {'year': i};
+      });
     }
   });
 }
@@ -282,7 +300,7 @@ Meteor.methods({
     if (! Meteor.userId()) {
       throw new Meteor.Error("not-authorized");
     }
- 
+
     Answers.insert(answerObject);
   },
   deleteAnswer: function (id) {

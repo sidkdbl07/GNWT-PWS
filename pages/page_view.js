@@ -26,20 +26,14 @@ if (Meteor.isClient) {
       qig = Question_In_Group.findOne({_id: qig_id});
       return Questions.findOne({_id: qig.question_id});
     },
-    'questions_after_this': function(qig_id) {
-      var qig = Question_In_Group.findOne({_id: qig_id});
+    'qigs_after_this': function(qig_id) {
       var results = [];
-      var group = Question_Groups.findOne({_id: qig.group_id})
+      var q = Question_In_Group.findOne({_id: qig_id}); // current Question_In_Group
+      var group = Question_Groups.findOne({_id: q.group_id})
       while(group) {
-        var qigs = Question_In_Group.find({group_id: qig.group_id, sort_order: {$gt: qig.sort_order}}, {sort: {sort_order: 1}});
-        if(!qigs) {
-          return [];
-        }
-
-        _.forEach(qigs.fetch(), function(row) {
-          results.append(Questions.findOne({_id: row.question_id}));
-        });
-        group = Question_Groups.findOne({page_id: group.page_id, sort_order: (group.sort_order+1)}, {sort: {sort_order: 1}});
+         var questions = Question_In_Group.find({group_id: q.group_id, sort_order: {$gt: q.sort_order}}, {sort: {sort_order: 1}});
+         results.concat(questions);
+         group = Question_Groups.findOne({page_id: group.page_id, sort_order: (group.sort_order+1)}, {sort: {sort_order: 1}});
       }
       return results;
     }

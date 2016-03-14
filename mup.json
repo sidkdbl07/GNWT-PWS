@@ -2,7 +2,7 @@
   // Server authentication info
   "servers": [
     {
-      "host": "40.78.107.114",
+      "host": "gnwtpws.cloudapp.net",
       "username": "azureuser",
       "password": "C0llecti0nFS"
       // or pem file (ssh based authentication)
