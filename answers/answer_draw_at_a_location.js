@@ -85,11 +85,26 @@ if (Meteor.isClient) {
     }
   };
 
+  let markersInsert = function(feature) {
+    switch(feature.layerType) {
+      case 'marker':
+        let marker = L.marker(feature.latlng);
+        marker._leaflet_id = feature._id;
+        marker.addTo(drawnItems);
+        break;
+      case 'polygon':
+        var polygon = L.polygon(feature.latlngs);
+        polygon._leaflet_id = feature._id;
+        polygon.addTo(drawnItems);
+        break;
+    }
+  };
+
   Template.answer_draw_at_a_location.onRendered(function() {
     $.publish('page_changed',"buildings");
 
     // building = Buildings.findOne({_id: this.building_id}).fetch();
-    if(this.data.building) {
+    if(this.data.building && this.data.group.use_map) {
       // building = Buildings.findOne({_id: this.building._id}).fetch();
       let building = this.data.building;
       let imageUrl, imageBounds;
@@ -140,20 +155,7 @@ if (Meteor.isClient) {
       // });
       // map.addControl(drawControl);
 
-      var markersInsert = function(feature) {
-        switch(feature.layerType) {
-          case 'marker':
-            let marker = L.marker(feature.latlng);
-            marker._leaflet_id = feature._id;
-            marker.addTo(drawnItems);
-            break;
-          case 'polygon':
-            var polygon = L.polygon(feature.latlngs);
-            polygon._leaflet_id = feature._id;
-            polygon.addTo(drawnItems);
-            break;
-        }
-      };
+      
 
 
       map.on('draw:created', function(event) {
@@ -188,31 +190,31 @@ if (Meteor.isClient) {
       //   }
       // });
 
-      let answers = Answers.find().fetch();
-      for (let answer of answers)
-      {
-        if (answer.location)
-        {
-          // $("#btn_" + answer.question_id).addClass("btn-invisible").siblings(".btn-delete").removeClass("btn-invisible");
-          let feature = {
-            _id: answer.question_id
-          };
-          if (answer.location.type === "Point") {
-            feature.layerType = 'marker';
-            feature.latlng = JSON.parse(answer.location.coordinates[0]);
-          }
-          else {
-            feature.layerType = 'polygon';
-            feature.latlngs = [];
-            debugger;
-            for(let coordinate of answer.location.coordinates)
-            {
-              feature.latlngs.push(JSON.parse(coordinate));
-            }
-          }
-          markersInsert(feature);
-        }
-      }
+      // let answers = Answers.find().fetch();
+      // for (let answer of answers)
+      // {
+      //   if (answer.location)
+      //   {
+      //     // $("#btn_" + answer.question_id).addClass("btn-invisible").siblings(".btn-delete").removeClass("btn-invisible");
+      //     let feature = {
+      //       _id: answer.question_id
+      //     };
+      //     if (answer.location.type === "Point") {
+      //       feature.layerType = 'marker';
+      //       console.log("marker position is ", answer.location.coordinates[0]);
+      //       feature.latlng = JSON.parse(answer.location.coordinates[0]);
+      //     }
+      //     else {
+      //       feature.layerType = 'polygon';
+      //       feature.latlngs = [];
+      //       for(let coordinate of answer.location.coordinates)
+      //       {
+      //         feature.latlngs.push(JSON.parse(coordinate));
+      //       }
+      //     }
+      //     markersInsert(feature);
+      //   }
+      // }
 
     }
   });
@@ -273,7 +275,30 @@ if (Meteor.isClient) {
     'has_answer': function(question_id) {
       let answer = Answers.findOne({'question_id': question_id, 'inspection_id': Template.instance().parent().data.inspection_id});
       if (answer)
+      {
+        if (answer.location)
+        {
+          // $("#btn_" + answer.question_id).addClass("btn-invisible").siblings(".btn-delete").removeClass("btn-invisible");
+          let feature = {
+            _id: answer.question_id
+          };
+          if (answer.location.type === "Point") {
+            feature.layerType = 'marker';
+            console.log("marker position is ", answer.location.coordinates[0]);
+            feature.latlng = JSON.parse(answer.location.coordinates[0]);
+          }
+          else {
+            feature.layerType = 'polygon';
+            feature.latlngs = [];
+            for(let coordinate of answer.location.coordinates)
+            {
+              feature.latlngs.push(JSON.parse(coordinate));
+            }
+          }
+          markersInsert(feature);
+        }
         return true;
+      }
       return false;
     },
     'is_geo_point': function(question_id) {
