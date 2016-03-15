@@ -320,6 +320,7 @@ Router.route('/inspection/go/:inspection_id/:group_id', {
   name: 'inspection_go',
   template: 'inspection_go',
   data: function() {
+    console.log("Inspection go invoked");
     var inspection = Inspections.findOne({_id: this.params.inspection_id});
     var group = Question_Groups.findOne({_id: this.params.group_id});
     // var images = Images.find({}).fetch();
