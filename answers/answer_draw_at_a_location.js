@@ -14,7 +14,7 @@ if (Meteor.isClient) {
     }
   };
 
-  let saveAnswer = function(question_id, inspection_id) {
+  let saveAnswer = function(question_id, inspection_id, {value = null, number_value = null, units = null}) {
     let answerObject = {
       'inspection_id': inspection_id,
       'question_id': question_id,
@@ -40,6 +40,16 @@ if (Meteor.isClient) {
         'type': "Polygon",
         'coordinates': coordinates
       };
+    }
+    else if(question.type === "Multiple Choice") {
+      answerObject.value = value;
+    }
+    else if (question.type === "Year") {
+      answerObject.value = value;
+    }
+    else if (question.type === "Numeric") {
+      answerObject.number_value = Number(number_value);
+      answerObject.units = units;
     }
 
     let originalAnswer = Answers.findOne({'question_id': question_id, 'inspection_id': inspection_id});
@@ -294,6 +304,52 @@ if (Meteor.isClient) {
       let question_id = $(event.target).siblings(".btn-geo")[0].id.substr(4);
       saveAnswer(question_id, Template.instance().parent().data.inspection_id);
       $(event.target).addClass("btn-invisible");
+    },
+    'change .multiple_choice_answer': function(event) {
+      let question_id = $(event.target)[0].id.substr(4);
+      let newVal = $(event.target).val();
+      if(newVal === "")
+      {
+        deleteAnswer(question_id, Template.instance().parent().data.inspection_id);
+      }
+      else {
+        saveAnswer(question_id, Template.instance().parent().data.inspection_id, {value: newVal});
+      }      
+    }, 
+    'change .year_answer': function(event) {
+      let question_id = $(event.target)[0].id.substr(4);
+      let newVal = $(event.target).val();
+      if(newVal === "")
+      {
+        deleteAnswer(question_id, Template.instance().parent().data.inspection_id);
+      }
+      else {
+        saveAnswer(question_id, Template.instance().parent().data.inspection_id, {value: newVal});
+      } 
+    },
+    'blur .numeric_answer_value': function(event) {
+      console.log("blur");
+      let question_id = $(event.target)[0].id.substr(8);
+      let newVal = $(event.target).val();
+      if(newVal === "")
+      {
+        deleteAnswer(question_id, Template.instance().parent().data.inspection_id);
+      }
+      else {
+        saveAnswer(question_id, Template.instance().parent().data.inspection_id, {number_value: newVal, units: $(event.target).closest(".row").find("select.numeric_answer_unit").val()});
+      } 
+    },
+    'change .numeric_answer_unit': function(event) {
+      let question_id = $(event.target)[0].id.substr(6);
+      let newVal = $(event.target).val();
+      let value = $(event.target).closest(".row").find(".numeric_answer_value").val();
+      if(value === "")
+      {
+        deleteAnswer(question_id, Template.instance().parent().data.inspection_id);
+      }
+      else {
+        saveAnswer(question_id, Template.instance().parent().data.inspection_id, {number_value: value, units: newVal});
+      } 
     }
   });
 
@@ -369,6 +425,26 @@ if (Meteor.isClient) {
         return true;
       }
       return false;
+    },
+    'matched': function(answer_value = null, column) {
+      var answer = Answers.findOne({question_id: Template.parentData()._id, inspection_id: Template.instance().parent().data.inspection_id});
+      if (!answer)
+        return false;
+      // return answer.value === answer_value;
+      if(answer[column] == answer_value) {
+        return true;
+      }
+      else {
+        return false;  
+      }
+      
+    },
+    'number_value': function(question_id) {
+      var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id});
+      if (!answer)
+        return "";
+      else 
+        return answer.number_value;
     },
     'is_multiple_choice': function(question_id) {
       if(this.type === "Multiple Choice") {
