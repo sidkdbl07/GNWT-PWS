@@ -346,44 +346,44 @@ if (Meteor.isClient) {
       }
       return false;
     },
+    'has_comment': function() {
+      if(this.comment && this.comment === "") {
+        return false;
+      }
+      return true;
+    },
     'has_help_text': function(question_id){
-      var question = Questions.findOne({_id: question_id});
-      if(question.help_text && question.help_text !== "") {
+      if(this.help_text && this.help_text !== "") {
         return true;
       }
       return false;
     },
     'is_geo_point': function(question_id) {
-      var question = Questions.findOne({_id: question_id});
-      if(question.type === "Geo-Point") {
+      if(this.type === "Geo-Point") {
         return true;
       }
       return false;
     },
     'is_geo_area': function(question_id) {
-      var question = Questions.findOne({_id: question_id});
-      if(question.type === "Geo-Area") {
+      if(this.type === "Geo-Area") {
         return true;
       }
       return false;
     },
     'is_multiple_choice': function(question_id) {
-      var question = Questions.findOne({_id: question_id});
-      if(question.type === "Multiple Choice") {
+      if(this.type === "Multiple Choice") {
         return true;
       }
       return false;
     },
     'is_numeric': function(question_id) {
-      var question = Questions.findOne({_id: question_id});
-      if(question.type === "Numeric") {
+      if(this.type === "Numeric") {
         return true;
       }
       return false;
     },
     'is_year': function(question_id) {
-      var question = Questions.findOne({_id: question_id});
-      if(question.type === "Year") {
+      if(this.type === "Year") {
         return true;
       }
       return false;
@@ -393,10 +393,8 @@ if (Meteor.isClient) {
       return Questions.findOne({_id: question_id});
     },
     'years_for_year_question': function(question_id) {
-      //$.publish('toast',["asking for years","Years",'info']);
-      var question = Questions.findOne({_id: question_id});
       var this_year = parseInt(moment().format("YYYY"));
-      return _.map(_.range(question.min, this_year), function(i) {
+      return _.map(_.range(this.min, this_year), function(i) {
         return {'year': i};
       });
     }
