@@ -267,6 +267,7 @@ if (Meteor.isClient) {
 
   Template.question_to_answer.onRendered(function() {
     $('select').material_select();
+    $('.modal-trigger').leanModal();
   });
 
   Template.question_to_answer.helpers({
@@ -274,6 +275,13 @@ if (Meteor.isClient) {
       let answer = Answers.findOne({'question_id': question_id, 'inspection_id': Template.instance().parent().data.inspection_id});
       if (answer)
         return true;
+      return false;
+    },
+    'has_help_text': function(question_id){
+      var question = Questions.findOne({_id: question_id});
+      if(question.help_text && question.help_text !== "") {
+        return true;
+      }
       return false;
     },
     'is_geo_point': function(question_id) {
