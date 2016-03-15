@@ -32,6 +32,7 @@ if (Meteor.isClient) {
     'is_simple': function() {
       var group = group_or_first(this.group, this.inspection);
       if(group.type === "Simple") {
+        console.log("Simple Group");
         return true;
       }
       return false;
