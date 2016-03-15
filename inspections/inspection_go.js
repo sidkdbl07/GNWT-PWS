@@ -80,9 +80,9 @@ if (Meteor.isClient) {
       } else {
         var book = Books.findOne({_id: this.inspection.book_id});
         var current_page = Pages.findOne({_id: current_group.page_id});
-        var previous_page = Pages.findOne({book_id: book._id, sort_order: {$lt: current_page.sort_order}},{sort: {sort_order: 1}});
+        var previous_page = Pages.findOne({book_id: book._id, sort_order: {$lt: current_page.sort_order}},{sort: {sort_order: -1}});
         if(previous_page) {
-          previous_group =  Question_Groups.findOne({page_id: previous_page._id}, {sort: {sort_order: 1}});
+          previous_group =  Question_Groups.findOne({page_id: previous_page._id}, {sort: {sort_order: -1}});
         } else {
           return false;
         }
