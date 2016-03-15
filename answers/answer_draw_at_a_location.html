@@ -35,10 +35,14 @@
         {{#if is_multiple_choice _id}}
           <div class="row" style="margin-bottom: 20px;">
             <div class="input-field col s11">
-              <select>
-                <option value="">No Answer Given</option>
+              <select id="ans_{{_id}}" name="answer" class="multiple_choice_answer">
+                <option value="">No Answer Given for Multiple Choice</option>
               {{#each allowed_values}}
-                <option value="{{value}}">{{value}}</option>
+                {{#if matched value "value"}}
+                  <option value="{{value}}" selected>{{value}}</option>
+                {{else}}
+                  <option value="{{value}}">{{value}}</option>
+                {{/if}}
               {{/each}}
               </select>
               <label>{{text}}</label>
@@ -83,14 +87,18 @@
         {{#if is_numeric _id}}
           <div class="row" style="margin-bottom: 20px;">
             <div class="input-field col s7">
-              <input type="text" id="value_{{_id}}"/>
+              <input type="text" class="numeric_answer_value" id="ans_val_{{_id}}" value="{{number_value _id}}"/>
               <label for="value_{{_id}}">{{text}}</label>
             </div>
             <div class="input-field col s3 offset-s1">
-              <select name="units_{{_id}}">
+              <select class="numeric_answer_unit" id="units_{{_id}}">
                 <option value="">No Units</option>
                 {{#each possible_units}}
-                  <option>{{unit}}</option>
+                  {{#if matched unit "units"}}
+                    <option value="{{unit}}" selected>{{unit}}</option>
+                  {{else}}
+                    <option value="{{unit}}">{{unit}}</option>
+                  {{/if}}
                 {{/each}}
               </select>
               <label for="units_{{_id}}">Units</label>
@@ -101,10 +109,14 @@
         {{#if is_year _id}}
           <div class="row" style="margin-bottom: 20px;">
             <div class="input-field col s11">
-              <select name="year_{{_id}}">
+              <select name="answer" id="ans_{{_id}}" class="year_answer">
                 <option value="">No Answer Given</option>
                 {{#each years_for_year_question _id}}
-                  <option value="{{year}}">{{year}}</option>
+                  {{#if matched year "value"}}
+                    <option value="{{year}}" selected>{{year}}</option>
+                  {{else}}
+                    <option value="{{year}}">{{year}}</option>
+                  {{/if}}
                 <!-- Need a way to display all the of the years from min to current year -->
                 {{/each}}
               </select>
