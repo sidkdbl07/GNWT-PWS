@@ -112,23 +112,25 @@
             </div>
           </div>
         {{/if}}
-      </form>
-      <div class="row">
-        <div class="col s3"><button class="photo waves-effect waves-teal btn-flat btn-large transparent disabled"><i class="mdi-editor-insert-photo left"></i>Photos</button></div>
-        {{#if has_help_text _id}}
-          <div class="col s3"><button data-target="help_text_{{_id}}" class="help waves-effect waves-teal btn-flat btn-large transparent teal-text disabled"><i class="mdi-communication-live-help left"></i>Help</button>
-            <div class="modal modal-fixed-footer" id="help_text_{{_id}}">
-              <div class="modal-content">
-                <h4>Help</h4>
-                {{help_text}}
-              </div>
-              <div class="modal-footer">
-                <a href="#!" class="modal-action modal-close waves-effect waves-teal btn-flat ">Close</a>
-              </div>
-            </div>
+        <div id="comment_{{_id}}" class="row" style="display: none; padding-bottom: 20px;">
+          <div class="input-field col s12">
+            <input type="text" name="comment" id="comments_{{_id}}"/>
+            <label for="comments_{{_id}}">Comments</label>
           </div>
+        </div>
+      </form>
+      <div id="help_text_{{_id}}" class="row" style="display: none; padding-bottom: 20px;">
+        <div class="col s12">
+          <h4>Need Help?</h4>
+          <div id="help_text_content_{{_id}}"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s3"><button class="photo tooltipped waves-effect waves-teal btn-flat btn-large transparent disabled" data-position="bottom" data-delay="50" data-tooltip="Photos"><i class="mdi-editor-insert-photo"></i></button></div>
+        {{#if has_help_text _id}}
+          <div class="col s3"><button id="help_{{_id}}" class="help tooltipped waves-effect waves-teal btn-flat btn-large transparent teal-text" data-position="bottom" data-delay="50" data-tooltip="Help"><i class="mdi-communication-live-help"></i></button></div>
         {{/if}}
-        <div class="col s3"><button class="comment waves-effect waves-teal btn-flat btn-large transparent disabled"><i class="mdi-communication-messenger left"></i>Comments</button></div>
+        <div class="col s3"><button class="comment tooltipped waves-effect waves-teal btn-flat btn-large transparent teal-text"  data-position="bottom" data-delay="50" data-tooltip="Comments"><i class="mdi-communication-messenger"></i></button></div>
       </div>
     </div>
   </div>

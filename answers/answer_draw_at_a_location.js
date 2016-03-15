@@ -301,6 +301,19 @@ if (Meteor.isClient) {
   Template.question_to_answer.onRendered(function() {
     $('select').material_select();
     $('.modal-trigger').leanModal();
+    $('.tooltipped').tooltip({delay: 50});
+  });
+
+  Template.question_to_answer.events({
+    "click .help": function(event, template){
+       event.preventDefault();
+       $("#help_text_content_"+this._id).html( this.help_text );
+       $("#help_text_"+this._id).toggle();
+    },
+    "click .comment": function(event, template){
+       event.preventDefault();
+       $("#comment_"+this._id).toggle();
+    }
   });
 
   Template.question_to_answer.helpers({
