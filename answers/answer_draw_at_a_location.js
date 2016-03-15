@@ -1,5 +1,5 @@
 if (Meteor.isClient) {
-  var map, drawnItems;
+  var map = null, drawnItems;
   var marker_id = null;
 
   Meteor.subscribe("images");
@@ -100,123 +100,154 @@ if (Meteor.isClient) {
     }
   };
 
-  Template.answer_draw_at_a_location.onRendered(function() {
-    $.publish('page_changed',"buildings");
+  Template.answer_draw_at_a_location.helpers({
+    'fire_for_answer_draw': function() {
+      let currData = Template.currentData();
+      Meteor.defer(function() {
+        // building = Buildings.findOne({_id: this.building._id}).fetch();
+        let building = currData.building;
+        let imageUrl, imageBounds;
 
-    // building = Buildings.findOne({_id: this.building_id}).fetch();
-    if(this.data.building && this.data.group.use_map) {
-      // building = Buildings.findOne({_id: this.building._id}).fetch();
-      let building = this.data.building;
-      let imageUrl, imageBounds;
-
-      map = L.map('answer-map', {zoomControl: false, minZoom: 14}).setView([building.location.coordinates[1], building.location.coordinates[0]], 15);
-
-      //only display open streetmap for web users
-      if(!Meteor.isCordova){
-       L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png').addTo(map);
-      }
-
-      if (building.picture) {
-        imageUrl = Images.findOne({_id: building.picture}).url();
-        if(building.bounding_box){
-          imageBounds = JSON.parse(building.bounding_box);
-          L.imageOverlay(imageUrl, imageBounds).addTo(map);
-          //$.publish('toast',['Drawing an ImageOverlay','Image Overlay','info']);
+        if(map)
+        {
+          map.remove();
         }
-      } else {
-        $.publish('toast',['Functionality may be restricted','No Aerial Image!','warning']);
-      }
 
-      L.Icon.Default.imagePath = Meteor.absoluteUrl() + 'packages/bevanhunt_leaflet/images';
+        map = L.map('answer-map', {zoomControl: false, minZoom: 14}).setView([building.location.coordinates[1], building.location.coordinates[0]], 15);
 
-      drawnItems = L.featureGroup().addTo(map);
-
-      map.addControl(new L.Control.Draw({
-        draw: {
-          polyline: false,
-          circle: false,
-          rectangle: false
-        },
-        edit: {
-          featureGroup: drawnItems,
-          edit: false,
-          remove: true
+        //only display open streetmap for web users
+        if(!Meteor.isCordova){
+         L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png').addTo(map);
         }
-      }));
 
-      // var drawnItems = new L.FeatureGroup();
-      // map.addLayer(drawnItems);
-
-      // // Initialise the draw control and pass it the FeatureGroup of editable layers
-      // var drawControl = new L.Control.Draw({
-      //     edit: {
-      //         featureGroup: drawnItems
-      //     }
-      // });
-      // map.addControl(drawControl);
-
-      
-
-
-      map.on('draw:created', function(event) {
-        var layer = event.layer;
-        // console.log(event.layer);
-        // console.log(event.layerType);
-        // console.log(drawnItems);
-        var feature = {
-          options: event.layer.options,
-          layerType: event.layerType,
-          _id: marker_id
-        };
-        switch (event.layerType) {
-        case 'marker':
-          feature.latlng = event.layer._latlng;
-          break;
-        case 'polygon':
-          feature.latlngs = event.layer._latlngs;
-          break;
+        if (building.picture) {
+          imageUrl = Images.findOne({_id: building.picture}).url();
+          if(building.bounding_box){
+            imageBounds = JSON.parse(building.bounding_box);
+            L.imageOverlay(imageUrl, imageBounds).addTo(map);
+            //$.publish('toast',['Drawing an ImageOverlay','Image Overlay','info']);
+          }
+        } else {
+          $.publish('toast',['Functionality may be restricted','No Aerial Image!','warning']);
         }
-        // console.log(feature);
-        markersInsert(feature);
-        handleButtons(feature._id);
+
+        L.Icon.Default.imagePath = Meteor.absoluteUrl() + 'packages/bevanhunt_leaflet/images';
+
+        drawnItems = L.featureGroup().addTo(map);
+
+        map.addControl(new L.Control.Draw({
+          draw: {
+            polyline: false,
+            circle: false,
+            rectangle: false
+          },
+          edit: {
+            featureGroup: drawnItems,
+            edit: false,
+            remove: true
+          }
+        }));
+
+        map.on('draw:created', function(event) {
+          var layer = event.layer;
+          // console.log(event.layer);
+          // console.log(event.layerType);
+          // console.log(drawnItems);
+          var feature = {
+            options: event.layer.options,
+            layerType: event.layerType,
+            _id: marker_id
+          };
+          switch (event.layerType) {
+          case 'marker':
+            feature.latlng = event.layer._latlng;
+            break;
+          case 'polygon':
+            feature.latlngs = event.layer._latlngs;
+            break;
+          }
+          // console.log(feature);
+          markersInsert(feature);
+          handleButtons(feature._id);
+        });
       });
-
-      // map.on('draw:deleted', function(event) {
-      //   console.log(event);
-      //   console.log(event.layers._layers);
-      //   for (var l in event.layers._layers) {
-      //     console.log(l);
-      //     // Markers.remove({_id: l});
-      //   }
-      // });
-
-      // let answers = Answers.find().fetch();
-      // for (let answer of answers)
-      // {
-      //   if (answer.location)
-      //   {
-      //     // $("#btn_" + answer.question_id).addClass("btn-invisible").siblings(".btn-delete").removeClass("btn-invisible");
-      //     let feature = {
-      //       _id: answer.question_id
-      //     };
-      //     if (answer.location.type === "Point") {
-      //       feature.layerType = 'marker';
-      //       console.log("marker position is ", answer.location.coordinates[0]);
-      //       feature.latlng = JSON.parse(answer.location.coordinates[0]);
-      //     }
-      //     else {
-      //       feature.layerType = 'polygon';
-      //       feature.latlngs = [];
-      //       for(let coordinate of answer.location.coordinates)
-      //       {
-      //         feature.latlngs.push(JSON.parse(coordinate));
-      //       }
-      //     }
-      //     markersInsert(feature);
-      //   }
-      // }
-
     }
+  });
+
+  Template.answer_draw_at_a_location.onRendered(function() {
+
+    // this.autorun(function() {
+    //   let currData = Template.currentData();
+
+    //   $.publish('page_changed',"buildings");
+
+    //   if (currData.building && currData.group.use_map) {
+    //     Meteor.defer(function() {
+
+    //       // building = Buildings.findOne({_id: this.building._id}).fetch();
+    //       let building = currData.building;
+    //       let imageUrl, imageBounds;
+
+    //       map = L.map('answer-map', {zoomControl: false, minZoom: 14}).setView([building.location.coordinates[1], building.location.coordinates[0]], 15);
+
+    //       //only display open streetmap for web users
+    //       if(!Meteor.isCordova){
+    //        L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png').addTo(map);
+    //       }
+
+    //       if (building.picture) {
+    //         imageUrl = Images.findOne({_id: building.picture}).url();
+    //         if(building.bounding_box){
+    //           imageBounds = JSON.parse(building.bounding_box);
+    //           L.imageOverlay(imageUrl, imageBounds).addTo(map);
+    //           //$.publish('toast',['Drawing an ImageOverlay','Image Overlay','info']);
+    //         }
+    //       } else {
+    //         $.publish('toast',['Functionality may be restricted','No Aerial Image!','warning']);
+    //       }
+
+    //       L.Icon.Default.imagePath = Meteor.absoluteUrl() + 'packages/bevanhunt_leaflet/images';
+
+    //       drawnItems = L.featureGroup().addTo(map);
+
+    //       map.addControl(new L.Control.Draw({
+    //         draw: {
+    //           polyline: false,
+    //           circle: false,
+    //           rectangle: false
+    //         },
+    //         edit: {
+    //           featureGroup: drawnItems,
+    //           edit: false,
+    //           remove: true
+    //         }
+    //       }));
+
+    //       map.on('draw:created', function(event) {
+    //         var layer = event.layer;
+    //         // console.log(event.layer);
+    //         // console.log(event.layerType);
+    //         // console.log(drawnItems);
+    //         var feature = {
+    //           options: event.layer.options,
+    //           layerType: event.layerType,
+    //           _id: marker_id
+    //         };
+    //         switch (event.layerType) {
+    //         case 'marker':
+    //           feature.latlng = event.layer._latlng;
+    //           break;
+    //         case 'polygon':
+    //           feature.latlngs = event.layer._latlngs;
+    //           break;
+    //         }
+    //         // console.log(feature);
+    //         markersInsert(feature);
+    //         handleButtons(feature._id);
+    //       });
+    //     });
+    //   }
+    // });
   });
 
   Template.registerHelper("has_decision_point", function(qig_id){
