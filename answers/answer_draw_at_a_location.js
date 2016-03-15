@@ -286,13 +286,13 @@ if (Meteor.isClient) {
     },
     'click .btn-delete': function(event) {
       let question_id = $(event.target).siblings(".btn-geo")[0].id.substr(4);
-      deleteAnswer(question_id, Template.instance().data.inspection_id);
+      deleteAnswer(question_id, Template.instance().parent().data.inspection_id);
       deleteMarker(question_id);
       handleButtons(question_id, hide=false);
     },
     'click .btn-save': function(event) {
       let question_id = $(event.target).siblings(".btn-geo")[0].id.substr(4);
-      saveAnswer(question_id, Template.instance().data.inspection_id);
+      saveAnswer(question_id, Template.instance().parent().data.inspection_id);
       $(event.target).addClass("btn-invisible");
     }
   });
