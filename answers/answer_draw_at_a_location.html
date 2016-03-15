@@ -114,9 +114,21 @@
         {{/if}}
       </form>
       <div class="row">
-        <div class="col s3"><button class="photo waves-effect waves-light btn-flat btn-large transparent disabled"><i class="mdi-editor-insert-photo"></i></button></div>
-        <div class="col s3"><button class="help waves-effect waves-light btn-flat btn-large transparent teal-text"><i class="mdi-communication-live-help left"></i>Help</button></div>
-        <div class="col s3"><button class="comment waves-effect waves-light btn-flat btn-large transparent disabled"><i class="mdi-communication-messenger"></i></button></div>
+        <div class="col s3"><button class="photo waves-effect waves-teal btn-flat btn-large transparent disabled"><i class="mdi-editor-insert-photo left"></i>Photos</button></div>
+        {{#if has_help_text _id}}
+          <div class="col s3"><button data-target="help_text_{{_id}}" class="help waves-effect waves-teal btn-flat btn-large transparent teal-text disabled"><i class="mdi-communication-live-help left"></i>Help</button>
+            <div class="modal modal-fixed-footer" id="help_text_{{_id}}">
+              <div class="modal-content">
+                <h4>Help</h4>
+                {{help_text}}
+              </div>
+              <div class="modal-footer">
+                <a href="#!" class="modal-action modal-close waves-effect waves-teal btn-flat ">Close</a>
+              </div>
+            </div>
+          </div>
+        {{/if}}
+        <div class="col s3"><button class="comment waves-effect waves-teal btn-flat btn-large transparent disabled"><i class="mdi-communication-messenger left"></i>Comments</button></div>
       </div>
     </div>
   </div>

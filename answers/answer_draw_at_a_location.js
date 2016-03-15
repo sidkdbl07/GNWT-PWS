@@ -300,6 +300,7 @@ if (Meteor.isClient) {
 
   Template.question_to_answer.onRendered(function() {
     $('select').material_select();
+    $('.modal-trigger').leanModal();
   });
 
   Template.question_to_answer.helpers({
@@ -328,6 +329,13 @@ if (Meteor.isClient) {
           }
           markersInsert(feature);
         }
+        return true;
+      }
+      return false;
+    },
+    'has_help_text': function(question_id){
+      var question = Questions.findOne({_id: question_id});
+      if(question.help_text && question.help_text !== "") {
         return true;
       }
       return false;
