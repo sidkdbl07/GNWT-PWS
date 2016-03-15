@@ -281,16 +281,7 @@ if (Meteor.isClient) {
     },
     'click #btn_zoomout': function() {
       map.zoomOut();
-    }
-  });
-
-
-  Template.question_to_answer.onRendered(function() {
-    $('select').material_select();
-    $('.modal-trigger').leanModal();
-  });
-
-  Template.question_to_answer.events({
+    },
     'click .btn-geo-point': function(event) {
       event.stopImmediatePropagation();
       console.log('geo point button clicked');
@@ -359,6 +350,25 @@ if (Meteor.isClient) {
       else {
         saveAnswer(question_id, Template.instance().parent().data.inspection_id, {number_value: value, units: newVal});
       } 
+    }
+  });
+
+
+  Template.question_to_answer.onRendered(function() {
+    $('select').material_select();
+    $('.modal-trigger').leanModal();
+    $('.tooltipped').tooltip({delay: 50});
+  });
+
+  Template.question_to_answer.events({
+    "click .help": function(event, template){
+       event.preventDefault();
+       $("#help_text_content_"+this._id).html( this.help_text );
+       $("#help_text_"+this._id).toggle();
+    },
+    "click .comment": function(event, template){
+       event.preventDefault();
+       $("#comment_"+this._id).toggle();
     }
   });
 
