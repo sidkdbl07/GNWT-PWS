@@ -151,11 +151,11 @@
           <ul class="collapsible" data-collapsible="accordion">
             <li>
               <div class="collapsible-header grey lighten-2 teal-text"><i class="{{#if has_comment}}mdi-communication-chat{{else}}mdi-communication-messenger{{/if}}"></i>Comments</div>
-              <div id="comment_{{_id}}" class="collapsible-body" style="padding-bottom: 20px;">
+              <div id="comment_{{_id}}" class="collapsible-body" style="padding-bottom: 20px; padding-top: 20px;">
                 <div class="row">
                   <div class="input-field col s12">
                     <input type="text" name="comment" id="comments_{{_id}}" value="{{comment _id}}"/>
-                    <label for="comments_{{_id}}">Comments</label>
+                    <label for="comments_{{_id}}" style="{{#if has_comment}}active{{/if}}">Comments</label>
                   </div>
                 </div>
               </div>
