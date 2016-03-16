@@ -12,10 +12,33 @@ if (Meteor.isClient) {
       // Answers.remove(answer._id);
        Meteor.call("deleteAnswer", answer._id, function(error, result) {
         if(error) $.publish('toast',[error.reason,"An error occurred",'error']);
-        else $.publish('toast',["Your remove answer was successful!","Answer Deleted",'success']);
+        else
+        {          
+         $.publish('toast',["Your remove answer was successful!","Answer Deleted",'success']);
+         $("#comment_" + question_id).hide();
+        }
        });
     }
   };
+
+  let saveComment = function(question_id, inspection_id, comment) {
+    let originalAnswer = Answers.findOne({'question_id': question_id, 'inspection_id': inspection_id});
+
+    if (originalAnswer)
+    {
+      // Answers.update(originalAnswer._id, {
+      //   $set: answerObject
+      // });
+      Meteor.call("updateAnswer", originalAnswer._id, {comments: comment}, function(error, result) {
+        if(error) $.publish('toast',[error.reason,"An error occurred",'error']);
+        else $.publish('toast',["Your comment was modified successful!","Comment Updated",'success']);
+      });
+    }
+    else
+    {
+      $.publish('toast', ["You cannot write comment for non-existing Answer!", "Comment Failed", 'warning']);
+    }
+  }
 
   let saveAnswer = function(question_id, inspection_id, {value, number_value, units} = {null, null, null}) {
     let answerObject = {
@@ -283,8 +306,13 @@ if (Meteor.isClient) {
         saveAnswer(question_id, Template.instance().parent().data.inspection_id, {value: newVal});
       } 
     },
+    'blur input[name="comment"]': function(event) {
+      console.log("blur comment");
+      let question_id = $(event.target)[0].id.substr(9);
+      let newVal = $(event.target).val();
+      saveComment(question_id, Template.instance().parent().data.inspection_id, newVal);
+    },
     'blur .numeric_answer_value': function(event) {
-      console.log("blur");
       let question_id = $(event.target)[0].id.substr(8);
       let newVal = $(event.target).val();
       if(newVal === "")
@@ -375,6 +403,14 @@ if (Meteor.isClient) {
         return false;  
       }
       
+    },
+    'comment': function(question_id) {
+      var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id});
+      if(!answer || !(answer.comments))
+        return "";
+      else
+        return answer.comments;
+
     },
     'number_value': function(question_id) {
       var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id});
