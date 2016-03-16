@@ -1,7 +1,7 @@
 <template name="answer_draw_at_a_location">
   <div class="row" style="margin-top: 20px;">
     {{#if group.use_map}}
-    <div class="col s7">
+    <div class="col s3">
       <div style="width: 100%; height: 300px;" class="grey lighten-3">
         <div style="width: 100%; height: 0px;">
           <button id="btn_zoomout" class="toolbar_button waves-effect waves-light btn-floating white-text purple"><i class="mdi-content-remove"></i></button>
@@ -16,7 +16,7 @@
       </div>
     </div>
     {{/if}}
-    <div class="col {{#if group.use_map}}s5{{else}}s11 offset-s1{{/if}}">
+    <div class="col {{#if group.use_map}}s9{{else}}s11 offset-s1{{/if}}">
       {{#each questions_in_group}}
         <!-- Use has_decision_point qig_id here -->
         <div style="width: 100%;">{{> question_to_answer question_id}}</div>
@@ -86,11 +86,11 @@
 
         {{#if is_numeric _id}}
           <div class="row" style="margin-bottom: 20px;">
-            <div class="input-field col s7">
+            <div class="input-field col s9">
               <input type="text" class="numeric_answer_value" id="ans_val_{{_id}}" value="{{number_value _id}}"/>
               <label for="value_{{_id}}">{{text}}</label>
             </div>
-            <div class="input-field col s3 offset-s1">
+            <div class="input-field col s3">
               <select class="numeric_answer_unit" id="units_{{_id}}">
                 <option value="">No Units</option>
                 {{#each possible_units}}

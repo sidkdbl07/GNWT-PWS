@@ -27,7 +27,7 @@ Meteor.startup(function () {
   var book, page, question_group, question;
   if(Books.find().count() === 0) {
     // Fake Dummy Book
-    book = Books.insert( {'name': "Tesing Book (Developer Only)", 'locked': false});
+    book = Books.insert( {'name': "Testing Book (Developer Only)", 'locked': false});
     page = Pages.insert( {'name': "A Parameter", "sort_order": 1, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
     question_group = Question_Groups.insert( {'name': 'A Group', 'sort_order': 1, 'type': 'Simple', 'use_map': true, 'multiple': true, 'decision_points': [], 'page_id': page});
     question = Questions.insert( {'text': 'Mark the highest point on the roof',
