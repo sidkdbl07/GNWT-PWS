@@ -74,7 +74,7 @@ if (Meteor.isClient) {
     },
     'previous_group': function() {
       var current_group = group_or_first(this.group, this.inspection);
-      var previous_group = Question_Groups.findOne({'page_id': current_group.page_id, sort_order: {$lt: current_group.sort_order}}, {sort: {sort_order: 1}});
+      var previous_group = Question_Groups.findOne({'page_id': current_group.page_id, sort_order: {$lt: current_group.sort_order}}, {sort: {sort_order: -1}});
       if(previous_group) {
         return previous_group;
       } else {
