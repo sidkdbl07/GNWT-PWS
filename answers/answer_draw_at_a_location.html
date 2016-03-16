@@ -126,7 +126,7 @@
         {{/if}}
         <div id="comment_{{_id}}" class="row" style="display: none; padding-bottom: 20px;">
           <div class="input-field col s12">
-            <input type="text" name="comment" id="comments_{{_id}}"/>
+            <input type="text" name="comment" id="comments_{{_id}}" value="{{comment _id}}"/>
             <label for="comments_{{_id}}">Comments</label>
           </div>
         </div>
@@ -139,7 +139,7 @@
       </div>
       <div class="row">
         <div class="col s3"><button class="photo tooltipped waves-effect waves-teal btn-flat btn-large transparent disabled" data-position="bottom" data-delay="50" data-tooltip="Photos"><i class="mdi-editor-insert-photo"></i></button></div>
-        <div class="col s3"><button class="comment tooltipped waves-effect waves-teal btn-flat btn-large transparent {{#if has_comment}}green-text{{else}}teal-text{{/if}}"  data-position="bottom" data-delay="50" data-tooltip="Comments"><i class="{{#if has_comment}}mdi-communication-chat{{else}}mdi-communication-messenger{{/if}}"></i></button></div>
+        <div class="col s3"><button class="comment tooltipped waves-effect waves-teal btn-flat btn-large transparent {{#if has_comment}}green-text{{else}}teal-text{{/if}}"  data-position="bottom" data-delay="50" data-tooltip="Comments" disabled="{{#unless has_answer _id}}true{{/unless}}"  ><i class="{{#if has_comment}}mdi-communication-chat{{else}}mdi-communication-messenger{{/if}}"></i></button></div>
         {{#if has_help_text _id}}
           <div class="col s3"><button id="help_{{_id}}" class="help tooltipped waves-effect waves-teal btn-flat btn-large transparent teal-text" data-position="bottom" data-delay="50" data-tooltip="Help"><i class="mdi-communication-live-help"></i></button></div>
         {{/if}}

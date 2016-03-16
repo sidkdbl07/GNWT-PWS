@@ -10,11 +10,37 @@ if (Meteor.isClient) {
     if (answer)
     {
       // Answers.remove(answer._id);
-       Meteor.call("deleteAnswer", answer._id);
+       Meteor.call("deleteAnswer", answer._id, function(error, result) {
+        if(error) $.publish('toast',[error.reason,"An error occurred",'error']);
+        else
+        {          
+         $.publish('toast',["Your remove answer was successful!","Answer Deleted",'success']);
+         $("#comment_" + question_id).hide();
+        }
+       });
     }
   };
 
-  let saveAnswer = function(question_id, inspection_id, {value = null, number_value = null, units = null}) {
+  let saveComment = function(question_id, inspection_id, comment) {
+    let originalAnswer = Answers.findOne({'question_id': question_id, 'inspection_id': inspection_id});
+
+    if (originalAnswer)
+    {
+      // Answers.update(originalAnswer._id, {
+      //   $set: answerObject
+      // });
+      Meteor.call("updateAnswer", originalAnswer._id, {comments: comment}, function(error, result) {
+        if(error) $.publish('toast',[error.reason,"An error occurred",'error']);
+        else $.publish('toast',["Your comment was modified successful!","Comment Updated",'success']);
+      });
+    }
+    else
+    {
+      $.publish('toast', ["You cannot write comment for non-existing Answer!", "Comment Failed", 'warning']);
+    }
+  }
+
+  let saveAnswer = function(question_id, inspection_id, {value, number_value, units} = {null, null, null}) {
     let answerObject = {
       'inspection_id': inspection_id,
       'question_id': question_id,
@@ -59,12 +85,18 @@ if (Meteor.isClient) {
       // Answers.update(originalAnswer._id, {
       //   $set: answerObject
       // });
-      Meteor.call("updateAnswer", originalAnswer._id, answerObject);
+      Meteor.call("updateAnswer", originalAnswer._id, answerObject, function(error, result) {
+        if(error) $.publish('toast',[error.reason,"An error occurred",'error']);
+        else $.publish('toast',["Your answer was updated successful!","Answer Modified",'success']);
+      });
     }
     else
     {
       // Answers.insert(answerObject);
-      Meteor.call("insertAnswer", answerObject);
+      Meteor.call("insertAnswer", answerObject, function(error, result) {
+        if(error) $.publish('toast',[error.reason,"An error occurred",'error']);
+        else $.publish('toast',["New answer was created successful!","Answer Created",'success']);
+      });
     }
 
   };
@@ -186,78 +218,6 @@ if (Meteor.isClient) {
 
   Template.answer_draw_at_a_location.onRendered(function() {
 
-    // this.autorun(function() {
-    //   let currData = Template.currentData();
-
-    //   $.publish('page_changed',"buildings");
-
-    //   if (currData.building && currData.group.use_map) {
-    //     Meteor.defer(function() {
-
-    //       // building = Buildings.findOne({_id: this.building._id}).fetch();
-    //       let building = currData.building;
-    //       let imageUrl, imageBounds;
-
-    //       map = L.map('answer-map', {zoomControl: false, minZoom: 14}).setView([building.location.coordinates[1], building.location.coordinates[0]], 15);
-
-    //       //only display open streetmap for web users
-    //       if(!Meteor.isCordova){
-    //        L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png').addTo(map);
-    //       }
-
-    //       if (building.picture) {
-    //         imageUrl = Images.findOne({_id: building.picture}).url();
-    //         if(building.bounding_box){
-    //           imageBounds = JSON.parse(building.bounding_box);
-    //           L.imageOverlay(imageUrl, imageBounds).addTo(map);
-    //           //$.publish('toast',['Drawing an ImageOverlay','Image Overlay','info']);
-    //         }
-    //       } else {
-    //         $.publish('toast',['Functionality may be restricted','No Aerial Image!','warning']);
-    //       }
-
-    //       L.Icon.Default.imagePath = Meteor.absoluteUrl() + 'packages/bevanhunt_leaflet/images';
-
-    //       drawnItems = L.featureGroup().addTo(map);
-
-    //       map.addControl(new L.Control.Draw({
-    //         draw: {
-    //           polyline: false,
-    //           circle: false,
-    //           rectangle: false
-    //         },
-    //         edit: {
-    //           featureGroup: drawnItems,
-    //           edit: false,
-    //           remove: true
-    //         }
-    //       }));
-
-    //       map.on('draw:created', function(event) {
-    //         var layer = event.layer;
-    //         // console.log(event.layer);
-    //         // console.log(event.layerType);
-    //         // console.log(drawnItems);
-    //         var feature = {
-    //           options: event.layer.options,
-    //           layerType: event.layerType,
-    //           _id: marker_id
-    //         };
-    //         switch (event.layerType) {
-    //         case 'marker':
-    //           feature.latlng = event.layer._latlng;
-    //           break;
-    //         case 'polygon':
-    //           feature.latlngs = event.layer._latlngs;
-    //           break;
-    //         }
-    //         // console.log(feature);
-    //         markersInsert(feature);
-    //         handleButtons(feature._id);
-    //       });
-    //     });
-    //   }
-    // });
   });
 
   Template.registerHelper("has_decision_point", function(qig_id){
@@ -281,6 +241,25 @@ if (Meteor.isClient) {
     },
     'click #btn_zoomout': function() {
       map.zoomOut();
+    }
+  });
+
+
+  Template.question_to_answer.onRendered(function() {
+    $('select').material_select();
+    $('.modal-trigger').leanModal();
+    $('.tooltipped').tooltip({delay: 50});
+  });
+
+  Template.question_to_answer.events({
+    "click .help": function(event, template){
+       event.preventDefault();
+       $("#help_text_content_"+this._id).html( this.help_text );
+       $("#help_text_"+this._id).toggle();
+    },
+    "click .comment": function(event, template){
+       event.preventDefault();
+       $("#comment_"+this._id).toggle();
     },
     'click .btn-geo-point': function(event) {
       event.stopImmediatePropagation();
@@ -327,8 +306,13 @@ if (Meteor.isClient) {
         saveAnswer(question_id, Template.instance().parent().data.inspection_id, {value: newVal});
       } 
     },
+    'blur input[name="comment"]': function(event) {
+      console.log("blur comment");
+      let question_id = $(event.target)[0].id.substr(9);
+      let newVal = $(event.target).val();
+      saveComment(question_id, Template.instance().parent().data.inspection_id, newVal);
+    },
     'blur .numeric_answer_value': function(event) {
-      console.log("blur");
       let question_id = $(event.target)[0].id.substr(8);
       let newVal = $(event.target).val();
       if(newVal === "")
@@ -350,25 +334,6 @@ if (Meteor.isClient) {
       else {
         saveAnswer(question_id, Template.instance().parent().data.inspection_id, {number_value: value, units: newVal});
       } 
-    }
-  });
-
-
-  Template.question_to_answer.onRendered(function() {
-    $('select').material_select();
-    $('.modal-trigger').leanModal();
-    $('.tooltipped').tooltip({delay: 50});
-  });
-
-  Template.question_to_answer.events({
-    "click .help": function(event, template){
-       event.preventDefault();
-       $("#help_text_content_"+this._id).html( this.help_text );
-       $("#help_text_"+this._id).toggle();
-    },
-    "click .comment": function(event, template){
-       event.preventDefault();
-       $("#comment_"+this._id).toggle();
     }
   });
 
@@ -403,9 +368,11 @@ if (Meteor.isClient) {
       return false;
     },
     'has_comment': function() {
-      if(this.comment && this.comment === "") {
+      var answer = Answers.findOne({question_id: this._id, inspection_id: Template.instance().parent().data.inspection_id});
+      if (!answer)
         return false;
-      }
+      if(!answer.comments || answer.comments == "")
+        return false;
       return true;
     },
     'has_help_text': function(question_id){
@@ -438,6 +405,14 @@ if (Meteor.isClient) {
         return false;  
       }
       
+    },
+    'comment': function(question_id) {
+      var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id});
+      if(!answer || !(answer.comments))
+        return "";
+      else
+        return answer.comments;
+
     },
     'number_value': function(question_id) {
       var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id});
@@ -484,15 +459,15 @@ Meteor.methods({
       throw new Meteor.Error("not-authorized");
     }
 
-    Answers.insert(answerObject);
+    return Answers.insert(answerObject);
     // $.publish('toast',['New Answer inserted','Answer Added!','info']);
   },
   deleteAnswer: function (id) {
-    Answers.remove(id);
+    return Answers.remove(id);
     // $.publish('toast',['Corresponding Answer removed','Answer Deleted!','info']);
   },
   updateAnswer: function (id, answerObject) {
-    Answers.update(id, { $set: answerObject });
+    return Answers.update(id, { $set: answerObject });
     // $.publish('toast',['Corresponding Answer modified','Answer Updated!','info']);
   }
 });
