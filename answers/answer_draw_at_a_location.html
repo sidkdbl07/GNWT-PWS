@@ -1,15 +1,16 @@
 <template name="answer_draw_at_a_location">
-  <div class="row" style="margin-top: 20px;">
+  <div class="row" style="margin-top: 20px; height: 100%;">
     {{#if group.use_map}}
-    <div class="col s3">
-      <div style="width: 100%; height: 300px;" class="grey lighten-3">
+    <div id="map_container" height="300" class="col s3">
+      <div style="width: 100%; height: 100%;" class="grey lighten-3">
         <div style="width: 100%; height: 0px;">
           <button id="btn_zoomout" class="toolbar_button waves-effect waves-light btn-floating white-text purple"><i class="mdi-content-remove"></i></button>
           <button id="btn_zoomin" class="toolbar_button waves-effect waves-light btn-floating white-text purple"><i class="mdi-content-add"></i></button>
+          <button id="btn_map_fullscreen" class="toolbar_button waves-effect waves-light btn-floating white-text purple"><i class="mdi-navigation-fullscreen"></i></button>
         </div>
         <div style="width: 100%; height: 100%;" id="map_wrapper">
-          <div class="answer-leaflet-map">
-            <div id='answer-map'></div>
+          <div class="answer-leaflet-map" style="height: 100%">
+            <div id='answer-map' style="height: 100%;"></div>
           </div>
           {{fire_for_answer_draw}}
         </div>
@@ -47,13 +48,16 @@
               </select>
               <label>{{text}}</label>
             </div>
+            {{#if has_help_text _id}}
+              <div class="col s1"><button id="help_{{_id}}" class="help tooltipped waves-effect waves-teal btn-flat btn-large transparent teal-text" data-position="bottom" data-delay="50" data-tooltip="Help"><i class="mdi-communication-live-help"></i></button></div>
+            {{/if}}
           </div>
         {{/if}}
 
         {{#if is_geo_point _id}}
           <div class="row" style="margin-bottom: 40px;">
             <div class="grey-text" style="font-size: 9pt; margin-bottom: 5px;">{{text}}</div>
-            <div class="input-field col s12">
+            <div class="input-field col s11">
               {{#if has_answer _id}}
                 <button type="button" id="btn_{{_id}}" class="btn btn-invisible btn-geo-point btn-geo waves-effect waves-light teal"><i class="mdi-content-add left"></i>{{label}}</button>
                 <button type="button" class="btn btn-invisible btn-save waves-effect waves-light teal">Save</button>
@@ -64,13 +68,16 @@
                 <button type="button" class="btn btn-invisible btn-delete waves-effect waves-light teal">Delete</button>
               {{/if}}
             </div>
+            {{#if has_help_text _id}}
+              <div class="col s1"><button id="help_{{_id}}" class="help tooltipped waves-effect waves-teal btn-flat btn-large transparent teal-text" data-position="bottom" data-delay="50" data-tooltip="Help"><i class="mdi-communication-live-help"></i></button></div>
+            {{/if}}
           </div>
         {{/if}}
 
         {{#if is_geo_area _id}}
           <div class="row" style="margin-bottom: 40px;">
             <div class="grey-text" style="font-size: 9pt; margin-bottom: 5px;">{{text}}</div>
-            <div class="input-field col s12">
+            <div class="input-field col s11">
               {{#if has_answer _id}}
                 <button type="button" id="btn_{{_id}}" class="btn btn-invisible btn-geo-area btn-geo waves-effect waves-light teal"><i class="mdi-content-add left"></i>{{label}}</button>
                 <button type="button" class="btn btn-invisible btn-save waves-effect waves-light teal">Save</button>
@@ -81,14 +88,17 @@
                 <button type="button" class="btn btn-invisible btn-delete waves-effect waves-light teal">Delete</button>
               {{/if}}
             </div>
+            {{#if has_help_text _id}}
+              <div class="col s1"><button id="help_{{_id}}" class="help tooltipped waves-effect waves-teal btn-flat btn-large transparent teal-text" data-position="bottom" data-delay="50" data-tooltip="Help"><i class="mdi-communication-live-help"></i></button></div>
+            {{/if}}
           </div>
         {{/if}}
 
         {{#if is_numeric _id}}
           <div class="row" style="margin-bottom: 20px;">
-            <div class="input-field col s9">
+            <div class="input-field col s8">
               <input type="text" class="numeric_answer_value" id="ans_val_{{_id}}" value="{{number_value _id}}"/>
-              <label for="value_{{_id}}">{{text}}</label>
+              <label for="value_{{_id}}" class="{{#if has_answer _id}}active{{/if}}">{{text}}</label>
             </div>
             <div class="input-field col s3">
               <select class="numeric_answer_unit" id="units_{{_id}}">
@@ -101,8 +111,11 @@
                   {{/if}}
                 {{/each}}
               </select>
-              <label for="units_{{_id}}">Units</label>
+              <label for="units_{{_id}} {{#if has_answer _id}}active{{/if}}">Units</label>
             </div>
+            {{#if has_help_text _id}}
+              <div class="col s1"><button id="help_{{_id}}" class="help tooltipped waves-effect waves-teal btn-flat btn-large transparent teal-text" data-position="bottom" data-delay="50" data-tooltip="Help"><i class="mdi-communication-live-help"></i></button></div>
+            {{/if}}
           </div>
         {{/if}}
 
@@ -122,29 +135,45 @@
               </select>
               <label for="year_{{_id}}">{{text}}</label>
             </div>
+            {{#if has_help_text _id}}
+              <div class="col s1"><button id="help_{{_id}}" class="help tooltipped waves-effect waves-teal btn-flat btn-large transparent teal-text" data-position="bottom" data-delay="50" data-tooltip="Help"><i class="mdi-communication-live-help"></i></button></div>
+            {{/if}}
           </div>
         {{/if}}
-        <div id="comment_{{_id}}" class="row" style="display: none; padding-bottom: 20px;">
-          <div class="input-field col s12">
-            <input type="text" name="comment" id="comments_{{_id}}" value="{{comment _id}}"/>
-            <label for="comments_{{_id}}">Comments</label>
+        <div id="help_text_{{_id}}" class="row" style="display: none; padding-bottom: 20px;">
+          <div class="col s12">
+            <h4>Need Help?</h4>
+            <div id="help_text_content_{{_id}}"></div>
           </div>
         </div>
+        {{#if has_answer _id}}
+        <div class="row">
+          <ul class="collapsible" data-collapsible="accordion">
+            <li>
+              <div class="collapsible-header grey lighten-2 teal-text"><i class="{{#if has_comment}}mdi-communication-chat{{else}}mdi-communication-messenger{{/if}}"></i>Comments</div>
+              <div id="comment_{{_id}}" class="collapsible-body" style="padding-bottom: 20px;">
+                <div class="row">
+                  <div class="input-field col s12">
+                    <input type="text" name="comment" id="comments_{{_id}}" value="{{comment _id}}"/>
+                    <label for="comments_{{_id}}">Comments</label>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="collapsible-header grey lighten-2 grey-text"><i class="mdi-editor-insert-photo"></i>Photos</div>
+              <div id="photo_{{_id}}" class="collapsible-body" style="padding-bottom: 20px;">
+                <div class="row">
+                  <div class="input-field col s12">
+                    Photos are not enabled for this beta test
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      {{/if}}
       </form>
-      <div id="help_text_{{_id}}" class="row" style="display: none; padding-bottom: 20px;">
-        <div class="col s12">
-          <h4>Need Help?</h4>
-          <div id="help_text_content_{{_id}}"></div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col s3"><button class="photo tooltipped waves-effect waves-teal btn-flat btn-large transparent disabled" data-position="bottom" data-delay="50" data-tooltip="Photos"><i class="mdi-editor-insert-photo"></i></button></div>
-        <div class="col s3"><button class="comment tooltipped waves-effect waves-teal btn-flat btn-large transparent {{#if has_comment}}green-text{{else}}teal-text{{/if}}"  data-position="bottom" data-delay="50" data-tooltip="Comments" disabled="{{#unless has_answer _id}}true{{/unless}}"  ><i class="{{#if has_comment}}mdi-communication-chat{{else}}mdi-communication-messenger{{/if}}"></i></button></div>
-        {{#if has_help_text _id}}
-          <div class="col s3"><button id="help_{{_id}}" class="help tooltipped waves-effect waves-teal btn-flat btn-large transparent teal-text" data-position="bottom" data-delay="50" data-tooltip="Help"><i class="mdi-communication-live-help"></i></button></div>
-        {{/if}}
-
-      </div>
     </div>
   </div>
   {{/with}}

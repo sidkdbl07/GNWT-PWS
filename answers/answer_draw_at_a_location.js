@@ -13,8 +13,8 @@ if (Meteor.isClient) {
        Meteor.call("deleteAnswer", answer._id, function(error, result) {
         if(error) $.publish('toast',[error.reason,"An error occurred",'error']);
         else
-        {          
-         $.publish('toast',["Your remove answer was successful!","Answer Deleted",'success']);
+        {
+         $.publish('toast',["Your answer was deleted","Answer Removed",'success']);
          $("#comment_" + question_id).hide();
         }
        });
@@ -31,7 +31,7 @@ if (Meteor.isClient) {
       // });
       Meteor.call("updateAnswer", originalAnswer._id, {comments: comment}, function(error, result) {
         if(error) $.publish('toast',[error.reason,"An error occurred",'error']);
-        else $.publish('toast',["Your comment was modified successful!","Comment Updated",'success']);
+        else $.publish('toast',["Your comment was saved successfully!","Comment Saved",'success']);
       });
     }
     else
@@ -87,7 +87,7 @@ if (Meteor.isClient) {
       // });
       Meteor.call("updateAnswer", originalAnswer._id, answerObject, function(error, result) {
         if(error) $.publish('toast',[error.reason,"An error occurred",'error']);
-        else $.publish('toast',["Your answer was updated successful!","Answer Modified",'success']);
+        else $.publish('toast',["Your answer has been noted!","Saved",'success']);
       });
     }
     else
@@ -95,7 +95,7 @@ if (Meteor.isClient) {
       // Answers.insert(answerObject);
       Meteor.call("insertAnswer", answerObject, function(error, result) {
         if(error) $.publish('toast',[error.reason,"An error occurred",'error']);
-        else $.publish('toast',["New answer was created successful!","Answer Created",'success']);
+        else $.publish('toast',["Your answer has been noted!","Saved",'success']);
       });
     }
 
@@ -241,14 +241,31 @@ if (Meteor.isClient) {
     },
     'click #btn_zoomout': function() {
       map.zoomOut();
+    },
+    'click #btn_map_fullscreen': function() {
+      if($("#map_container").hasClass("s3")) { // map is small
+        $("#map_container").addClass("s12");
+        $("#map_container").removeClass("s3");
+        $("#map_container").height('100%');
+        $("#btn_map_fullscreen i").removeClass("mdi-navigation-fullscreen");
+        $("#btn_map_fullscreen i").addClass("mdi-navigation-fullscreen-exit");
+      } else {
+        $("#map_container").addClass("s3");
+        $("#map_container").removeClass("s12");
+        $("#map_container").height('300');
+        $("#btn_map_fullscreen i").removeClass("mdi-navigation-fullscreen-exit");
+        $("#btn_map_fullscreen i").addClass("mdi-navigation-fullscreen");
+      }
+      map._onResize();
     }
   });
 
 
   Template.question_to_answer.onRendered(function() {
     $('select').material_select();
-    $('.modal-trigger').leanModal();
-    $('.tooltipped').tooltip({delay: 50});
+    $('.collapsible').collapsible({
+      accordion : true
+    });
   });
 
   Template.question_to_answer.events({
@@ -293,8 +310,8 @@ if (Meteor.isClient) {
       }
       else {
         saveAnswer(question_id, Template.instance().parent().data.inspection_id, {value: newVal});
-      }      
-    }, 
+      }
+    },
     'change .year_answer': function(event) {
       let question_id = $(event.target)[0].id.substr(4);
       let newVal = $(event.target).val();
@@ -304,7 +321,7 @@ if (Meteor.isClient) {
       }
       else {
         saveAnswer(question_id, Template.instance().parent().data.inspection_id, {value: newVal});
-      } 
+      }
     },
     'blur input[name="comment"]': function(event) {
       console.log("blur comment");
@@ -321,7 +338,7 @@ if (Meteor.isClient) {
       }
       else {
         saveAnswer(question_id, Template.instance().parent().data.inspection_id, {number_value: newVal, units: $(event.target).closest(".row").find("select.numeric_answer_unit").val()});
-      } 
+      }
     },
     'change .numeric_answer_unit': function(event) {
       let question_id = $(event.target)[0].id.substr(6);
@@ -333,7 +350,7 @@ if (Meteor.isClient) {
       }
       else {
         saveAnswer(question_id, Template.instance().parent().data.inspection_id, {number_value: value, units: newVal});
-      } 
+      }
     }
   });
 
@@ -402,9 +419,9 @@ if (Meteor.isClient) {
         return true;
       }
       else {
-        return false;  
+        return false;
       }
-      
+
     },
     'comment': function(question_id) {
       var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id});
@@ -418,7 +435,7 @@ if (Meteor.isClient) {
       var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id});
       if (!answer)
         return "";
-      else 
+      else
         return answer.number_value;
     },
     'is_multiple_choice': function(question_id) {

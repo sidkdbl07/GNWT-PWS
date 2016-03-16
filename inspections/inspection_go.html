@@ -13,7 +13,12 @@
   				<a href="{{pathFor 'inspection_view' _id=inspection._id}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="back-button btn-large btn-floating waves-effect waves-light blue" ><i class="mdi-hardware-keyboard-backspace"></i></a>
 				{{/if}}
 			</div>
-			<div class="col s4 offset-s6 right">
+			<div class="col s7">
+				<div class="red-text text-lighten-4" style="font-size: 20pt; display: inline-block;">{{page.name}}
+					<div style="font-size: 10pt; display: inline-block;" class="red-text text-accent-2">{{current_group.name}}</div>
+				</div>
+			</div>
+			<div class="col s4">
 				{{#if next_group}}
 					<a href="{{pathFor 'inspection_go' inspection_id=inspection._id group_id=next_group._id}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="back-button btn-large btn-floating waves-effect waves-light blue" ><i class="mdi-image-navigate-next"></i></a>
 				{{else}}
@@ -29,15 +34,8 @@
 					<a href="{{pathFor 'inspection_view' _id=inspection._id}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn">Inspection {{date_of_inspection}}</a>
         </div>
 			</div>
-			<div class="row">
-        <div class="col s12">
-					<div class="red-text text-lighten-4" style="font-size: 20pt; display: inline-block;">{{page.name}}
-						<div style="font-size: 10pt; display: inline-block;" class="red-text text-accent-2">{{current_group.name}}</div>
-					</div>
-        </div>
-			</div>
-      <div class="row">
-        <div class="col s12">
+      <div class="row" style="height: calc(100% - 100px);">
+        <div class="col s12" style="height: 100%;">
           {{#if is_simple}}
             {{> answer_draw_at_a_location group=current_group building=building inspection_id=inspection._id}}
           {{/if}}

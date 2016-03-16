@@ -1,7 +1,6 @@
 #answer-map, .answer-leaflet-map {
-  height: 300px;
+  height: 100%;
   min-height: 300px;
-  max-height: 300px;
   min-width: 100%;
 }
 
