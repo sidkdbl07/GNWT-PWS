@@ -368,9 +368,11 @@ if (Meteor.isClient) {
       return false;
     },
     'has_comment': function() {
-      if(this.comment && this.comment === "") {
+      var answer = Answers.findOne({question_id: this._id, inspection_id: Template.instance().parent().data.inspection_id});
+      if (!answer)
         return false;
-      }
+      if(!answer.comments || answer.comments == "")
+        return false;
       return true;
     },
     'has_help_text': function(question_id){
