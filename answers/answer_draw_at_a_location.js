@@ -265,9 +265,6 @@ if (Meteor.isClient) {
 
   Template.question_to_answer.onRendered(function() {
     $('select').material_select();
-    $('.collapsible').collapsible({
-      accordion : true
-    });
   });
 
   Template.question_to_answer.events({
@@ -357,6 +354,13 @@ if (Meteor.isClient) {
   });
 
   Template.question_to_answer.helpers({
+    'collapsible_support': function(id) {
+      Meteor.defer(function() {
+        $('#collapsible_' + id).collapsible({
+          accordion : true
+        });
+      });
+    },
     'has_answer': function(question_id) {
       let answer = Answers.findOne({'question_id': question_id, 'inspection_id': Template.instance().parent().data.inspection_id});
       if (answer)
@@ -381,7 +385,7 @@ if (Meteor.isClient) {
             }
           }
           markersInsert(feature);
-        }
+        }        
         return true;
       }
       return false;
