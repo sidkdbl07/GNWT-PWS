@@ -96,6 +96,8 @@ if (Meteor.isClient) {
       Meteor.call("insertAnswer", answerObject, function(error, result) {
         if(error) $.publish('toast',[error.reason,"An error occurred",'error']);
         else $.publish('toast',["Your answer has been noted!","Saved",'success']);
+        $.publish('toast',["form #"+answerObject.question_id,"Collapsible",'info']);
+        $("form #"+answerObject.question_id).children(".collapsible").collapsible();
       });
     }
 
@@ -410,19 +412,6 @@ if (Meteor.isClient) {
       }
       return false;
     },
-    'matched': function(answer_value = null, column) {
-      var answer = Answers.findOne({question_id: Template.parentData()._id, inspection_id: Template.instance().parent().data.inspection_id});
-      if (!answer)
-        return false;
-      // return answer.value === answer_value;
-      if(answer[column] == answer_value) {
-        return true;
-      }
-      else {
-        return false;
-      }
-
-    },
     'comment': function(question_id) {
       var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id});
       if(!answer || !(answer.comments))
@@ -430,13 +419,6 @@ if (Meteor.isClient) {
       else
         return answer.comments;
 
-    },
-    'number_value': function(question_id) {
-      var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id});
-      if (!answer)
-        return "";
-      else
-        return answer.number_value;
     },
     'is_multiple_choice': function(question_id) {
       if(this.type === "Multiple Choice") {
@@ -456,9 +438,35 @@ if (Meteor.isClient) {
       }
       return false;
     },
+    'matched': function(answer_value = null, column) {
+      var answer = Answers.findOne({question_id: Template.parentData()._id, inspection_id: Template.instance().parent().data.inspection_id});
+      if (!answer)
+        return false;
+      // return answer.value === answer_value;
+      if(answer[column] == answer_value) {
+        return true;
+      }
+      else {
+        return false;
+      }
+
+    },
+    'number_value': function(question_id) {
+      var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id});
+      if (!answer)
+        return "";
+      else
+        return answer.number_value;
+    },
     'question': function(question_id) {
       //$.publish('toast',[question_id,"Getting Question", 'info']);
       return Questions.findOne({_id: question_id});
+    },
+    'show_pictures': function() {
+      if(this.pictures === "Required" || this.pictures === "Permitted") {
+        return true;
+      }
+      return false;
     },
     'years_for_year_question': function(question_id) {
       var this_year = parseInt(moment().format("YYYY"));
