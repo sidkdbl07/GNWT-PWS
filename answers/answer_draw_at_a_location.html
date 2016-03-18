@@ -155,19 +155,22 @@
                 <div class="row">
                   <div class="input-field col s12">
                     <input type="text" name="comment" id="comments_{{_id}}" value="{{comment _id}}"/>
-                    <label for="comments_{{_id}}" style="{{#if has_comment _id}}active{{/if}}">Comments</label>
+                    <label for="comments_{{_id}}" style="{{#if has_comment}}active{{/if}}">Comments</label>
                   </div>
                 </div>
               </div>
             </li>
             {{#if show_pictures}}
             <li>
-              <div class="collapsible-header grey lighten-2 grey-text"><i class="mdi-editor-insert-photo"></i>Photos</div>
+              <div class="collapsible-header grey lighten-2 grey-text"><i class="mdi-editor-insert-photo"></i>Photos<div class="chip grey white-text right">{{number_of_photos _id}}</div></div>
               <div id="photo_{{_id}}" class="collapsible-body" style="padding-bottom: 20px;">
                 <div class="row">
                   <div class="col s12">
-                    <div style="display: inline-block;" class="grey-text"><i class="mdi-editor-insert-photo large"></i></div>
-                    <div style="display: inline-block; line-height: 50px; height: 50px;">No photos attached</div>
+                    <div class="row" style="overflow-y: auto; height: 100px;">
+                      <div class="col s1" style="padding: 30px 0px;"><button class="add_photo waves-effect waves-light btn-floating green" ><i class="mdi-content-add"></i></button></div>
+                      <!--<div class="col s2 grey-text"><i class="mdi-editor-insert-photo large"></i></div>-->
+                      <div class="col s4 grey-text" style="padding: 40px 0px;"><div class="valign">No photos attached</div></div>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -28,22 +28,37 @@ Meteor.startup(function () {
   if(Books.find().count() === 0) {
     // Fake Dummy Book
     book = Books.insert( {'name': "Testing Book (Developer Only)", 'locked': false});
-    page = Pages.insert( {'name': "A Parameter", "sort_order": 1, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
-    question_group = Question_Groups.insert( {'name': 'A Group', 'sort_order': 1, 'type': 'Simple', 'use_map': true, 'multiple': true, 'decision_points': [], 'page_id': page});
+    page = Pages.insert( {'name': "First Parameter", "sort_order": 1, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
+    question_group = Question_Groups.insert( {'name': 'First Group', 'sort_order': 1, 'type': 'Simple', 'use_map': true, 'multiple': false, 'decision_points': [], 'page_id': page});
     question = Questions.insert( {'text': 'Mark the highest point on the roof',
                                   'type': 'Geo-Point',
                                   'help_text': 'Touch your finger on the highest point on the roof.',
                                   'label': 'High Point',
-                                  'show_history': false, 'use_history': false, 'pictures': 'disabled',
+                                  'show_history': false, 'use_history': false, 'pictures': 'Permitted',
                                   'tags': [{'tag': 'Snow'}] });
     qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
     question = Questions.insert( {'text': 'Trace one of the roof areas',
                                   'type': 'Geo-Area',
                                   'help_text': 'Trace a polygon with your finger to trace an area of the roof.',
                                   'label': 'Area Descriptor',
-                                  'show_history': false, 'use_history': false, 'pictures': 'disabled',
+                                  'show_history': false, 'use_history': false, 'pictures': 'Disabled',
                                   'tags': [{'tag': 'Snow'}] });
     qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
+    question_group = Question_Groups.insert( {'name': 'Second Group', 'sort_order': 2, 'type': 'Simple', 'use_map': true, 'multiple': true, 'decision_points': [], 'page_id': page});
+    question = Questions.insert( {'text': 'Mark places where there are significant ice build-up',
+                                  'type': 'Geo-Point',
+                                  'help_text': 'Touch your finger on place on the roof where signiicant ice is observed.',
+                                  'label': 'Ice Observed',
+                                  'show_history': false, 'use_history': false, 'pictures': 'Permitted',
+                                  'tags': [{'tag': 'Snow'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
+    question = Questions.insert( {'text': 'Mark places where you took a measurement',
+                                  'type': 'Geo-Point',
+                                  'help_text': 'Touch your finger on a point of measurement.',
+                                  'label': 'Measurement',
+                                  'show_history': false, 'use_history': false, 'pictures': 'Permitted',
+                                  'tags': [{'tag': 'Snow'}] });
+    qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 2});
     // Real Book
     book = Books.insert( {'name': "Field Book v.20160306r1", 'locked': false});
     page = Pages.insert( {'name': "As Built", "sort_order": 1, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
@@ -411,7 +426,7 @@ Meteor.startup(function () {
                                                      {'value': 'Medium Coarse'},
                                                      {'value': 'Very Coarse'}
                                                    ],
-                                  'show_history': false, 'use_history': false, 'pictures': 'enabled',
+                                  'show_history': false, 'use_history': false, 'pictures': 'Permitted',
                                   'tags': [{'tag': 'Roof'}] });
     qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 3});
 
@@ -422,7 +437,7 @@ Meteor.startup(function () {
                                   'allowed_values': [{'value': 'Yes'},
                                                      {'value': 'No'}
                                                    ],
-                                  'show_history': false, 'use_history': false, 'pictures': 'enabled',
+                                  'show_history': false, 'use_history': false, 'pictures': 'Permitted',
                                   'tags': [{'tag': 'Roof'}, {'tag': 'Snow Slide'}] });
     qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
     question = Questions.insert( {'text': 'Choose which roof area snow could slide from',
@@ -446,7 +461,7 @@ Meteor.startup(function () {
                                                      {'value': 'Medium (1m to 2m)'},
                                                      {'value': 'Large (>2m)'}
                                                    ],
-                                  'show_history': false, 'use_history': false, 'pictures': 'enabled',
+                                  'show_history': false, 'use_history': false, 'pictures': 'Permitted',
                                   'tags': [{'tag': 'Roof'}, {'tag': 'Snow Slide'}] });
     qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 4});
     question = Questions.insert( {'text': 'Is there anything on the higher roof area that could stop snow from sliding off?',
@@ -455,7 +470,7 @@ Meteor.startup(function () {
                                   'allowed_values': [{'value': 'Yes'},
                                                      {'value': 'No'}
                                                    ],
-                                  'show_history': false, 'use_history': false, 'pictures': 'enabled',
+                                  'show_history': false, 'use_history': false, 'pictures': 'Permitted',
                                   'tags': [{'tag': 'Roof'}, {'tag': 'Snow Slide'}] });
     qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 5});
 
@@ -466,7 +481,7 @@ Meteor.startup(function () {
                                   'allowed_values': [{'value': 'Yes'},
                                                      {'value': 'No'}
                                                    ],
-                                  'show_history': false, 'use_history': false, 'pictures': 'enabled',
+                                  'show_history': false, 'use_history': false, 'pictures': 'Permitted',
                                   'tags': [{'tag': 'Roof'}, {'tag': 'Snow Drop'}] });
     qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
     question = Questions.insert( {'text': 'Choose which roof area snow could fall from',
@@ -490,7 +505,7 @@ Meteor.startup(function () {
                                                      {'value': 'Medium (1m to 2m)'},
                                                      {'value': 'Large (>2m)'}
                                                    ],
-                                  'show_history': false, 'use_history': false, 'pictures': 'enabled',
+                                  'show_history': false, 'use_history': false, 'pictures': 'Permitted',
                                   'tags': [{'tag': 'Roof'}, {'tag': 'Snow Slide'}] });
     qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 4});
     question = Questions.insert( {'text': 'Is there a parapet or other similar feature on the edge of the high roof area that would stop snow from falling off?',
@@ -499,7 +514,7 @@ Meteor.startup(function () {
                                   'allowed_values': [{'value': 'Yes'},
                                                      {'value': 'No'}
                                                    ],
-                                  'show_history': false, 'use_history': false, 'pictures': 'enabled',
+                                  'show_history': false, 'use_history': false, 'pictures': 'Permitted',
                                   'tags': [{'tag': 'Roof'}, {'tag': 'Snow Slide'}] });
     qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 5});
 
@@ -508,7 +523,7 @@ Meteor.startup(function () {
                                   'type': 'Geo-Point',
                                   'help_text': '<p>Touch your finger on the roof where you took your measurement.</p>',
                                   'label': 'Measurement',
-                                  'show_history': false, 'use_history': false, 'pictures': 'enabled',
+                                  'show_history': false, 'use_history': false, 'pictures': 'Permitted',
                                   'tags': [{'tag': 'Roof'}, {'tag': 'Snow Depth'}, {'tag': 'Density'}] });
     qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
     question = Questions.insert( {'text': 'What is the value of the snow density measurement?',
@@ -536,7 +551,7 @@ Meteor.startup(function () {
                                   'type': 'Geo-Point',
                                   'help_text': '<p>Touch your finger on the roof where you observe ice build-up.</p>',
                                   'label': 'Ice Observed',
-                                  'show_history': false, 'use_history': false, 'pictures': 'enabled',
+                                  'show_history': false, 'use_history': false, 'pictures': 'Permitted',
                                   'tags': [{'tag': 'Roof'}, {'tag': 'Ice'}] });
     qig = Question_In_Group.insert({'group_id': question_group, 'question_id': question, 'sort_order': 1});
     question = Questions.insert( {'text': 'How thick is the ice?',

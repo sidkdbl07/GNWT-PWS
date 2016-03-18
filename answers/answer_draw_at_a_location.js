@@ -97,7 +97,7 @@ if (Meteor.isClient) {
         if(error) $.publish('toast',[error.reason,"An error occurred",'error']);
         else $.publish('toast',["Your answer has been noted!","Saved",'success']);
         $.publish('toast',["form #"+answerObject.question_id,"Collapsible",'info']);
-        $("form #"+answerObject.question_id).children(".collapsible").collapsible();
+        $("#"+answerObject.question_id).children(".collapsible").collapsible();
       });
     }
 
@@ -238,13 +238,12 @@ if (Meteor.isClient) {
   });
 
   Template.answer_draw_at_a_location.events({
-    'click #btn_zoomin': function() {
-      map.zoomIn();
+    'click .add_photo': function(event, template) {
+      event.preventDefault();
+      $.publish('toast',['Photos have been disabled for the beta test','Photos disabled', 'warning']);
     },
-    'click #btn_zoomout': function() {
-      map.zoomOut();
-    },
-    'click #btn_map_fullscreen': function() {
+    'click #btn_map_fullscreen': function(event, template) {
+      event.preventDefault();
       if($("#map_container").hasClass("s3")) { // map is small
         $("#map_container").addClass("s12");
         $("#map_container").removeClass("s3");
@@ -259,6 +258,14 @@ if (Meteor.isClient) {
         $("#btn_map_fullscreen i").addClass("mdi-navigation-fullscreen");
       }
       map._onResize();
+    },
+    'click #btn_zoomin': function(event, template) {
+      event.preventDefault();
+      map.zoomIn();
+    },
+    'click #btn_zoomout': function(event, template) {
+      event.preventDefault();
+      map.zoomOut();
     }
   });
 
@@ -457,6 +464,13 @@ if (Meteor.isClient) {
         return "";
       else
         return answer.number_value;
+    },
+    'number_of_photos': function(question_id) {
+      var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id});
+      var n = 0;
+      if(answer.photos)
+        n = answer.photos.lenth;
+      return n;
     },
     'question': function(question_id) {
       //$.publish('toast',[question_id,"Getting Question", 'info']);
