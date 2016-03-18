@@ -148,7 +148,7 @@
         </div>
         {{#if has_answer _id}}
         <div class="row">
-          <ul class="collapsible" data-collapsible="accordion">
+          <ul class="collapsible" id="collapsible_{{_id}}" data-collapsible="accordion">
             <li>
               <div class="collapsible-header grey lighten-2 teal-text"><i class="{{#if has_comment}}mdi-communication-chat{{else}}mdi-communication-messenger{{/if}}"></i>Comments</div>
               <div id="comment_{{_id}}" class="collapsible-body" style="padding-bottom: 20px; padding-top: 20px;">
@@ -177,6 +177,7 @@
             </li>
             {{/if}}
           </ul>
+          {{ collapsible_support _id}}
         </div>
       {{/if}}
       </form>
