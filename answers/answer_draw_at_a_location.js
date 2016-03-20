@@ -144,82 +144,70 @@ if (Meteor.isClient) {
     }
   };
 
-  Template.answer_draw_at_a_location.helpers({
-    'fire_for_answer_draw': function() {
-      let currData = Template.currentData();
-      Meteor.defer(function() {
-        // building = Buildings.findOne({_id: this.building._id}).fetch();
-        let building = currData.building;
-        let imageUrl, imageBounds;
+  Template.answer_draw_at_a_location.onRendered(function() {
+    if(this.data.building && this.data.group.use_map) {
+      console.log("Answer draw onRendered with Map");
+      let building = this.data.building;
+      let imageUrl, imageBounds;
 
-        if(map)
-        {
-          map.remove();
+      map = L.map('answer-map', {zoomControl: false, minZoom: 14}).setView([building.location.coordinates[1], building.location.coordinates[0]], 15);
+
+      //only display open streetmap for web users
+      if(!Meteor.isCordova){
+       L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png').addTo(map);
+      }
+
+      if (building.picture) {
+        imageUrl = Images.findOne({_id: building.picture}).url();
+        if(building.bounding_box){
+          imageBounds = JSON.parse(building.bounding_box);
+          L.imageOverlay(imageUrl, imageBounds).addTo(map);
+          $.publish('toast',['Drawing an ImageOverlay','Image Overlay','info']);
         }
+      } else {
+        $.publish('toast',['Functionality may be restricted','No Aerial Image!','warning']);
+      }
 
-        map = L.map('answer-map', {zoomControl: false, minZoom: 14}).setView([building.location.coordinates[1], building.location.coordinates[0]], 15);
+      L.Icon.Default.imagePath = Meteor.absoluteUrl() + 'packages/bevanhunt_leaflet/images';
 
-        //only display open streetmap for web users
-        if(!Meteor.isCordova){
-         L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png').addTo(map);
+      drawnItems = L.featureGroup().addTo(map);
+
+      map.addControl(new L.Control.Draw({
+        draw: {
+          polyline: false,
+          circle: false,
+          rectangle: false
+        },
+        edit: {
+          featureGroup: drawnItems,
+          edit: false,
+          remove: true
         }
+      }));
 
-        if (building.picture) {
-          imageUrl = Images.findOne({_id: building.picture}).url();
-          if(building.bounding_box){
-            imageBounds = JSON.parse(building.bounding_box);
-            L.imageOverlay(imageUrl, imageBounds).addTo(map);
-            //$.publish('toast',['Drawing an ImageOverlay','Image Overlay','info']);
-          }
-        } else {
-          $.publish('toast',['Functionality may be restricted','No Aerial Image!','warning']);
+      map.on('draw:created', function(event) {
+        var layer = event.layer;
+        // console.log(event.layer);
+        // console.log(event.layerType);
+        // console.log(drawnItems);
+        var feature = {
+          options: event.layer.options,
+          layerType: event.layerType,
+          _id: marker_id
+        };
+        switch (event.layerType) {
+        case 'marker':
+          feature.latlng = event.layer._latlng;
+          break;
+        case 'polygon':
+          feature.latlngs = event.layer._latlngs;
+          break;
         }
-
-        L.Icon.Default.imagePath = Meteor.absoluteUrl() + 'packages/bevanhunt_leaflet/images';
-
-        drawnItems = L.featureGroup().addTo(map);
-
-        map.addControl(new L.Control.Draw({
-          draw: {
-            polyline: false,
-            circle: false,
-            rectangle: false
-          },
-          edit: {
-            featureGroup: drawnItems,
-            edit: false,
-            remove: true
-          }
-        }));
-
-        map.on('draw:created', function(event) {
-          var layer = event.layer;
-          // console.log(event.layer);
-          // console.log(event.layerType);
-          // console.log(drawnItems);
-          var feature = {
-            options: event.layer.options,
-            layerType: event.layerType,
-            _id: marker_id
-          };
-          switch (event.layerType) {
-          case 'marker':
-            feature.latlng = event.layer._latlng;
-            break;
-          case 'polygon':
-            feature.latlngs = event.layer._latlngs;
-            break;
-          }
-          // console.log(feature);
-          markersInsert(feature);
-          handleButtons(feature._id);
-        });
+        // console.log(feature);
+        markersInsert(feature);
+        handleButtons(feature._id);
       });
     }
-  });
-
-  Template.answer_draw_at_a_location.onRendered(function() {
-
   });
 
   Template.registerHelper("has_decision_point", function(qig_id){
@@ -269,9 +257,9 @@ if (Meteor.isClient) {
     }
   });
 
-
   Template.question_to_answer.onRendered(function() {
     $('select').material_select();
+    console.log("question_to_answer onRendered");
   });
 
   Template.question_to_answer.events({
@@ -374,6 +362,7 @@ if (Meteor.isClient) {
       {
         if (answer.location)
         {
+          console.log("Has Answer part for marker");
           // $("#btn_" + answer.question_id).addClass("btn-invisible").siblings(".btn-delete").removeClass("btn-invisible");
           let feature = {
             _id: answer.question_id

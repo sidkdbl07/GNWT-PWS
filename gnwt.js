@@ -321,12 +321,14 @@ Router.route('/inspection/go/:inspection_id/:group_id', {
   template: 'inspection_go',
   data: function() {
     var inspection = Inspections.findOne({_id: this.params.inspection_id});
+    var building = Buildings.findOne({_id: inspection.building_id});
     var group = Question_Groups.findOne({_id: this.params.group_id});
     // var images = Images.find({}).fetch();
     // console.log("Images in data: ", images);
     return {
       'inspection': inspection,
-      'group': group
+      'group': group,
+      'building': building
     };
   },
   waitOn: function() {
