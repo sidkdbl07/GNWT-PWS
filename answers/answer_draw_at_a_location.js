@@ -6,8 +6,8 @@ if (Meteor.isClient) {
   Meteor.subscribe("answers");
   Meteor.subscribe("question_in_groups");
 
-  let deleteAnswer = function(question_id, inspection_id) {
-    let answer = Answers.findOne({'question_id': question_id, 'inspection_id': inspection_id});
+  let deleteAnswer = function(question_id, inspection_id, group_id) {
+    let answer = Answers.findOne({'question_id': question_id, 'inspection_id': inspection_id, 'group_id': group_id});
     if (answer)
     {
       // Answers.remove(answer._id);
@@ -22,8 +22,8 @@ if (Meteor.isClient) {
     }
   };
 
-  let saveComment = function(question_id, inspection_id, comment) {
-    let originalAnswer = Answers.findOne({'question_id': question_id, 'inspection_id': inspection_id});
+  let saveComment = function(question_id, inspection_id, group_id, comment) {
+    let originalAnswer = Answers.findOne({'question_id': question_id, 'inspection_id': inspection_id, 'group_id': group_id});
 
     if (originalAnswer)
     {
@@ -41,10 +41,11 @@ if (Meteor.isClient) {
     }
   }
 
-  let saveAnswer = function(question_id, inspection_id, {value, number_value, units} = {null, null, null}) {
+  let saveAnswer = function(question_id, inspection_id, group_id, {value, number_value, units} = {null, null, null}) {
     let answerObject = {
       'inspection_id': inspection_id,
       'question_id': question_id,
+      'group_id': group_id,
       'sort_order': -1,
       'user_id': Meteor.userId(),
       'date': new Date()
@@ -318,13 +319,13 @@ if (Meteor.isClient) {
     },
     'click .btn-delete': function(event) {
       let question_id = $(event.target).siblings(".btn-geo")[0].id.substr(4);
-      deleteAnswer(question_id, Template.instance().parent().data.inspection_id);
+      deleteAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id);
       deleteMarker(question_id);
       handleButtons(question_id, hide=false);
     },
     'click .btn-save': function(event) {
       let question_id = $(event.target).siblings(".btn-geo")[0].id.substr(4);
-      saveAnswer(question_id, Template.instance().parent().data.inspection_id);
+      saveAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id);
       $(event.target).addClass("btn-invisible");
     },
     'change .multiple_choice_answer': function(event) {
@@ -332,10 +333,10 @@ if (Meteor.isClient) {
       let newVal = $(event.target).val();
       if(newVal === "")
       {
-        deleteAnswer(question_id, Template.instance().parent().data.inspection_id);
+        deleteAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id);
       }
       else {
-        saveAnswer(question_id, Template.instance().parent().data.inspection_id, {value: newVal});
+        saveAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id, {value: newVal});
       }
     },
     'change .year_answer': function(event) {
@@ -343,27 +344,27 @@ if (Meteor.isClient) {
       let newVal = $(event.target).val();
       if(newVal === "")
       {
-        deleteAnswer(question_id, Template.instance().parent().data.inspection_id);
+        deleteAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id);
       }
       else {
-        saveAnswer(question_id, Template.instance().parent().data.inspection_id, {value: newVal});
+        saveAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id, {value: newVal});
       }
     },
     'blur input[name="comment"]': function(event) {
       console.log("blur comment");
       let question_id = $(event.target)[0].id.substr(9);
       let newVal = $(event.target).val();
-      saveComment(question_id, Template.instance().parent().data.inspection_id, newVal);
+      saveComment(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id, newVal);
     },
     'blur .numeric_answer_value': function(event) {
       let question_id = $(event.target)[0].id.substr(8);
       let newVal = $(event.target).val();
       if(newVal === "")
       {
-        deleteAnswer(question_id, Template.instance().parent().data.inspection_id);
+        deleteAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id);
       }
       else {
-        saveAnswer(question_id, Template.instance().parent().data.inspection_id, {number_value: newVal, units: $(event.target).closest(".row").find("select.numeric_answer_unit").val()});
+        saveAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id, {number_value: newVal, units: $(event.target).closest(".row").find("select.numeric_answer_unit").val()});
       }
     },
     'change .numeric_answer_unit': function(event) {
@@ -372,10 +373,10 @@ if (Meteor.isClient) {
       let value = $(event.target).closest(".row").find(".numeric_answer_value").val();
       if(value === "")
       {
-        deleteAnswer(question_id, Template.instance().parent().data.inspection_id);
+        deleteAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id);
       }
       else {
-        saveAnswer(question_id, Template.instance().parent().data.inspection_id, {number_value: value, units: newVal});
+        saveAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id, {number_value: value, units: newVal});
       }
     }
   });
@@ -389,7 +390,7 @@ if (Meteor.isClient) {
       });
     },
     'has_answer': function(question_id) {
-      let answer = Answers.findOne({'question_id': question_id, 'inspection_id': Template.instance().parent().data.inspection_id});
+      let answer = Answers.findOne({'question_id': question_id, 'inspection_id': Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id});
       if (answer)
       {
         // if (answer.location)
@@ -419,7 +420,7 @@ if (Meteor.isClient) {
       return false;
     },
     'has_comment': function() {
-      var answer = Answers.findOne({question_id: this._id, inspection_id: Template.instance().parent().data.inspection_id});
+      var answer = Answers.findOne({question_id: this._id, inspection_id: Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id});
       if (!answer)
         return false;
       if(!answer.comments || answer.comments == "")
@@ -445,7 +446,7 @@ if (Meteor.isClient) {
       return false;
     },
     'comment': function(question_id) {
-      var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id});
+      var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id});
       if(!answer || !(answer.comments))
         return "";
       else
@@ -471,7 +472,7 @@ if (Meteor.isClient) {
       return false;
     },
     'matched': function(answer_value = null, column) {
-      var answer = Answers.findOne({question_id: Template.parentData()._id, inspection_id: Template.instance().parent().data.inspection_id});
+      var answer = Answers.findOne({question_id: Template.parentData()._id, inspection_id: Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id});
       if (!answer)
         return false;
       // return answer.value === answer_value;
@@ -484,14 +485,14 @@ if (Meteor.isClient) {
 
     },
     'number_value': function(question_id) {
-      var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id});
+      var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id});
       if (!answer)
         return "";
       else
         return answer.number_value;
     },
     'number_of_photos': function(question_id) {
-      var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id});
+      var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id});
       var n = 0;
       if(answer.photos)
         n = answer.photos.lenth;

@@ -42,8 +42,12 @@ Schemas.Answers = new SimpleSchema({
   'question_id': {
     type: String
   },
-  'sort_order': {
-    type: Number
+  'group_id': {
+    type: String
+  },
+  'instance': {
+    type: Number,
+    optional: true
   },
   'value': {
     type: String,
