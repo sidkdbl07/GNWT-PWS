@@ -2,11 +2,6 @@ if (Meteor.isClient) {
   Template.building_view.onRendered(function() {
     $.publish('page_changed',"buildings");
     $("ul.tabs").tabs();
-    Session.set("building", this.data);
-  });
-
-  Template.registerHelper("building", function(){
-    return Session.get("building");
   });
 
   Template.building_view.helpers({
