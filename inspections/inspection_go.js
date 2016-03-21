@@ -2,6 +2,7 @@ if (Meteor.isClient) {
   Template.inspection_go.onRendered(function() {
     $.publish('page_changed',"buildings");
     $("ul.tabs").tabs();
+    console.log("inspection_go onRendered");
   });
 
   var group_or_first = function(group, inspection) {
@@ -17,12 +18,9 @@ if (Meteor.isClient) {
   };
 
   Template.inspection_go.helpers({
-    'building': function() {
-      return Buildings.findOne({_id: this.inspection.building_id});
-    },
-    'current_group': function() {
+    'current_groups': function() {
       var result = group_or_first(this.group, this.inspection);
-      return result;
+      return new Array(result);
     },
     'date_of_inspection': function() {
       //console.log(inspection.date);
@@ -93,5 +91,9 @@ if (Meteor.isClient) {
         return false;
       }
     }
+  });
+
+  Template.def.onRendered(function() {
+    console.log("def onRendered");
   });
 }

@@ -36,11 +36,21 @@
 			</div>
       <div class="row" style="height: calc(100% - 100px);">
         <div class="col s12" style="height: 100%;">
+        {{#if Template.subscriptionsReady}}
           {{#if is_simple}}
-            {{> answer_draw_at_a_location group=current_group building=building inspection_id=inspection._id}}
+            {{#each current_groups}}
+              {{> answer_draw_at_a_location group=this building=../building inspection_id=../inspection._id}}
+            {{/each}}
           {{/if}}
+        {{else}}
+          {{> spinner}}
+        {{/if}}
         </div>
       </div>
     </div>
   </div>
+</template>
+
+<template name="def">
+  def????
 </template>
