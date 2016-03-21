@@ -35,6 +35,16 @@ if (Meteor.isClient) {
       }
       return false;
     },
+    'group_instance': function() {
+      var instances = [
+        { id: 1 },
+        { id: 2 },
+        { id: 3 },
+        { id: 4 },
+        { id: 5 }
+      ];
+      return instances;
+    },
     'next_group': function() {
       var current_group = group_or_first(this.group, this.inspection);
       var next_group = Question_Groups.findOne({'page_id': current_group.page_id, sort_order: {$gt: current_group.sort_order}}, {sort: {sort_order: 1}});
@@ -93,7 +103,4 @@ if (Meteor.isClient) {
     }
   });
 
-  Template.def.onRendered(function() {
-    console.log("def onRendered");
-  });
 }

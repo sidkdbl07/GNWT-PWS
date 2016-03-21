@@ -33,6 +33,15 @@
 					<a href="{{pathFor 'building_view' _id=building._id}}#inspections" data-transition-out="slideRightOut" data-transition-in="slideRightIn" >{{building.name}}</a> >
 					<a href="{{pathFor 'inspection_view' _id=inspection._id}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn">Inspection {{date_of_inspection}}</a>
         </div>
+
+        <div class="col s12">
+          <ul class="tabs">
+            {{#each group_instance}}
+              <li class="tab col s3"><a href="#instance{{id}}">Instance #{{id}}</a></li>
+            {{/each}}
+              <li class="tab col s3"><a href="#new_instance">+ Add New Instance</a></li>
+          </ul>
+        </div>
 			</div>
       <div class="row" style="height: calc(100% - 100px);">
         <div class="col s12" style="height: 100%;">
@@ -49,8 +58,4 @@
       </div>
     </div>
   </div>
-</template>
-
-<template name="def">
-  def????
 </template>
