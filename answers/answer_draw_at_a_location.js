@@ -46,7 +46,6 @@ if (Meteor.isClient) {
       'inspection_id': inspection_id,
       'question_id': question_id,
       'group_id': group_id,
-      'sort_order': -1,
       'user_id': Meteor.userId(),
       'date': new Date()
     };
@@ -80,7 +79,7 @@ if (Meteor.isClient) {
       answerObject.units = units;
     }
 
-    let originalAnswer = Answers.findOne({'question_id': question_id, 'inspection_id': inspection_id});
+    let originalAnswer = Answers.findOne({'question_id': question_id, 'inspection_id': inspection_id, 'group_id': group_id});
 
     if (originalAnswer)
     {
@@ -214,7 +213,7 @@ if (Meteor.isClient) {
         let questions_in_group = Question_In_Group.find({group_id: group_id},{sort: {sort_order: 1}}).fetch();
         for(question_in_group of questions_in_group) {
           let answer = Answers.findOne({'question_id': question_in_group.question_id
-, 'inspection_id': inspection_id});
+, 'inspection_id': inspection_id, 'group_id': group_id});
           if ( answer && answer.location)
           {
              console.log("Display for marker");

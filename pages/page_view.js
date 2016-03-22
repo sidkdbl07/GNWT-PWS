@@ -22,9 +22,9 @@ if (Meteor.isClient) {
     'questions_in_group': function(group_id) {
       return Question_In_Group.find({group_id: group_id}, {sort: {sort_order: 1}}).fetch();
     },
-    'question': function(qig_id) {
-      qig = Question_In_Group.findOne({_id: qig_id});
-      return Questions.findOne({_id: qig.question_id});
+    'question': function(question_id) {
+      // qig = Question_In_Group.findOne({_id: qig_id});
+      return Questions.findOne({_id: question_id});
     },
     'qigs_after_this': function(qig_id) {
       var results = [];
