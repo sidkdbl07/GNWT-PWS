@@ -33,30 +33,39 @@
 					<a href="{{pathFor 'building_view' _id=building._id}}#inspections" data-transition-out="slideRightOut" data-transition-in="slideRightIn" >{{building.name}}</a> >
 					<a href="{{pathFor 'inspection_view' _id=inspection._id}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn">Inspection {{date_of_inspection}}</a>
         </div>
-
-        {{#if is_multiple}}
+			</div>
+      <div class="row" style="height: calc(100% - 100px);">
         <div class="col s12">
+        {{#if is_multiple}}
           <ul class="tabs">
-            {{#each instances_of_group}}
-              <li class="tab col s3"><a href="#{{ this }}">{{ this }}</a></li>
+            {{#each instances_of_group group inspection}}
+              <li class="tab col s3"><a href="#{{ this }}">Instance #{{ this }}</a></li>
             {{/each}}
               <li class="tab col s3"><a href="#new_instance">+ Add New Instance</a></li>
           </ul>
-        </div>
         {{/if}}
-			</div>
-      <div class="row" style="height: calc(100% - 100px);">
-        <div class="col s12" style="height: 100%;">
-        {{#if Template.subscriptionsReady}}
+        </div>
+
+        {{#if Template.subscriptionsReady}} 
           {{#if is_simple}}
-            {{#each current_groups}}
-              {{> answer_draw_at_a_location group=this building=../building inspection_id=../inspection._id}}
-            {{/each}}
+            {{#if is_multiple}}
+              {{#each current_groups}}
+                {{#each instances_of_group this ../inspection}}
+                  <div id="{{this}}" class="col s12" style="height: 100%;">
+                    {{> answer_draw_at_a_location group=.. instance=this building=../../building inspection_id=../../inspection._id}}
+                  </div>
+                {{/each}}
+              {{/each}}
+              <div id="new_instance">Blah Blah</div>
+            {{else}}
+              {{#each current_groups}}
+                {{> answer_draw_at_a_location group=this building=../building inspection_id=../inspection._id}}
+              {{/each}}
+            {{/if}}
           {{/if}}
         {{else}}
           {{> spinner}}
         {{/if}}
-        </div>
       </div>
     </div>
   </div>

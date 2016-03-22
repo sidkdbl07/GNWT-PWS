@@ -22,6 +22,10 @@ if (Meteor.isClient) {
       var result = group_or_first(this.group, this.inspection);
       return new Array(result);
     },
+    'current_group': function() {
+      var result = group_or_first(this.group, this.inspection);
+      return result;
+    },
     'date_of_inspection': function() {
       //console.log(inspection.date);
       //return inspection.date;
@@ -43,13 +47,13 @@ if (Meteor.isClient) {
       }
       return false;
     },
-    'instances_of_group': function() {
-      let instances = new Set(['default']);
-      let group = group_or_first(this.group, this.inspection);
-      let answers = Answers.find({inspection_id: this.inspection._id, group_id: group._id}).fetch();
+    'instances_of_group': function(group, inspection) {
+      let instances = new Set([0]);
+      let curr_group = group_or_first(group, inspection);
+      let answers = Answers.find({inspection_id: inspection._id, group_id: curr_group._id}).fetch();
       for(answer of answers) {
-        if(answer.instance)
-          instances.add(answer.instance);
+        // if(answer.instance)
+        instances.add(answer.instance);
       }
       return Array.from(instances);
     },
