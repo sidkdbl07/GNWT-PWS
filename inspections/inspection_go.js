@@ -46,13 +46,12 @@ if (Meteor.isClient) {
     'instances_of_group': function() {
       let instances = new Set(['default']);
       let group = group_or_first(this.group, this.inspection);
-      let answers = Answers.find({inspection_id: this.inspection._id, group_id: group._id});
+      let answers = Answers.find({inspection_id: this.inspection._id, group_id: group._id}).fetch();
       for(answer of answers) {
         if(answer.instance)
           instances.add(answer.instance);
       }
-      
-      return [...instances];
+      return Array.from(instances);
     },
     'next_group': function() {
       var current_group = group_or_first(this.group, this.inspection);
