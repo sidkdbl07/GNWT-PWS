@@ -47,7 +47,8 @@ Schemas.Answers = new SimpleSchema({
   },
   'instance': {
     type: Number,
-    optional: true
+    // optional: true,
+    defaultValue: 0
   },
   'value': {
     type: String,

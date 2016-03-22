@@ -22,6 +22,10 @@ if (Meteor.isClient) {
       var result = group_or_first(this.group, this.inspection);
       return new Array(result);
     },
+    'current_group': function() {
+      var result = group_or_first(this.group, this.inspection);
+      return result;
+    },
     'date_of_inspection': function() {
       //console.log(inspection.date);
       //return inspection.date;
@@ -30,20 +34,28 @@ if (Meteor.isClient) {
     'is_simple': function() {
       var group = group_or_first(this.group, this.inspection);
       if(group.type === "Simple") {
-        console.log("Simple Group");
         return true;
       }
       return false;
     },
-    'group_instance': function() {
-      var instances = [
-        { id: 1 },
-        { id: 2 },
-        { id: 3 },
-        { id: 4 },
-        { id: 5 }
-      ];
-      return instances;
+    'is_multiple': function() {
+      var group = group_or_first(this.group, this.inspection);
+      if(group.multiple && group.multiple == true)
+      {
+        console.log("multiple instance group");
+        return true;
+      }
+      return false;
+    },
+    'instances_of_group': function(group, inspection) {
+      let instances = new Set([0]);
+      let curr_group = group_or_first(group, inspection);
+      let answers = Answers.find({inspection_id: inspection._id, group_id: curr_group._id}).fetch();
+      for(answer of answers) {
+        // if(answer.instance)
+        instances.add(answer.instance);
+      }
+      return Array.from(instances);
     },
     'next_group': function() {
       var current_group = group_or_first(this.group, this.inspection);

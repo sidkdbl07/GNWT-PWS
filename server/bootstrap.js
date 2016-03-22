@@ -29,7 +29,7 @@ Meteor.startup(function () {
     // Fake Dummy Book
     book = Books.insert( {'name': "Testing Book (Developer Only)", 'locked': false});
     page = Pages.insert( {'name': "First Parameter", "sort_order": 1, "page_colors": [{'value': "Yellow"},{'value': "Orange"},{'value': "Light Green"}], 'book_id': book});
-    question_group = Question_Groups.insert( {'name': 'First Group', 'sort_order': 1, 'type': 'Simple', 'use_map': true, 'multiple': false, 'decision_points': [], 'page_id': page});
+    question_group = Question_Groups.insert( {'name': 'First Group', 'sort_order': 1, 'type': 'Simple', 'use_map': true, 'multiple': true, 'decision_points': [], 'page_id': page});
     question = Questions.insert( {'text': 'Mark the highest point on the roof',
                                   'type': 'Geo-Point',
                                   'help_text': 'Touch your finger on the highest point on the roof.',
