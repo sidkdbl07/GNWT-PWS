@@ -43,7 +43,7 @@ if (Meteor.isClient) {
       return false;
     },
     'instances_of_group': function(group, inspection) {
-      let instances = new Set([0]);
+      let instances = new Set(["0"]);
       let curr_group = group;
       let answers = Answers.find({inspection_id: inspection._id, group_id: curr_group._id}).fetch();
       for(answer of answers) {
