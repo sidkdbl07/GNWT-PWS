@@ -1,30 +1,25 @@
 if (Meteor.isClient) {
   Template.inspection_go.onRendered(function() {
     $.publish('page_changed',"buildings");
-    $("ul.tabs").tabs();
+    // $("ul.tabs").tabs();
     console.log("inspection_go onRendered");
   });
 
-  var group_or_first = function(group, inspection) {
-    var result = "";
-    if(group) {
-      result = group;
-    } else {
-      var book = Books.findOne({_id: inspection.book_id});
-      var page = Pages.findOne({book_id: book._id},{sort: {sort_order: 1}});
-      result = Question_Groups.findOne({page_id: page._id}, {sort: {sort_order: 1}});
-    }
-    return result;
-  };
+  // var group_or_first = function(group, inspection) {
+  //   var result = "";
+  //   if(group) {
+  //     result = group;
+  //   } else {
+  //     var book = Books.findOne({_id: inspection.book_id});
+  //     var page = Pages.findOne({book_id: book._id},{sort: {sort_order: 1}});
+  //     result = Question_Groups.findOne({page_id: page._id}, {sort: {sort_order: 1}});
+  //   }
+  //   return result;
+  // };
 
   Template.inspection_go.helpers({
-    'current_groups': function() {
-      var result = group_or_first(this.group, this.inspection);
-      return new Array(result);
-    },
-    'current_group': function() {
-      var result = group_or_first(this.group, this.inspection);
-      return result;
+    'current_group_instance': function() {
+      return new Array({'group': this.group, 'instance': this.instance});
     },
     'date_of_inspection': function() {
       //console.log(inspection.date);
@@ -32,15 +27,15 @@ if (Meteor.isClient) {
       return moment(this.inspection.date).format("MMMM YYYY")+" ("+moment(this.inspection.date).fromNow()+")";
     },
     'is_simple': function() {
-      var group = group_or_first(this.group, this.inspection);
+      var group = this.group
       if(group.type === "Simple") {
         return true;
       }
       return false;
     },
-    'is_multiple': function() {
-      var group = group_or_first(this.group, this.inspection);
-      if(group.multiple && group.multiple == true)
+    'has_multiple_instance': function() {
+      var group = this.group;
+      if(group.multiple)
       {
         console.log("multiple instance group");
         return true;
@@ -49,7 +44,7 @@ if (Meteor.isClient) {
     },
     'instances_of_group': function(group, inspection) {
       let instances = new Set([0]);
-      let curr_group = group_or_first(group, inspection);
+      let curr_group = group;
       let answers = Answers.find({inspection_id: inspection._id, group_id: curr_group._id}).fetch();
       for(answer of answers) {
         // if(answer.instance)
@@ -57,8 +52,18 @@ if (Meteor.isClient) {
       }
       return Array.from(instances);
     },
+    'new_instance_of_group': function(group, inspection) {
+      let curr_group = group;
+      let newestAnswer = Answers.findOne({inspection_id: inspection._id, group_id: curr_group._id}, {sort: {instance: -1}});
+      if(newestAnswer)
+      {
+        return (parseInt(newestAnswer.instance) + 1).toString();
+      }
+      else
+        return "1";
+    },
     'next_group': function() {
-      var current_group = group_or_first(this.group, this.inspection);
+      var current_group = this.group;
       var next_group = Question_Groups.findOne({'page_id': current_group.page_id, sort_order: {$gt: current_group.sort_order}}, {sort: {sort_order: 1}});
       if(next_group) {
         return next_group;
@@ -79,7 +84,7 @@ if (Meteor.isClient) {
       }
     },
     'page': function() {
-      var current_group = group_or_first(this.group, this.inspection);
+      var current_group = this.group;
       return Pages.findOne({_id: current_group.page_id}, {sort: {sort_order: 1}});
     },
     'pages': function() {
@@ -93,7 +98,7 @@ if (Meteor.isClient) {
       return result;
     },
     'previous_group': function() {
-      var current_group = group_or_first(this.group, this.inspection);
+      var current_group = this.group;
       var previous_group = Question_Groups.findOne({'page_id': current_group.page_id, sort_order: {$lt: current_group.sort_order}}, {sort: {sort_order: -1}});
       if(previous_group) {
         return previous_group;

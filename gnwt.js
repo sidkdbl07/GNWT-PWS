@@ -316,19 +316,35 @@ Router.route('/inspection/:_id', {
     document.title = "GNWT PWS - Inpsection";
   }
 });
-Router.route('/inspection/go/:inspection_id/:group_id', {
+Router.route('/inspection/go/:inspection_id/:group_id/:instance', {
   name: 'inspection_go',
   template: 'inspection_go',
   data: function() {
     var inspection = Inspections.findOne({_id: this.params.inspection_id});
     var building = Buildings.findOne({_id: inspection.building_id});
     var group = Question_Groups.findOne({_id: this.params.group_id});
+
+    var group_or_first = function(group, inspection) {
+      var result = "";
+      if(group) {
+        result = group;
+      } else {
+        var book = Books.findOne({_id: inspection.book_id});
+        var page = Pages.findOne({book_id: book._id},{sort: {sort_order: 1}});
+        result = Question_Groups.findOne({page_id: page._id}, {sort: {sort_order: 1}});
+      }
+      return result;
+    };
+
+    
+    var instance = this.params.instance;
     // var images = Images.find({}).fetch();
     // console.log("Images in data: ", images);
     return {
       'inspection': inspection,
-      'group': group,
-      'building': building
+      'group': group_or_first(group, inspection),
+      'building': building,
+      'instance': instance
     };
   },
   waitOn: function() {

@@ -6,8 +6,8 @@ if (Meteor.isClient) {
   Meteor.subscribe("answers");
   Meteor.subscribe("question_in_groups");
 
-  let deleteAnswer = function(question_id, inspection_id, group_id) {
-    let answer = Answers.findOne({'question_id': question_id, 'inspection_id': inspection_id, 'group_id': group_id});
+  let deleteAnswer = function(question_id, inspection_id, group_id, instance) {
+    let answer = Answers.findOne({'question_id': question_id, 'inspection_id': inspection_id, 'group_id': group_id, 'instance': instance});
     if (answer)
     {
       // Answers.remove(answer._id);
@@ -22,8 +22,8 @@ if (Meteor.isClient) {
     }
   };
 
-  let saveComment = function(question_id, inspection_id, group_id, comment) {
-    let originalAnswer = Answers.findOne({'question_id': question_id, 'inspection_id': inspection_id, 'group_id': group_id});
+  let saveComment = function(question_id, inspection_id, group_id, instance, comment) {
+    let originalAnswer = Answers.findOne({'question_id': question_id, 'inspection_id': inspection_id, 'group_id': group_id, 'instance': instance});
 
     if (originalAnswer)
     {
@@ -39,13 +39,43 @@ if (Meteor.isClient) {
     {
       $.publish('toast', ["You cannot write comment for non-existing Answer!", "Comment Failed", 'warning']);
     }
-  }
+  };
 
-  let saveAnswer = function(question_id, inspection_id, group_id, {value, number_value, units} = {null, null, null}) {
+  let showMapMarkers = function(group_id, inspection_id, instance) {
+    let questions_in_group = Question_In_Group.find({group_id: group_id},{sort: {sort_order: 1}}).fetch();
+    for(question_in_group of questions_in_group) {
+      let answer = Answers.findOne({'question_id': question_in_group.question_id
+, 'inspection_id': inspection_id, 'group_id': group_id, 'instance': instance});
+      if ( answer && answer.location)
+      {
+         console.log("Display for marker");
+        let feature = {
+          _id: answer.question_id
+        };
+        if (answer.location.type === "Point") {
+          feature.layerType = 'marker';
+          console.log("marker position is ", answer.location.coordinates[0]);
+          feature.latlng = JSON.parse(answer.location.coordinates[0]);
+        }
+        else {
+          feature.layerType = 'polygon';
+          feature.latlngs = [];
+          for(let coordinate of answer.location.coordinates)
+          {
+            feature.latlngs.push(JSON.parse(coordinate));
+          }
+        }
+        markersInsert(feature);
+      }
+    }
+  };
+
+  let saveAnswer = function(question_id, inspection_id, group_id, instance, {value, number_value, units} = {null, null, null}) {
     let answerObject = {
       'inspection_id': inspection_id,
       'question_id': question_id,
       'group_id': group_id,
+      'instance': instance,
       'user_id': Meteor.userId(),
       'date': new Date()
     };
@@ -79,7 +109,7 @@ if (Meteor.isClient) {
       answerObject.units = units;
     }
 
-    let originalAnswer = Answers.findOne({'question_id': question_id, 'inspection_id': inspection_id, 'group_id': group_id});
+    let originalAnswer = Answers.findOne({'question_id': question_id, 'inspection_id': inspection_id, 'group_id': group_id, 'instance': instance});
 
     if (originalAnswer)
     {
@@ -146,100 +176,7 @@ if (Meteor.isClient) {
   };
 
   Template.answer_draw_at_a_location.onRendered(function() {
-    if(this.data.building && this.data.group.use_map) {
-      console.log("Answer draw onRendered with Map");
-      let building = this.data.building;
-      let imageUrl, imageBounds;
 
-      map = L.map('answer-map', {zoomControl: false, minZoom: 14}).setView([building.location.coordinates[1], building.location.coordinates[0]], 15);
-
-      //only display open streetmap for web users
-      if(!Meteor.isCordova){
-       L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png').addTo(map);
-      }
-
-      if (building.picture) {
-        imageUrl = Images.findOne({_id: building.picture}).url();
-        if(building.bounding_box){
-          imageBounds = JSON.parse(building.bounding_box);
-          L.imageOverlay(imageUrl, imageBounds).addTo(map);
-          $.publish('toast',['Drawing an ImageOverlay','Image Overlay','info']);
-        }
-      } else {
-        $.publish('toast',['Functionality may be restricted','No Aerial Image!','warning']);
-      }
-
-      L.Icon.Default.imagePath = Meteor.absoluteUrl() + 'packages/bevanhunt_leaflet/images';
-
-      drawnItems = L.featureGroup().addTo(map);
-
-      map.addControl(new L.Control.Draw({
-        draw: {
-          polyline: false,
-          circle: false,
-          rectangle: false
-        },
-        edit: {
-          featureGroup: drawnItems,
-          edit: false,
-          remove: true
-        }
-      }));
-
-      map.on('draw:created', function(event) {
-        var layer = event.layer;
-        // console.log(event.layer);
-        // console.log(event.layerType);
-        // console.log(drawnItems);
-        var feature = {
-          options: event.layer.options,
-          layerType: event.layerType,
-          _id: marker_id
-        };
-        switch (event.layerType) {
-        case 'marker':
-          feature.latlng = event.layer._latlng;
-          break;
-        case 'polygon':
-          feature.latlngs = event.layer._latlngs;
-          break;
-        }
-        // console.log(feature);
-        markersInsert(feature);
-        handleButtons(feature._id);
-      });
-
-      let showMapMarkers = function(group_id, inspection_id) {
-        let questions_in_group = Question_In_Group.find({group_id: group_id},{sort: {sort_order: 1}}).fetch();
-        for(question_in_group of questions_in_group) {
-          let answer = Answers.findOne({'question_id': question_in_group.question_id
-, 'inspection_id': inspection_id, 'group_id': group_id});
-          if ( answer && answer.location)
-          {
-             console.log("Display for marker");
-            let feature = {
-              _id: answer.question_id
-            };
-            if (answer.location.type === "Point") {
-              feature.layerType = 'marker';
-              console.log("marker position is ", answer.location.coordinates[0]);
-              feature.latlng = JSON.parse(answer.location.coordinates[0]);
-            }
-            else {
-              feature.layerType = 'polygon';
-              feature.latlngs = [];
-              for(let coordinate of answer.location.coordinates)
-              {
-                feature.latlngs.push(JSON.parse(coordinate));
-              }
-            }
-            markersInsert(feature);
-          }
-        }
-      };
-
-      showMapMarkers(this.data.group._id, this.data.inspection_id);
-    }
   });
 
   Template.registerHelper("has_decision_point", function(qig_id){
@@ -254,6 +191,80 @@ if (Meteor.isClient) {
   Template.answer_draw_at_a_location.helpers({
     'questions_in_group': function() {
       return Question_In_Group.find({group_id: this.group._id},{sort: {sort_order: 1}}).fetch();
+    },
+    'fire_for_answer_draw': function() {
+      let currData = Template.currentData();
+      Meteor.defer(function() {
+        // building = Buildings.findOne({_id: this.building._id}).fetch();
+        let building = currData.building;
+        let imageUrl, imageBounds;
+
+        if(map)
+        {
+          map.remove();
+        }
+
+        map = L.map('answer-map', {zoomControl: false, minZoom: 14}).setView([building.location.coordinates[1], building.location.coordinates[0]], 15);
+
+        //only display open streetmap for web users
+        if(!Meteor.isCordova){
+         L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png').addTo(map);
+        }
+
+        if (building.picture) {
+          imageUrl = Images.findOne({_id: building.picture}).url();
+          if(building.bounding_box){
+            imageBounds = JSON.parse(building.bounding_box);
+            L.imageOverlay(imageUrl, imageBounds).addTo(map);
+            //$.publish('toast',['Drawing an ImageOverlay','Image Overlay','info']);
+          }
+        } else {
+          $.publish('toast',['Functionality may be restricted','No Aerial Image!','warning']);
+        }
+
+        L.Icon.Default.imagePath = Meteor.absoluteUrl() + 'packages/bevanhunt_leaflet/images';
+
+        drawnItems = L.featureGroup().addTo(map);
+
+        map.addControl(new L.Control.Draw({
+          draw: {
+            polyline: false,
+            circle: false,
+            rectangle: false
+          },
+          edit: {
+            featureGroup: drawnItems,
+            edit: false,
+            remove: true
+          }
+        }));
+
+        map.on('draw:created', function(event) {
+          var layer = event.layer;
+          // console.log(event.layer);
+          // console.log(event.layerType);
+          // console.log(drawnItems);
+          var feature = {
+            options: event.layer.options,
+            layerType: event.layerType,
+            _id: marker_id
+          };
+          switch (event.layerType) {
+          case 'marker':
+            feature.latlng = event.layer._latlng;
+            break;
+          case 'polygon':
+            feature.latlngs = event.layer._latlngs;
+            break;
+          }
+          // console.log(feature);
+          markersInsert(feature);
+          handleButtons(feature._id);
+        });
+        
+        showMapMarkers(currData.group._id, currData.inspection_id, currData.instance);
+
+      });
     }
   });
 
@@ -318,13 +329,13 @@ if (Meteor.isClient) {
     },
     'click .btn-delete': function(event) {
       let question_id = $(event.target).siblings(".btn-geo")[0].id.substr(4);
-      deleteAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id);
+      deleteAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id, Template.instance().parent().data.instance);
       deleteMarker(question_id);
       handleButtons(question_id, hide=false);
     },
     'click .btn-save': function(event) {
       let question_id = $(event.target).siblings(".btn-geo")[0].id.substr(4);
-      saveAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id);
+      saveAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id, Template.instance().parent().data.instance);
       $(event.target).addClass("btn-invisible");
     },
     'change .multiple_choice_answer': function(event) {
@@ -332,10 +343,10 @@ if (Meteor.isClient) {
       let newVal = $(event.target).val();
       if(newVal === "")
       {
-        deleteAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id);
+        deleteAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id, Template.instance().parent().data.instance);
       }
       else {
-        saveAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id, {value: newVal});
+        saveAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id, Template.instance().parent().data.instance, {value: newVal});
       }
     },
     'change .year_answer': function(event) {
@@ -343,27 +354,27 @@ if (Meteor.isClient) {
       let newVal = $(event.target).val();
       if(newVal === "")
       {
-        deleteAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id);
+        deleteAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id, Template.instance().parent().data.instance);
       }
       else {
-        saveAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id, {value: newVal});
+        saveAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id, Template.instance().parent().data.instance, {value: newVal});
       }
     },
     'blur input[name="comment"]': function(event) {
       console.log("blur comment");
       let question_id = $(event.target)[0].id.substr(9);
       let newVal = $(event.target).val();
-      saveComment(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id, newVal);
+      saveComment(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id, Template.instance().parent().data.instance,newVal);
     },
     'blur .numeric_answer_value': function(event) {
       let question_id = $(event.target)[0].id.substr(8);
       let newVal = $(event.target).val();
       if(newVal === "")
       {
-        deleteAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id);
+        deleteAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id, Template.instance().parent().data.instance);
       }
       else {
-        saveAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id, {number_value: newVal, units: $(event.target).closest(".row").find("select.numeric_answer_unit").val()});
+        saveAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id, Template.instance().parent().data.instance, {number_value: newVal, units: $(event.target).closest(".row").find("select.numeric_answer_unit").val()});
       }
     },
     'change .numeric_answer_unit': function(event) {
@@ -372,10 +383,10 @@ if (Meteor.isClient) {
       let value = $(event.target).closest(".row").find(".numeric_answer_value").val();
       if(value === "")
       {
-        deleteAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id);
+        deleteAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id, Template.instance().parent().data.instance);
       }
       else {
-        saveAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id, {number_value: value, units: newVal});
+        saveAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id, Template.instance().parent().data.instance, {number_value: value, units: newVal});
       }
     }
   });
@@ -389,7 +400,7 @@ if (Meteor.isClient) {
       });
     },
     'has_answer': function(question_id) {
-      let answer = Answers.findOne({'question_id': question_id, 'inspection_id': Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id});
+      let answer = Answers.findOne({'question_id': question_id, 'inspection_id': Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id, 'instance': Template.instance().parent().data.instance});
       if (answer)
       {
         // if (answer.location)
@@ -419,7 +430,7 @@ if (Meteor.isClient) {
       return false;
     },
     'has_comment': function() {
-      var answer = Answers.findOne({question_id: this._id, inspection_id: Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id});
+      var answer = Answers.findOne({question_id: this._id, inspection_id: Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id, 'instance': Template.instance().parent().data.instance});
       if (!answer)
         return false;
       if(!answer.comments || answer.comments == "")
@@ -445,7 +456,7 @@ if (Meteor.isClient) {
       return false;
     },
     'comment': function(question_id) {
-      var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id});
+      var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id, 'instance': Template.instance().parent().data.instance});
       if(!answer || !(answer.comments))
         return "";
       else
@@ -471,7 +482,7 @@ if (Meteor.isClient) {
       return false;
     },
     'matched': function(answer_value = null, column) {
-      var answer = Answers.findOne({question_id: Template.parentData()._id, inspection_id: Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id});
+      var answer = Answers.findOne({question_id: Template.parentData()._id, inspection_id: Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id, 'instance': Template.instance().parent().data.instance});
       if (!answer)
         return false;
       // return answer.value === answer_value;
@@ -484,14 +495,14 @@ if (Meteor.isClient) {
 
     },
     'number_value': function(question_id) {
-      var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id});
+      var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id, 'instance': Template.instance().parent().data.instance});
       if (!answer)
         return "";
       else
         return answer.number_value;
     },
     'number_of_photos': function(question_id) {
-      var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id});
+      var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id, 'instance': Template.instance().parent().data.instance});
       var n = 0;
       if(answer.photos)
         n = answer.photos.lenth;

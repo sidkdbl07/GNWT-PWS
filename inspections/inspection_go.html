@@ -8,19 +8,19 @@
   	<div class="row toolbar">
   		<div class="col s1">
 				{{#if previous_group}}
-					<a href="{{pathFor 'inspection_go' inspection_id=inspection._id group_id=previous_group._id}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="back-button btn-large btn-floating waves-effect waves-light blue" ><i class="mdi-image-navigate-before"></i></a>
+					<a href="{{pathFor 'inspection_go' inspection_id=inspection._id group_id=previous_group._id instance = '0' }}" data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="back-button btn-large btn-floating waves-effect waves-light blue" ><i class="mdi-image-navigate-before"></i></a>
 				{{else}}
   				<a href="{{pathFor 'inspection_view' _id=inspection._id}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="back-button btn-large btn-floating waves-effect waves-light blue" ><i class="mdi-hardware-keyboard-backspace"></i></a>
 				{{/if}}
 			</div>
 			<div class="col s7">
 				<div class="red-text text-lighten-4" style="font-size: 20pt; display: inline-block;">{{page.name}}
-					<div style="font-size: 10pt; display: inline-block;" class="red-text text-accent-2">{{current_group.name}}</div>
+					<div style="font-size: 10pt; display: inline-block;" class="red-text text-accent-2">{{group.name}}</div>
 				</div>
 			</div>
 			<div class="col s4">
 				{{#if next_group}}
-					<a href="{{pathFor 'inspection_go' inspection_id=inspection._id group_id=next_group._id}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="back-button btn-large btn-floating waves-effect waves-light blue" ><i class="mdi-image-navigate-next"></i></a>
+					<a href="{{pathFor 'inspection_go' inspection_id=inspection._id group_id=next_group._id instance = '0' }}" data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="back-button btn-large btn-floating waves-effect waves-light blue" ><i class="mdi-image-navigate-next"></i></a>
 				{{else}}
 					<a href="{{pathFor 'inspection_view' _id=inspection._id}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn" class="toolbar_button btn waves-effect waves-light green" ><i class="mdi-navigation-check left"></i>Complete Inspection</a>
 				{{/if}}
@@ -33,35 +33,25 @@
 					<a href="{{pathFor 'building_view' _id=building._id}}#inspections" data-transition-out="slideRightOut" data-transition-in="slideRightIn" >{{building.name}}</a> >
 					<a href="{{pathFor 'inspection_view' _id=inspection._id}}" data-transition-out="slideRightOut" data-transition-in="slideRightIn">Inspection {{date_of_inspection}}</a>
         </div>
-			</div>
-      <div class="row" style="height: calc(100% - 100px);">
+
         <div class="col s12">
-        {{#if is_multiple}}
+        {{#if has_multiple_instance}}
           <ul class="tabs">
-            {{#each instances_of_group group inspection}}
-              <li class="tab col s3"><a href="#{{ this }}">Instance #{{ this }}</a></li>
-            {{/each}}
-              <li class="tab col s3"><a href="#new_instance">+ Add New Instance</a></li>
+              {{#each instances_of_group group inspection}}
+                <li class="tab col s3"><a href="{{pathFor 'inspection_go' inspection_id=../inspection._id group_id=../group._id instance=this }}">Instance #{{ this }}</a></li>
+              {{/each}}
+            
+            {{#with new_instance_of_group  group inspection}}
+              <li class="tab col s3"><a href="{{pathFor 'inspection_go' inspection_id=../inspection._id group_id=../group._id instance=this }}">+ Add New Instance</a></li>
+            {{/with}}
           </ul>
         {{/if}}
-        </div>
-
+        </div>        
+			</div>
+      <div class="row" style="height: calc(100% - 100px);">
         {{#if Template.subscriptionsReady}} 
           {{#if is_simple}}
-            {{#if is_multiple}}
-              {{#each current_groups}}
-                {{#each instances_of_group this ../inspection}}
-                  <div id="{{this}}" class="col s12" style="height: 100%;">
-                    {{> answer_draw_at_a_location group=.. instance=this building=../../building inspection_id=../../inspection._id}}
-                  </div>
-                {{/each}}
-              {{/each}}
-              <div id="new_instance">Blah Blah</div>
-            {{else}}
-              {{#each current_groups}}
-                {{> answer_draw_at_a_location group=this building=../building inspection_id=../inspection._id}}
-              {{/each}}
-            {{/if}}
+              {{> answer_draw_at_a_location group=group building=building inspection_id=inspection._id instance=instance }}
           {{/if}}
         {{else}}
           {{> spinner}}
