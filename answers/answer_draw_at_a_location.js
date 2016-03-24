@@ -22,6 +22,27 @@ if (Meteor.isClient) {
     }
   };
 
+  let savePhoto = function(answer_id, photo) {
+    // let originalAnswer = Answers.findOne({'question_id': question_id, 'inspection_id': inspection_id, 'group_id': group_id, 'instance': instance});
+
+    let originalAnswer = Answers.findOne({'_id': answer_id});
+
+    if (originalAnswer)
+    {
+      // Answers.update(originalAnswer._id, {
+      //   $set: answerObject
+      // });
+      Meteor.call("updateAnswer", originalAnswer._id, {photoA: photo}, function(error, result) {
+        if(error) $.publish('toast',[error.reason,"An error occurred",'error']);
+        else $.publish('toast',["Your photo was saved successfully!","Photo Saved",'success']);
+      });
+    }
+    else
+    {
+      $.publish('toast', ["You cannot save photo for non-existing Answer!", "Photo Save Failed", 'warning']);
+    }
+  };
+
   let saveComment = function(question_id, inspection_id, group_id, instance, comment) {
     let originalAnswer = Answers.findOne({'question_id': question_id, 'inspection_id': inspection_id, 'group_id': group_id, 'instance': instance});
 
@@ -269,24 +290,6 @@ if (Meteor.isClient) {
   });
 
   Template.answer_draw_at_a_location.events({
-    'click .add_photo': function(event, template) {
-      event.preventDefault();
-
-      MeteorCameraUI.getPicture({}, function(error, data){
-        // something goes here
-        if(error)
-         {
-          $.publish('toast',[error,"Whoops! Camera didn't work!",'error']);
-         } 
-         else {
-          Session.set('photo', data); 
-          $.publish('toast',["Photo saved to Session","Photo Saved",'success']);
-         }
-         
-      });
-
-      // $.publish('toast',['Photos have been disabled for the beta test','Photos disabled', 'warning']);
-    },
     'click #btn_map_fullscreen': function(event, template) {
       event.preventDefault();
       if($("#map_container").hasClass("s3")) { // map is small
@@ -320,6 +323,38 @@ if (Meteor.isClient) {
   });
 
   Template.question_to_answer.events({
+    "click .add_photo": function(event, template) {
+      event.preventDefault();
+
+      let question_id = $(event.target).closest(".photos_for_question")[0].id.substr(6);
+      let answer_id = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id, group_id: Template.instance().parent().data.group._id, instance: Template.instance().parent().data.instance })._id;
+
+      MeteorCameraUI.getPicture({}, function(error, data){
+        // something goes here
+        if(error)
+         {
+          $.publish('toast',[error,"Whoops! Camera didn't work!",'error']);
+         } 
+         else {
+          Session.set('photo', data); 
+          let photo_blob = MeteorCameraUI.dataURIToBlob(data);
+          Images.insert(photo_blob, function(error, fileObj) {
+            // Here, we need to save image 
+            if(error)
+            {
+              $.publish('toast',[error,"Whoops! Image insert failed!",'error']);
+            }
+            else {
+              savePhoto(answer_id, fileObj._id);
+            }
+          });
+          $.publish('toast',["Photo saved to Session","Photo Saved",'success']);
+         }
+         
+      });
+
+      // $.publish('toast',['Photos have been disabled for the beta test','Photos disabled', 'warning']);
+    },
     "click .help": function(event, template){
        event.preventDefault();
        $("#help_text_content_"+this._id).html( this.help_text );

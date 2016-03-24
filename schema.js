@@ -87,11 +87,22 @@ Schemas.Answers = new SimpleSchema({
     type: Date,
     optional: true
   },
-  'photos': {
-    type: [Object],
+  'photoA': {
+    type: String, 
     optional: true
   },
+  'photos': {
+    type: Array,
+    minCount: 0,
+    optional: true
+  },
+  'photos.$': {
+    type: Object
+  },
   'photos.$.caption': {
+    type: String
+  },
+  'photos.$.url': {
     type: String
   },
   'comments': {
