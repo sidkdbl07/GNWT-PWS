@@ -515,6 +515,17 @@ if (Meteor.isClient) {
         return answer.comments;
 
     },
+    'photoA': function(question_id) {
+      var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id, 'instance': Template.instance().parent().data.instance});
+      if(answer && answer.photoA)
+      {
+        let imageUrl = Images.findOne({_id: answer.photoA}).url();
+        console.log("photoA url is ", imageUrl);
+        return imageUrl;
+      }
+      else
+        return "";
+    },
     'is_multiple_choice': function(question_id) {
       if(this.type === "Multiple Choice") {
         return true;
