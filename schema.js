@@ -100,9 +100,10 @@ Schemas.Answers = new SimpleSchema({
     type: Object
   },
   'photos.$.caption': {
-    type: String
+    type: String,
+    optional: true
   },
-  'photos.$.url': {
+  'photos.$.imageID': {
     type: String
   },
   'comments': {

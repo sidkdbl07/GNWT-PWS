@@ -32,7 +32,7 @@ if (Meteor.isClient) {
       // Answers.update(originalAnswer._id, {
       //   $set: answerObject
       // });
-      Meteor.call("updateAnswer", originalAnswer._id, {photoA: photo}, function(error, result) {
+      Meteor.call("insertAnswerPhoto", originalAnswer._id, photo, function(error, result) {
         if(error) $.publish('toast',[error.reason,"An error occurred",'error']);
         else $.publish('toast',["Your photo was saved successfully!","Photo Saved",'success']);
       });
@@ -441,8 +441,18 @@ if (Meteor.isClient) {
   });
 
   Template.question_to_answer.helpers({
-    'photos': function() {
-      return Session.get('photo');
+    'photos': function(question_id) {
+      var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id, 'instance': Template.instance().parent().data.instance});
+      if(answer && answer.photos)
+      {
+        console.log(answer.photos);
+        return answer.photos;
+      }
+      else 
+        return [];
+    },
+    'image': function(id) {
+      return { "url": Images.findOne({_id: id}).url() };
     },
     'collapsible_support': function(id) {
       Meteor.defer(function() {
@@ -515,17 +525,17 @@ if (Meteor.isClient) {
         return answer.comments;
 
     },
-    'photoA': function(question_id) {
-      var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id, 'instance': Template.instance().parent().data.instance});
-      if(answer && answer.photoA)
-      {
-        let imageUrl = Images.findOne({_id: answer.photoA}).url();
-        console.log("photoA url is ", imageUrl);
-        return imageUrl;
-      }
-      else
-        return "";
-    },
+    // 'photoA': function(question_id) {
+    //   var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id, 'instance': Template.instance().parent().data.instance});
+    //   if(answer && answer.photoA)
+    //   {
+    //     let imageUrl = Images.findOne({_id: answer.photoA}).url();
+    //     console.log("photoA url is ", imageUrl);
+    //     return imageUrl;
+    //   }
+    //   else
+    //     return "";
+    // },
     'is_multiple_choice': function(question_id) {
       if(this.type === "Multiple Choice") {
         return true;
@@ -568,7 +578,7 @@ if (Meteor.isClient) {
       var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id, 'instance': Template.instance().parent().data.instance});
       var n = 0;
       if(answer.photos)
-        n = answer.photos.lenth;
+        n = answer.photos.length;
       return n;
     },
     'question': function(question_id) {
@@ -601,11 +611,23 @@ Meteor.methods({
     // $.publish('toast',['New Answer inserted','Answer Added!','info']);
   },
   deleteAnswer: function (id) {
+    // First off, we need to remove corresponding images. 
+    let answer = Answers.findOne({"_id": id});
+    if (answer.photos)
+    {
+      for (let photo of answer.photos)
+      {
+        Images.remove({_id: photo.imageID});
+      }
+    }
     return Answers.remove(id);
     // $.publish('toast',['Corresponding Answer removed','Answer Deleted!','info']);
   },
   updateAnswer: function (id, answerObject) {
     return Answers.update(id, { $set: answerObject });
     // $.publish('toast',['Corresponding Answer modified','Answer Updated!','info']);
+  },
+  insertAnswerPhoto: function(id, newPhotoID) {
+    return Answers.update(id, {$push: {"photos": {"imageID": newPhotoID}} });
   }
 });
