@@ -171,7 +171,11 @@
                       <div class="row" style="overflow-y: auto; height: 100px;">
                         <div class="col s1" style="padding: 30px 0px;"><button class="add_photo waves-effect waves-light btn-floating green" ><i class="mdi-content-add"></i></button></div>
                         <!--<div class="col s2 grey-text"><i class="mdi-editor-insert-photo large"></i></div>-->
-                        <div class="col s4 grey-text" style="padding: 40px 0px;"><div class="valign">No photos attached</div></div>
+                        {{#if photos}}
+                          <div class="col s4 grey-text" style="padding: 40px 0px;"><div class="valign"><img src="{{ photos }}"></div></div>
+                        {{else}}
+                          <div class="col s4 grey-text" style="padding: 40px 0px;"><div class="valign">No photos attached</div></div>
+                        {{/if}}
                       </div>
                     </div>
                   </div>

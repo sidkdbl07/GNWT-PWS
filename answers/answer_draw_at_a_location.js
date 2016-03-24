@@ -271,7 +271,21 @@ if (Meteor.isClient) {
   Template.answer_draw_at_a_location.events({
     'click .add_photo': function(event, template) {
       event.preventDefault();
-      $.publish('toast',['Photos have been disabled for the beta test','Photos disabled', 'warning']);
+
+      MeteorCameraUI.getPicture({}, function(error, data){
+        // something goes here
+        if(error)
+         {
+          $.publish('toast',[error,"Whoops! Camera didn't work!",'error']);
+         } 
+         else {
+          Session.set('photo', data); 
+          $.publish('toast',["Photo saved to Session","Photo Saved",'success']);
+         }
+         
+      });
+
+      // $.publish('toast',['Photos have been disabled for the beta test','Photos disabled', 'warning']);
     },
     'click #btn_map_fullscreen': function(event, template) {
       event.preventDefault();
@@ -392,6 +406,9 @@ if (Meteor.isClient) {
   });
 
   Template.question_to_answer.helpers({
+    'photos': function() {
+      return Session.get('photo');
+    },
     'collapsible_support': function(id) {
       Meteor.defer(function() {
         $('#collapsible_' + id).collapsible({

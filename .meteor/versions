@@ -90,6 +90,7 @@ livedata@1.0.15
 localstorage@1.0.5
 logging@1.0.8
 materialize:materialize@0.97.5
+mdg:camera@1.1.5
 mdg:validation-error@0.2.0
 meteor@1.1.10
 meteor-base@1.0.1
@@ -106,6 +107,7 @@ mpowaga:jquery-ui-widget@1.11.4
 npm-bcrypt@0.7.8_2
 npm-mongo@1.4.39_1
 observe-sequence@1.0.7
+okland:camera-ui@0.0.2
 ordered-dict@1.0.4
 pagebakers:ionicons@2.0.1_1
 promise@0.5.1
