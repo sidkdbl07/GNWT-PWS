@@ -43,6 +43,25 @@ if (Meteor.isClient) {
     }
   };
 
+  let removePhoto = function(answer_id, photo) {
+    let originalAnswer = Answers.findOne({'_id': answer_id});
+
+    if (originalAnswer)
+    {
+      // Answers.update(originalAnswer._id, {
+      //   $set: answerObject
+      // });
+      Meteor.call("removePhotoFromAnswer", originalAnswer._id, photo, function(error, result) {
+        if(error) $.publish('toast',[error.reason,"An error occurred while remove photo from Answer",'error']);
+        else $.publish('toast',["Your photo was deleted successfully!","Photo removed",'success']);
+      });
+    }
+    else
+    {
+      $.publish('toast', ["You cannot delete photo for non-existing Answer!", "Photo Remove Failed", 'warning']);
+    }
+  };
+
   let saveComment = function(question_id, inspection_id, group_id, instance, comment) {
     let originalAnswer = Answers.findOne({'question_id': question_id, 'inspection_id': inspection_id, 'group_id': group_id, 'instance': instance});
 
@@ -355,6 +374,16 @@ if (Meteor.isClient) {
 
       // $.publish('toast',['Photos have been disabled for the beta test','Photos disabled', 'warning']);
     },
+    "click .image-delete-button": function(event, template) {
+      event.preventDefault();
+      let imageID = $(event.target).closest("button").attr("id").substr(7);
+      console.log("imageID is: ", imageID);
+      let question_id = $(event.target).closest(".photos_for_question")[0].id.substr(6);
+      let answer_id = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id, group_id: Template.instance().parent().data.group._id, instance: Template.instance().parent().data.instance })._id;
+      console.log("Answer for deleted image is: ", answer_id);
+      removePhoto(answer_id, imageID);
+      Images.remove({_id: imageID});
+    },
     "click .help": function(event, template){
        event.preventDefault();
        $("#help_text_content_"+this._id).html( this.help_text );
@@ -452,7 +481,7 @@ if (Meteor.isClient) {
         return [];
     },
     'image': function(id) {
-      return { "url": Images.findOne({_id: id}).url() };
+      return { "url": Images.findOne({_id: id}).url(), "id": id };
     },
     'collapsible_support': function(id) {
       Meteor.defer(function() {
@@ -629,5 +658,8 @@ Meteor.methods({
   },
   insertAnswerPhoto: function(id, newPhotoID) {
     return Answers.update(id, {$push: {"photos": {"imageID": newPhotoID}} });
+  },
+  removePhotoFromAnswer: function(id, photoID) {
+    return Answers.update(id, {$pull: {"photos": {"imageID": photoID}} });
   }
 });

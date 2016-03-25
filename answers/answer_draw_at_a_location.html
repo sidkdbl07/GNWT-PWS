@@ -176,7 +176,10 @@
                           {{#each photos _id}}
                             {{#with image imageID}}
                               {{#if url}}
-                              <div class="col s4 grey-text" style="padding: 40px 0px;"><div class="valign"><img src="{{ url }}" width="50" height="50"></div></div>
+                              <div class="col s4 grey-text" style="padding: 40px 0px;"><div class="valign">
+                                <img src="{{ url }}" width="50" height="50">
+                                <button class="btn btn-primary btn-floating red image-delete-button" id="delete_{{id}}"><i class="mdi-content-remove"></i></button>
+                              </div></div>
                               {{/if}}
                           {{/with}}
                           {{/each}}
