@@ -167,8 +167,6 @@ if (Meteor.isClient) {
       Meteor.call("insertAnswer", answerObject, function(error, result) {
         if(error) $.publish('toast',[error.reason,"An error occurred",'error']);
         else $.publish('toast',["Your answer has been noted!","Saved",'success']);
-        $.publish('toast',["form #"+answerObject.question_id,"Collapsible",'info']);
-        $("#"+answerObject.question_id).children(".collapsible").collapsible();
       });
     }
 
@@ -301,7 +299,7 @@ if (Meteor.isClient) {
           markersInsert(feature);
           handleButtons(feature._id);
         });
-        
+
         showMapMarkers(currData.group._id, currData.inspection_id, currData.instance);
 
       });
@@ -338,7 +336,6 @@ if (Meteor.isClient) {
 
   Template.question_to_answer.onRendered(function() {
     $('select').material_select();
-    console.log("question_to_answer onRendered");
   });
 
   Template.question_to_answer.events({
@@ -353,12 +350,12 @@ if (Meteor.isClient) {
         if(error)
          {
           $.publish('toast',[error,"Whoops! Camera didn't work!",'error']);
-         } 
+         }
          else {
-          Session.set('photo', data); 
+          Session.set('photo', data);
           let photo_blob = MeteorCameraUI.dataURIToBlob(data);
           Images.insert(photo_blob, function(error, fileObj) {
-            // Here, we need to save image 
+            // Here, we need to save image
             if(error)
             {
               $.publish('toast',[error,"Whoops! Image insert failed!",'error']);
@@ -367,9 +364,9 @@ if (Meteor.isClient) {
               savePhoto(answer_id, fileObj._id);
             }
           });
-          $.publish('toast',["Photo saved to Session","Photo Saved",'success']);
+          $.publish('toast',["Photo has been captured","Photo Saved",'success']);
          }
-         
+
       });
 
       // $.publish('toast',['Photos have been disabled for the beta test','Photos disabled', 'warning']);
@@ -474,10 +471,10 @@ if (Meteor.isClient) {
       var answer = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id, 'group_id': Template.instance().parent().data.group._id, 'instance': Template.instance().parent().data.instance});
       if(answer && answer.photos)
       {
-        console.log(answer.photos);
+        //console.log(answer.photos);
         return answer.photos;
       }
-      else 
+      else
         return [];
     },
     'image': function(id) {
@@ -488,6 +485,8 @@ if (Meteor.isClient) {
         $('#collapsible_' + id).collapsible({
           accordion : true
         });
+
+        $('.materialboxed').materialbox();
       });
     },
     'has_answer': function(question_id) {
@@ -515,7 +514,7 @@ if (Meteor.isClient) {
         //     }
         //   }
         //   markersInsert(feature);
-        // }        
+        // }
         return true;
       }
       return false;
@@ -640,7 +639,7 @@ Meteor.methods({
     // $.publish('toast',['New Answer inserted','Answer Added!','info']);
   },
   deleteAnswer: function (id) {
-    // First off, we need to remove corresponding images. 
+    // First off, we need to remove corresponding images.
     let answer = Answers.findOne({"_id": id});
     if (answer.photos)
     {

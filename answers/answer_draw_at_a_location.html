@@ -17,7 +17,7 @@
       </div>
     </div>
     {{/if}}
-    
+
     <div class="col {{#if group.use_map}}s9{{else}}s11 offset-s1{{/if}}">
       {{#each questions_in_group}}
         <!-- Use has_decision_point qig_id here -->
@@ -62,12 +62,12 @@
             <div class="input-field col s11">
               {{#if has_answer _id}}
                 <button type="button" id="btn_{{_id}}" class="btn btn-invisible btn-geo-point btn-geo waves-effect waves-light teal"><i class="mdi-content-add left"></i>{{label}}</button>
-                <button type="button" class="btn btn-invisible btn-save waves-effect waves-light teal">Save</button>
-                <button type="button" class="btn btn-delete waves-effect waves-light teal">Delete</button>
+                <button type="button" class="btn btn-invisible btn-save waves-effect waves-light green">Save</button>
+                <button type="button" class="btn btn-delete waves-effect waves-light red">Delete</button>
               {{else}}
                 <button type="button" id="btn_{{_id}}" class="btn btn-geo-point btn-geo waves-effect waves-light teal"><i class="mdi-content-add left"></i>{{label}}</button>
-                <button type="button" class="btn btn-invisible btn-save waves-effect waves-light teal">Save</button>
-                <button type="button" class="btn btn-invisible btn-delete waves-effect waves-light teal">Delete</button>
+                <button type="button" class="btn btn-invisible btn-save waves-effect waves-light green">Save</button>
+                <button type="button" class="btn btn-invisible btn-delete waves-effect waves-light red">Delete</button>
               {{/if}}
             </div>
             {{#if has_help_text _id}}
@@ -82,12 +82,12 @@
             <div class="input-field col s11">
               {{#if has_answer _id}}
                 <button type="button" id="btn_{{_id}}" class="btn btn-invisible btn-geo-area btn-geo waves-effect waves-light teal"><i class="mdi-content-add left"></i>{{label}}</button>
-                <button type="button" class="btn btn-invisible btn-save waves-effect waves-light teal">Save</button>
-                <button type="button" class="btn btn-delete waves-effect waves-light teal">Delete</button>
+                <button type="button" class="btn btn-invisible btn-save waves-effect waves-light green">Save</button>
+                <button type="button" class="btn btn-delete waves-effect waves-light red">Delete</button>
               {{else}}
                 <button type="button" id="btn_{{_id}}" class="btn btn-geo-area btn-geo waves-effect waves-light teal"><i class="mdi-content-add left"></i>{{label}}</button>
-                <button type="button" class="btn btn-invisible btn-save waves-effect waves-light teal">Save</button>
-                <button type="button" class="btn btn-invisible btn-delete waves-effect waves-light teal">Delete</button>
+                <button type="button" class="btn btn-invisible btn-save waves-effect waves-light green">Save</button>
+                <button type="button" class="btn btn-invisible btn-delete waves-effect waves-light red">Delete</button>
               {{/if}}
             </div>
             {{#if has_help_text _id}}
@@ -164,22 +164,22 @@
               </li>
               {{#if show_pictures}}
               <li>
-                <div class="collapsible-header grey lighten-2 grey-text"><i class="mdi-editor-insert-photo"></i>Photos<div class="chip grey white-text right">{{number_of_photos _id}}</div></div>
+                <div class="collapsible-header grey lighten-2 teal-text"><i class="mdi-editor-insert-photo"></i>Photos<div class="chip grey white-text right">{{number_of_photos _id}}</div></div>
                 <div id="photo_{{_id}}" class="collapsible-body photos_for_question" style="padding-bottom: 20px;">
                   <div class="row">
                     <div class="col s12">
                       <div class="row" style="overflow-y: auto; height: 100px;">
                         <div class="col s1" style="padding: 30px 0px;"><button class="add_photo waves-effect waves-light btn-floating green" ><i class="mdi-content-add"></i></button></div>
                         <!--<div class="col s2 grey-text"><i class="mdi-editor-insert-photo large"></i></div>-->
-                        
+
                         {{#if photos _id}}
                           {{#each photos _id}}
                             {{#with image imageID}}
                               {{#if url}}
-                              <div class="col s4 grey-text" style="padding: 40px 0px;"><div class="valign">
-                                <img src="{{ url }}" width="50" height="50">
+                              <div class="col s2">
+                                <img src="{{ url }}" class="materialboxed" height="100">
                                 <button class="btn btn-primary btn-floating red image-delete-button" id="delete_{{id}}"><i class="mdi-content-remove"></i></button>
-                              </div></div>
+                              </div>
                               {{/if}}
                           {{/with}}
                           {{/each}}

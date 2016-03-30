@@ -19,7 +19,6 @@ ecmascript              # Enable ECMAScript2015+ syntax in app code
 iron:router
 alanning:roles
 accounts-password
-materialize:materialize
 aldeed:simple-schema
 aldeed:collection2
 gildaspk:autoform-materialize
@@ -39,3 +38,4 @@ yogiben:autoform-file
 cfs:ui
 reactive-var
 okland:camera-ui
+materialize:materialize
