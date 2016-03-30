@@ -168,24 +168,26 @@
                 <div id="photo_{{_id}}" class="collapsible-body photos_for_question" style="padding-bottom: 20px;">
                   <div class="row">
                     <div class="col s12">
-                      <div class="row" style="overflow-y: auto; height: 100px;">
+                      <div class="row">
                         <div class="col s1" style="padding: 30px 0px;"><button class="add_photo waves-effect waves-light btn-floating green" ><i class="mdi-content-add"></i></button></div>
                         <!--<div class="col s2 grey-text"><i class="mdi-editor-insert-photo large"></i></div>-->
 
-                        {{#if photos _id}}
-                          {{#each photos _id}}
-                            {{#with image imageID}}
-                              {{#if url}}
-                              <div class="col s2">
-                                <img src="{{ url }}" class="materialboxed" height="100">
-                                <button class="btn btn-primary btn-floating red image-delete-button" id="delete_{{id}}"><i class="mdi-content-remove"></i></button>
-                              </div>
-                              {{/if}}
-                          {{/with}}
-                          {{/each}}
-                        {{else}}
-                          <div class="col s4 grey-text" style="padding: 40px 0px;"><div class="valign">No photos attached</div></div>
-                        {{/if}}
+                        <div class="col s11" style="height: 120px; overflow-x: scroll; overflow-y: hidden; white-space: nowrap;">
+                          {{#if photos _id}}
+                            {{#each photos _id}}
+                              {{#with image imageID}}
+                                {{#if url}}
+                                <div style="display: inline-block; margin: 0px 1px;">
+                                  <a href="#answer_photo_modal" class="modal-trigger"><img id="{{id}}" src="{{ url }}" height="100"></a>
+                                  <!--<button class="btn btn-primary btn-floating red image-delete-button" id="delete_{{id}}"><i class="mdi-content-remove"></i></button>-->
+                                </div>
+                                {{/if}}
+                            {{/with}}
+                            {{/each}}
+                          {{else}}
+                            <div class="col s4 grey-text" style="padding: 40px 0px;"><div class="valign">No photos attached</div></div>
+                          {{/if}}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -200,4 +202,17 @@
     </div>
   </div>
   {{/with}}
+</template>
+
+<template name="photo_in_answer">
+  <div style="white-space: nowrap;">
+    <div style="display: inline-block; width: 300px;">
+      <button class="btn btn-primary red image-delete-button" id="delete_{{photo._id}}"><i class="mdi-content-clear left"></i>Delete Image</button>
+    </div>
+    <div class="input-field" style="display: inline-block; width: 520px;">
+      <input id="caption_for_image" type="text" />
+      <label for="caption_for_image">Caption</label>
+    </div>
+  </div>
+  <img src="{{photo.url}}" />
 </template>

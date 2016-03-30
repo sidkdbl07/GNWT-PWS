@@ -88,13 +88,13 @@ if (Meteor.isClient) {
 , 'inspection_id': inspection_id, 'group_id': group_id, 'instance': instance});
       if ( answer && answer.location)
       {
-         console.log("Display for marker");
+        // console.log("Display for marker");
         let feature = {
           _id: answer.question_id
         };
         if (answer.location.type === "Point") {
           feature.layerType = 'marker';
-          console.log("marker position is ", answer.location.coordinates[0]);
+        //  console.log("marker position is ", answer.location.coordinates[0]);
           feature.latlng = JSON.parse(answer.location.coordinates[0]);
         }
         else {
@@ -217,14 +217,16 @@ if (Meteor.isClient) {
 
   });
 
-  Template.registerHelper("has_decision_point", function(qig_id){
-    var n = Decision_Points.find({qig_id: qig_id}).count();
-    $.publish('toast',[n,"Decision Points",'info']);
-    if(n > 0) {
-      return true;
+  Template.registerHelper(
+    "has_decision_point", function(qig_id){
+      var n = Decision_Points.find({qig_id: qig_id}).count();
+      $.publish('toast',[n,"Decision Points",'info']);
+      if(n > 0) {
+        return true;
+      }
+      return false;
     }
-    return false;
-  });
+  );
 
   Template.answer_draw_at_a_location.helpers({
     'questions_in_group': function() {
@@ -374,10 +376,10 @@ if (Meteor.isClient) {
     "click .image-delete-button": function(event, template) {
       event.preventDefault();
       let imageID = $(event.target).closest("button").attr("id").substr(7);
-      console.log("imageID is: ", imageID);
+      //console.log("imageID is: ", imageID);
       let question_id = $(event.target).closest(".photos_for_question")[0].id.substr(6);
       let answer_id = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id, group_id: Template.instance().parent().data.group._id, instance: Template.instance().parent().data.instance })._id;
-      console.log("Answer for deleted image is: ", answer_id);
+      //console.log("Answer for deleted image is: ", answer_id);
       removePhoto(answer_id, imageID);
       Images.remove({_id: imageID});
     },
@@ -392,13 +394,13 @@ if (Meteor.isClient) {
     },
     'click .btn-geo-point': function(event) {
       event.stopImmediatePropagation();
-      console.log('geo point button clicked');
+      //console.log('geo point button clicked');
       marker_id = event.target.id.substr(4);
       $(".leaflet-draw-draw-marker")[0].click();
     },
     'click .btn-geo-area': function(event) {
       event.stopImmediatePropagation();
-      console.log('geo area button clicked');
+      //console.log('geo area button clicked');
       marker_id = event.target.id.substr(4);
       $(".leaflet-draw-draw-polygon")[0].click();
     },
@@ -412,6 +414,10 @@ if (Meteor.isClient) {
       let question_id = $(event.target).siblings(".btn-geo")[0].id.substr(4);
       saveAnswer(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id, Template.instance().parent().data.instance);
       $(event.target).addClass("btn-invisible");
+    },
+    'click .modal-trigger': function(event) {
+      console.log("target: "+event.target.id);
+      Session.set('answer_photo_to_display', event.target.id);
     },
     'change .multiple_choice_answer': function(event) {
       let question_id = $(event.target)[0].id.substr(4);
@@ -436,7 +442,7 @@ if (Meteor.isClient) {
       }
     },
     'blur input[name="comment"]': function(event) {
-      console.log("blur comment");
+      //console.log("blur comment");
       let question_id = $(event.target)[0].id.substr(9);
       let newVal = $(event.target).val();
       saveComment(question_id, Template.instance().parent().data.inspection_id, Template.instance().parent().data.group._id, Template.instance().parent().data.instance,newVal);
@@ -485,8 +491,12 @@ if (Meteor.isClient) {
         $('#collapsible_' + id).collapsible({
           accordion : true
         });
-
-        $('.materialboxed').materialbox();
+        $('.modal-trigger').leanModal({
+          dismissible: false,
+          complete: function() {
+            $(".lean-overlay").remove();
+          }
+        });
       });
     },
     'has_answer': function(question_id) {
@@ -625,6 +635,18 @@ if (Meteor.isClient) {
         return {'year': i};
       });
     }
+  });
+
+
+  Template.photo_in_answer.helpers({
+    'photo': function() {
+      //console.log("Photo: "+Session.get('answer_photo_to_display'));
+      return Images.findOne({_id: Session.get('answer_photo_to_display')});
+    }
+  });
+
+  Template.photo_in_answer.events({
+
   });
 }
 

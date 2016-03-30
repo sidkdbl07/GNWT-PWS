@@ -40,7 +40,7 @@ if (Meteor.isClient) {
   // Login helpers, render events and events
   ////////////////////////////////////////
   Template.login.onRendered(function() {
-    $("#login_button").leanModal();
+    $(".modal-trigger").leanModal();
   });
   Template.login.events({
     'click #submit_logout': function (event) {

@@ -40,16 +40,16 @@
               {{#each instances_of_group group inspection}}
                 <li class="tab col s3"><a href="{{pathFor 'inspection_go' inspection_id=../inspection._id group_id=../group._id instance=this }}">Instance #{{ this }}</a></li>
               {{/each}}
-            
+
             {{#with new_instance_of_group  group inspection}}
               <li class="tab col s3"><a href="{{pathFor 'inspection_go' inspection_id=../inspection._id group_id=../group._id instance=this }}">+ Add New Instance</a></li>
             {{/with}}
           </ul>
         {{/if}}
-        </div>        
+        </div>
 			</div>
       <div class="row" style="height: calc(100% - 100px);">
-        {{#if Template.subscriptionsReady}} 
+        {{#if Template.subscriptionsReady}}
           {{#if is_simple}}
               {{> answer_draw_at_a_location group=group building=building inspection_id=inspection._id instance=instance }}
           {{/if}}
