@@ -1,14 +1,14 @@
 <template name="user_edit">
   <div class="transitions-content">
     <div id="header" class="row">
-      <div class="col s3">
-        <div id="header_page_title">Update a User</div>
+      <div class="col s8">
+        <div id="header_page_title">Update User Information</div>
       </div>
     </div>
     <div class="content">
       <div class="row">
-        <div class="col s3">
-          <div class="card  grey lighten-3">
+        <div class="col s4">
+          <div class="card grey lighten-3">
             <div class="card-content" style="padding: 10px;">
               <span class="card-title">User Info</span>
               <div class="row" style="height: 65px;">
@@ -29,7 +29,8 @@
             </div>
           </div>
         </div>
-        <div class="col s3 offset-s1">
+        {{#if isInRole 'admin' 'default_group'}}
+        <div class="col s4">
           <div class="card grey lighten-3">
             <div class="card-content" style="padding: 10px;">
               <span class="card-title">Permissions</span>
@@ -49,7 +50,8 @@
             </div>
           </div>
         </div>
-        <div class="col s3 offset-s1">
+        {{/if}}
+        <div class="col s4">
           <div class="card  grey lighten-3">
             <div class="card-content" style="padding: 10px;">
               <span class="card-title">Password</span>

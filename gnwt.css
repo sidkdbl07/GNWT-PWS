@@ -63,7 +63,8 @@ h2 {
 }
 
 .header_button {
-  margin-top: 3px;
+  top: 3px;
+  right: 25px;
 }
 
 #header_page_title {

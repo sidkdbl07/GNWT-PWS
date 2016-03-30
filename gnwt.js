@@ -46,7 +46,7 @@ if (Meteor.isClient) {
     'click #submit_logout': function (event) {
       event.preventDefault();
       Meteor.logout();
-      $('#login_modal').closeModal();
+      //$('#login_modal').closeModal();
       $.publish('toast', ["You have been logged out", "Logout Successful!", "success"]);
     },
     'click #submit_login': function (e) {
@@ -336,7 +336,7 @@ Router.route('/inspection/go/:inspection_id/:group_id/:instance', {
       return result;
     };
 
-    
+
     var instance = this.params.instance;
     // var images = Images.find({}).fetch();
     // console.log("Images in data: ", images);
@@ -453,8 +453,10 @@ Router.route('/users/update/:_id', {
   name: 'edit_user',
   template: 'user_edit',
   data: function() {
-    var currentUser = this.params._id;
-    return Meteor.user.findOne({ _id: currentUser });
+    return Meteor.users.findOne({ _id: this.params._id });
+  },
+  waitOn: function() {
+    this.subscribe('users');
   },
   onAfterAction: function() {
     document.title = "GNWT PWS - Edit User";
