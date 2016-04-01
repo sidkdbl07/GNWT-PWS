@@ -8,26 +8,29 @@
     <div class="content">
       <div class="row">
         <div class="col s4">
-          <div class="card grey lighten-3">
-            <div class="card-content" style="padding: 10px;">
-              <span class="card-title">User Info</span>
-              <div class="row" style="height: 65px;">
-                <div class="input-field col s12">
-                  <input type="text" id="edit_user_fullname" name="edit_user_fullname" class="validate" required="" aria-required="true" value={{profile.fullname}} />
-                  <label for="fullname" class="active">Full Name</label>
+          <input type="hidden" name="user_id" value={{_id}} />
+          <form id="user_info_form" novalidate="novalidate">
+            <div class="card grey lighten-3">
+              <div class="card-content" style="padding: 10px;">
+                <span class="card-title">User Info</span>
+                <div class="row" style="height: 65px;">
+                  <div class="input-field col s12">
+                    <input type="text" id="edit_user_fullname" name="edit_user_fullname" class="validate" required="" aria-required="true" value={{profile.fullname}} />
+                    <label for="edit_user_fullname" class="active">Full Name</label>
+                  </div>
+                </div>
+                <div class="row" style="height: 65px;">
+                  <div class="input-field col s12">
+                    <input type="email" id="edit_user_email" name="edit_user_email" class="validate" required="" aria-required="true" value={{emails.[0].address}} />
+                    <label for="edit_user_email" class="active">eMail Address</label>
+                  </div>
                 </div>
               </div>
-              <div class="row" style="height: 65px;">
-                <div class="input-field col s12">
-                  <input type="email" id="edit_user_email" name="edit_user_email" class="validate" required="" aria-required="true" value={{emails.[0].address}} />
-                  <label for="email" class="active">eMail Address</label>
-                </div>
+              <div class="card-action">
+                <button type="submit" id="submit_user_edit_info" class="waves-effect waves-light btn green" style="margin-right: 5px;"><i class="mdi-content-save left"></i>Save</button>
               </div>
             </div>
-            <div class="card-action">
-              <button type="submit" id="submit_user_edit_info" class="waves-effect waves-light btn green" style="margin-right: 5px;"><i class="mdi-content-save left"></i>Save</button>
-            </div>
-          </div>
+          </form>
         </div>
         {{#if isInRole 'admin' 'default_group'}}
         <div class="col s4">
