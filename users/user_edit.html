@@ -13,19 +13,19 @@
               <span class="card-title">User Info</span>
               <div class="row" style="height: 65px;">
                 <div class="input-field col s12">
-                  <input type="text" id="edit_user_fullname" name="edit_user_fullname" class="validate" required="" aria-required="true" />
-                  <label for="fullname" >Full Name</label>
+                  <input type="text" id="edit_user_fullname" name="edit_user_fullname" class="validate" required="" aria-required="true" value={{profile.fullname}} />
+                  <label for="fullname" class="active">Full Name</label>
                 </div>
               </div>
               <div class="row" style="height: 65px;">
                 <div class="input-field col s12">
-                  <input type="email" id="edit_user_email" name="edit_user_email" class="validate" required="" aria-required="true"  />
-                  <label for="email">eMail Address</label>
+                  <input type="email" id="edit_user_email" name="edit_user_email" class="validate" required="" aria-required="true" value={{emails.[0].address}} />
+                  <label for="email" class="active">eMail Address</label>
                 </div>
               </div>
             </div>
             <div class="card-action">
-              <button id="submit_user_edit_info" class="waves-effect waves-light btn green" style="margin-right: 5px;"><i class="mdi-content-save left"></i>Save</button>
+              <button type="submit" id="submit_user_edit_info" class="waves-effect waves-light btn green" style="margin-right: 5px;"><i class="mdi-content-save left"></i>Save</button>
             </div>
           </div>
         </div>
@@ -36,11 +36,11 @@
               <span class="card-title">Permissions</span>
               <div class="row" style="height: 130px;">
                 <div class="input-field col s12">
-                  <input id="edit_field" type="radio" name="edit_user_role" value="field">
+                <input id="edit_field" type="radio" name="edit_user_role" value="field" {{checkedIf "field" }}>
                   <label for="edit_field">Field</label><br/>
-                  <input id="edit_manager" type="radio" name="edit_user_role" value="manager">
+                  <input id="edit_manager" type="radio" name="edit_user_role" value="manager" {{checkedIf "manager"}}>
                   <label for="edit_manager">Manager</label><br/>
-                  <input id="edit_admin" type="radio" name="edit_user_role" value="admin">
+                  <input id="edit_admin" type="radio" name="edit_user_role" value="admin" {{checkedIf "admin"}}>
                   <label for="edit_admin">Administrator</label>
                 </div>
               </div>
