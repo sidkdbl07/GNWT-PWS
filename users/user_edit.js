@@ -16,6 +16,19 @@ if (Meteor.isClient) {
         });
       }
     });
+
+    // $( '#user_permission_form' ).validate({
+    //   submitHander: function(form) {
+    //     var id = $('[name=user_id]').val();
+    //     var role = $('[name=edit_user_role]:checked')[0].value;
+
+    //     Meteor.call("updateRoles", id, new Array(role), function(error, result) {
+    //       if(error) $.publish('toast',[error.reason,"An error occurred",'error']);
+    //       else $.publish('toast',["Your change to user info accepted","User Info Saved",'success']);
+    //     });
+    //   }
+    // });
+
   });
 
   Template.user_edit.helpers({
@@ -26,31 +39,32 @@ if (Meteor.isClient) {
   });
 
   Template.user_edit.events({
-    // 'click #submit_user_edit_info': function(event) {
-    //   event.preventDefault();
+    'click #submit_user_edit_perm': function(event) {
+      event.preventDefault();
       
-    //   var id = Template.instance().data._id;
-    //   var email = $('[name=edit_user_email]').val();
-    //   var fullname = $('[name=edit_user_fullname]').val();      
+      var id = $('[name=user_id]').val();
+      var role = $('[name=edit_user_role]:checked')[0].value;
 
-    //   if( $('[name=edit_user_email]').hasClass("invalid") || $('[name=edit_user_fullname]').hasClass("invalid") || email == "" || fullname == "" ) 
-    //   {
-    //     $.publish('toast', ["You have to fill Full Name and eMail Address correctly!", "User Info Save Failed", 'warning']);
-    //     return false;
-    //   }
-      
-    //   Meteor.call("userUpdate", id, {'profile.fullname': fullname, 'emails[0].address': email}, function(error, result) {
-    //     if(error) $.publish('toast',[error.reason,"An error occurred",'error']);
-    //     else $.publish('toast',["Your change to user info accepted","User Info Saved",'success']);
-    //   });
-
-    //   // Meteor.users.update( {_id: id }, { $set: {'profile.fullname': fullname, 'emails[0].address': email} });  
-    // }
+      Meteor.call("updateRoles", id, new Array(role), function(error, result) {
+        if(error) $.publish('toast',[error.reason,"An error occurred",'error']);
+        else $.publish('toast',["Your change to user info accepted","User Info Saved",'success']);
+      });
+    }
   });
 }
 
 Meteor.methods({
   userUpdate: function (id, userInfo) {
     return Meteor.users.update( {_id: id }, { $set: userInfo });
+  },
+  updateRoles: function (targetUserId, roles, group = 'default_group') {
+    var loggedInUser = Meteor.user()
+
+    if (!loggedInUser ||
+        !Roles.userIsInRole(loggedInUser, ['admin'], 'default_group')) {
+      throw new Meteor.Error(403, "Access denied")
+    }
+
+    Roles.setUserRoles(targetUserId, roles, group)
   }
 });

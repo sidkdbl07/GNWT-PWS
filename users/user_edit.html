@@ -35,22 +35,24 @@
         {{#if isInRole 'admin' 'default_group'}}
         <div class="col s4">
           <div class="card grey lighten-3">
-            <div class="card-content" style="padding: 10px;">
-              <span class="card-title">Permissions</span>
-              <div class="row" style="height: 130px;">
-                <div class="input-field col s12">
-                <input id="edit_field" type="radio" name="edit_user_role" value="field" {{checkedIf "field" }}>
-                  <label for="edit_field">Field</label><br/>
-                  <input id="edit_manager" type="radio" name="edit_user_role" value="manager" {{checkedIf "manager"}}>
-                  <label for="edit_manager">Manager</label><br/>
-                  <input id="edit_admin" type="radio" name="edit_user_role" value="admin" {{checkedIf "admin"}}>
-                  <label for="edit_admin">Administrator</label>
+            <form id="user_permission_form" novalidate="novalidate">
+              <div class="card-content" style="padding: 10px;">
+                <span class="card-title">Permissions</span>
+                <div class="row" style="height: 130px;">
+                  <div class="input-field col s12">
+                    <input id="edit_field" type="radio" name="edit_user_role" value="field" {{checkedIf "field" }}>
+                    <label for="edit_field">Field</label><br/>
+                    <input id="edit_manager" type="radio" name="edit_user_role" value="manager" {{checkedIf "manager"}}>
+                    <label for="edit_manager">Manager</label><br/>
+                    <input id="edit_admin" type="radio" name="edit_user_role" value="admin" {{checkedIf "admin"}}>
+                    <label for="edit_admin">Administrator</label>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="card-action">
-              <button id="submit_user_edit_perm" class="waves-effect waves-light btn green" style="margin-right: 5px;"><i class="mdi-content-save left"></i>Save</button>
-            </div>
+              <div class="card-action">
+                <button type="submit" id="submit_user_edit_perm" class="waves-effect waves-light btn green" style="margin-right: 5px;"><i class="mdi-content-save left"></i>Save</button>
+              </div>
+            </form>
           </div>
         </div>
         {{/if}}
