@@ -13,14 +13,16 @@ if (Meteor.isClient) {
   Template.user_edit.events({
     'click #submit_user_edit_info': function(event) {
       event.preventDefault();
-      if( !$('[name=edit_user_email]').hasClass("valid") || !$('[name=edit_user_fullname]').hasClass("valid") ) 
+      
+      var id = Template.instance().data._id;
+      var email = $('[name=edit_user_email]').val();
+      var fullname = $('[name=edit_user_fullname]').val();      
+
+      if( $('[name=edit_user_email]').hasClass("invalid") || $('[name=edit_user_fullname]').hasClass("invalid") || email == "" || fullname == "" ) 
       {
         $.publish('toast', ["You have to fill Full Name and eMail Address correctly!", "User Info Save Failed", 'warning']);
         return false;
       }
-      var id = Template.instance().data._id;
-      var email = $('[name=edit_user_email]').val();
-      var fullname = $('[name=edit_user_fullname]').val();      
       
       Meteor.call("userUpdate", id, {'profile.fullname': fullname, 'emails[0].address': email}, function(error, result) {
         if(error) $.publish('toast',[error.reason,"An error occurred",'error']);
