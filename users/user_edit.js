@@ -83,7 +83,7 @@ if (Meteor.isServer) {
         var loggedInUser = Meteor.user()
 
         if (!loggedInUser ||
-            !(Roles.userIsInRole(loggedInUser, ['admin'], 'default_group')) || (loggedInUser._id == userId) ) {
+            !(Roles.userIsInRole(loggedInUser, ['admin'], 'default_group') || (loggedInUser._id == userId) ) ) {
           throw new Meteor.Error(403, "Access denied")
         }
 
