@@ -57,20 +57,24 @@
         </div>
         {{/if}}
         <div class="col s4">
-          <div class="card  grey lighten-3">
-            <div class="card-content" style="padding: 10px;">
-              <span class="card-title">Password</span>
-              <div class="row" style="height: 130px;">
-                <div class="input-field col s12">
-                  <input type="text" id="edit_user_password" name="edit_user_password" class="validate" required="" aria-required="true" />
-                  <label for="edit_user_password" >New Password</label>
+          <form id="user_password_form" novalidate="novalidate">
+            <div class="card  grey lighten-3">           
+              <div class="card-content" style="padding: 10px;">
+                <span class="card-title">Password</span>
+                
+                <div class="row" style="height: 130px;">
+                  <div class="input-field col s12">
+                    <input type="password" id="edit_user_password" name="edit_user_password" class="validate" required="" aria-required="true" />
+                    <label for="edit_user_password" >New Password</label>
+                  </div>
                 </div>
+                
+              </div>
+              <div class="card-action">
+                <button type="submit" id="submit_user_edit_pass" class="waves-effect waves-light btn green" style="margin-right: 5px;"><i class="mdi-content-save left"></i>Save</button>
               </div>
             </div>
-            <div class="card-action">
-              <button id="submit_user_edit_pass" class="waves-effect waves-light btn green" style="margin-right: 5px;"><i class="mdi-content-save left"></i>Save</button>
-            </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
