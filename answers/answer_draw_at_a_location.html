@@ -204,15 +204,20 @@
   {{/with}}
 </template>
 
-<template name="photo_in_answer">
-  <div style="white-space: nowrap;">
-    <div style="display: inline-block; width: 300px;">
-      <button class="btn btn-primary red image-delete-button" id="delete_{{photo._id}}"><i class="mdi-content-clear left"></i>Delete Image</button>
+<template name="photo_in_answer_modal">
+  <div class="modal-content" style="padding: 0px;">
+    <div style="white-space: nowrap;">
+      <div class="input-field" style="padding: 10px; margin-top: 15px;">
+        <input id="caption_for_image" type="text" />
+        <label for="caption_for_image">Caption</label>
+      </div>
     </div>
-    <div class="input-field" style="display: inline-block; width: 520px;">
-      <input id="caption_for_image" type="text" />
-      <label for="caption_for_image">Caption</label>
+    <div style="white-space: nowrap; padding: 10px;">
+      <img src="{{photo.url}}" style="width: 100%;" />
     </div>
   </div>
-  <img src="{{photo.url}}" />
+  <div class="modal-footer">
+    <button class="modal-close waves-effect waves-light btn" style="margin-right: 5px; margin-left: 10px;"><i class="mdi-content-clear left"></i>Close</button>
+    <button class="btn btn-primary red image-delete-button" id="delete_{{photo._id}}"><i class="mdi-content-clear left"></i>Delete Image</button>
+  </div>
 </template>

@@ -638,14 +638,14 @@ if (Meteor.isClient) {
   });
 
 
-  Template.photo_in_answer.helpers({
+  Template.photo_in_answer_modal.helpers({
     'photo': function() {
       //console.log("Photo: "+Session.get('answer_photo_to_display'));
       return Images.findOne({_id: Session.get('answer_photo_to_display')});
     }
   });
 
-  Template.photo_in_answer.events({
+  Template.photo_in_answer_modal.events({
 
   });
 }
