@@ -373,16 +373,6 @@ if (Meteor.isClient) {
 
       // $.publish('toast',['Photos have been disabled for the beta test','Photos disabled', 'warning']);
     },
-    "click .image-delete-button": function(event, template) {
-      event.preventDefault();
-      let imageID = $(event.target).closest("button").attr("id").substr(7);
-      //console.log("imageID is: ", imageID);
-      let question_id = $(event.target).closest(".photos_for_question")[0].id.substr(6);
-      let answer_id = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id, group_id: Template.instance().parent().data.group._id, instance: Template.instance().parent().data.instance })._id;
-      //console.log("Answer for deleted image is: ", answer_id);
-      removePhoto(answer_id, imageID);
-      Images.remove({_id: imageID});
-    },
     "click .help": function(event, template){
        event.preventDefault();
        $("#help_text_content_"+this._id).html( this.help_text );
@@ -417,7 +407,15 @@ if (Meteor.isClient) {
     },
     'click .modal-trigger': function(event) {
       console.log("target: "+event.target.id);
+      
+      let question_id = $(event.target).closest(".photos_for_question")[0].id.substr(6);
+      let answer_id = Answers.findOne({question_id: question_id, inspection_id: Template.instance().parent().data.inspection_id, group_id: Template.instance().parent().data.group._id, instance: Template.instance().parent().data.instance })._id;
+      //console.log("Answer for deleted image is: ", answer_id);
+      // removePhoto(answer_id, imageID);
+      // Images.remove({_id: imageID});
+
       Session.set('answer_photo_to_display', event.target.id);
+      Session.set('answer_id_of_modal_photo', answer_id);
     },
     'change .multiple_choice_answer': function(event) {
       let question_id = $(event.target)[0].id.substr(4);
@@ -642,11 +640,21 @@ if (Meteor.isClient) {
     'photo': function() {
       //console.log("Photo: "+Session.get('answer_photo_to_display'));
       return Images.findOne({_id: Session.get('answer_photo_to_display')});
+    },
+    'answer_id': function() {
+      return Session.get('answer_id_of_modal_photo');
     }
   });
 
   Template.photo_in_answer_modal.events({
-
+    "click .image-delete-button": function(event, template) {
+      event.preventDefault();
+      let imageID = $(event.target).closest("button").attr("id").substr(7);
+      let answer_id = $(event.target).siblings("input[name='answer_id']")[0].value;
+      removePhoto(answer_id, imageID);
+      Images.remove({_id: imageID});
+      $(event.target).siblings('button.modal-close').trigger( "click" );
+    }
   });
 }
 
