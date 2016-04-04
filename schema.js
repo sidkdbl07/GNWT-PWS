@@ -87,10 +87,6 @@ Schemas.Answers = new SimpleSchema({
     type: Date,
     optional: true
   },
-  'photoA': {
-    type: String, 
-    optional: true
-  },
   'photos': {
     type: Array,
     minCount: 0,

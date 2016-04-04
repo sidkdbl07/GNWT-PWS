@@ -22,6 +22,25 @@ if (Meteor.isClient) {
     }
   };
 
+  let savePhotoCaption = function(answer_id, photo, caption) {
+    let originalAnswer = Answers.findOne({'_id': answer_id});
+
+    if (originalAnswer)
+    {
+      // Answers.update(originalAnswer._id, {
+      //   $set: answerObject
+      // });
+      Meteor.call("updatePhotoCaption", originalAnswer._id, photo, caption, function(error, result) {
+        if(error) $.publish('toast',[error.reason,"An error occurred",'error']);
+        else $.publish('toast',["Your photo caption was saved successfully!","Photo Saved",'success']);
+      });
+    }
+    else
+    {
+      $.publish('toast', ["You cannot save photo caption for non-existing Answer!", "Photo Caption Save Failed", 'warning']);
+    }
+  };
+
   let savePhoto = function(answer_id, photo) {
     // let originalAnswer = Answers.findOne({'question_id': question_id, 'inspection_id': inspection_id, 'group_id': group_id, 'instance': instance});
 
@@ -643,6 +662,16 @@ if (Meteor.isClient) {
     },
     'answer_id': function() {
       return Session.get('answer_id_of_modal_photo');
+    },
+    'photo_caption': function() {
+      if(!(Session.get('answer_id_of_modal_photo') && Session.get('answer_photo_to_display')))
+        return "";
+      let answer = Answers.findOne({_id: Session.get('answer_id_of_modal_photo')});
+      let result = $.grep(answer.photos, function(e){ return e.imageID == Session.get('answer_photo_to_display'); });
+      if (result.length == 1 && result[0].caption) {
+        return result[0].caption;
+      }
+      return "";
     }
   });
 
@@ -654,6 +683,13 @@ if (Meteor.isClient) {
       removePhoto(answer_id, imageID);
       Images.remove({_id: imageID});
       $(event.target).siblings('button.modal-close').trigger( "click" );
+    },
+    'blur input[name="caption_for_image"]': function(event) {
+      let answer_id = Session.get('answer_id_of_modal_photo');
+      let imageID = Session.get('answer_photo_to_display');
+      let image_caption = $(event.target).val();
+
+      savePhotoCaption(answer_id, imageID, image_caption);
     }
   });
 }
@@ -687,6 +723,9 @@ Meteor.methods({
   },
   insertAnswerPhoto: function(id, newPhotoID) {
     return Answers.update(id, {$push: {"photos": {"imageID": newPhotoID}} });
+  },
+  updatePhotoCaption: function(id, photoID, caption) {
+    return Answers.update({ _id: id, 'photos.imageID': photoID }, { $set: {'photos.$.caption': caption} });
   },
   removePhotoFromAnswer: function(id, photoID) {
     return Answers.update(id, {$pull: {"photos": {"imageID": photoID}} });
