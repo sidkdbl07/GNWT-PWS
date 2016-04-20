@@ -38,11 +38,15 @@
         {{#if has_multiple_instance}}
           <ul class="tabs">
               {{#each instances_of_group group inspection}}
-                <li class="tab col s3"><a href="{{pathFor 'inspection_go' inspection_id=../inspection._id group_id=../group._id instance=this }}">Instance #{{ this }}</a></li>
+                <li class="tab col s3">
+									<a class="truncate" href="{{pathFor 'inspection_go' inspection_id=../inspection._id group_id=../group._id instance=this }}">{{../group.name}} #{{ this }}</a>
+								</li>
               {{/each}}
 
             {{#with new_instance_of_group  group inspection}}
-              <li class="tab col s3"><a href="{{pathFor 'inspection_go' inspection_id=../inspection._id group_id=../group._id instance=this }}">+ Add New Instance</a></li>
+              <li class="tab col s3">
+								<a class="truncate" href="{{pathFor 'inspection_go' inspection_id=../inspection._id group_id=../group._id instance=this }}">+ Add {{../group.name}}</a>
+							</li>
             {{/with}}
           </ul>
         {{/if}}

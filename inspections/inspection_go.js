@@ -1,7 +1,7 @@
 if (Meteor.isClient) {
   Template.inspection_go.onRendered(function() {
     $.publish('page_changed',"buildings");
-    // $("ul.tabs").tabs();
+    //$("ul.tabs").tabs();
     console.log("inspection_go onRendered");
   });
 
